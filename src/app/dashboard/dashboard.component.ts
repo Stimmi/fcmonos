@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Event } from '../event/event.component';
+import { Event } from '../events/events.component';
 
 
 @Component({

@@ -6,8 +6,13 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { MenuComponent } from './menu/menu.component';
-import { EventComponent } from './event/event.component';
-import { EventDetailComponent } from './event-detail/event-detail.component';
+import { EventsComponent } from './events/events.component';
+import { EventDetailComponent } from './events/event-detail/event-detail.component';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import { PlayersComponent } from './players/players.component';
+import { PlayerDetailsComponent } from './players/player-details/player-details.component';
+import { EventDashboardComponent } from './events/event-dashboard/event-dashboard.component';
+import { TipstricksComponent } from './tipstricks/tipstricks.component';
 
 @NgModule({
   declarations: [
@@ -15,12 +20,17 @@ import { EventDetailComponent } from './event-detail/event-detail.component';
     LoginComponent,
     DashboardComponent,
     MenuComponent,
-    EventComponent,
-    EventDetailComponent
+    EventsComponent,
+    EventDetailComponent,
+    PlayersComponent,
+    PlayerDetailsComponent,
+    EventDashboardComponent,
+    TipstricksComponent,
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    BrowserAnimationsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

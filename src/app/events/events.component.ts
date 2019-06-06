@@ -11,11 +11,11 @@ export class Event {
 }
 
 @Component({
-  selector: 'event',
-  templateUrl: './event.component.html',
-  styleUrls: ['./event.component.css']
+  selector: 'events',
+  templateUrl: './events.component.html',
+  styleUrls: ['./events.component.css']
 })
-export class EventComponent implements OnInit {
+export class EventsComponent implements OnInit {
 
   @Input() event: Event;
 
