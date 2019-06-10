@@ -12,12 +12,16 @@ export class DashboardComponent implements OnInit {
 
   constructor() {
 
-    this.events = [new Event("Event1"), new Event("Event2")];
 
 
    }
 
+
+
   ngOnInit() {
+
+    this.events = [new Event("Event1"), new Event("Event2")];
+
   }
 
 }

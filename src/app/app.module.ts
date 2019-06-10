@@ -8,11 +8,14 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { MenuComponent } from './menu/menu.component';
 import { EventsComponent } from './events/events.component';
 import { EventDetailComponent } from './events/event-detail/event-detail.component';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { PlayersComponent } from './players/players.component';
 import { PlayerDetailsComponent } from './players/player-details/player-details.component';
 import { EventDashboardComponent } from './events/event-dashboard/event-dashboard.component';
 import { TipstricksComponent } from './tipstricks/tipstricks.component';
+import { AngularFireModule } from '@angular/fire';
+import { environment } from '../environments/environment';
+import { AngularFirestoreModule } from '@angular/fire/firestore';
+import { DbService } from './services/db.service';
 
 @NgModule({
   declarations: [
@@ -25,14 +28,16 @@ import { TipstricksComponent } from './tipstricks/tipstricks.component';
     PlayersComponent,
     PlayerDetailsComponent,
     EventDashboardComponent,
-    TipstricksComponent,
-  ],
+    TipstricksComponent
+    ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    BrowserAnimationsModule
+    AngularFireModule.initializeApp(environment.firebase),
+    AngularFirestoreModule
+
   ],
-  providers: [],
+  providers: [DbService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

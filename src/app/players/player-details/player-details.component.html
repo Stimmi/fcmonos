@@ -1,3 +1,13 @@
-<p>
-  player-details works!
-</p>
+
+<div *ngIf="updateMode">
+
+
+  <button>Confirm</button>
+  <button>Cancel</button>
+
+
+</div>
+<div *ngIf="!updateMode">
+  <p>{{playerName}}</p>
+
+</div>

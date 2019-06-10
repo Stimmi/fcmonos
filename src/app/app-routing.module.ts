@@ -6,16 +6,19 @@ import { EventDetailComponent } from './events/event-detail/event-detail.compone
 import { PlayersComponent } from './players/players.component';
 import { EventsComponent } from './events/events.component';
 import { TipstricksComponent } from './tipstricks/tipstricks.component';
+import { PlayerDetailsComponent } from './players/player-details/player-details.component';
 
 
 const routes: Routes = [
-  {path: 'Login', component: LoginComponent},
-  {path: 'Dashboard', component: DashboardComponent},
-  {path: 'Events', component: EventsComponent},
-  {path: 'Players', component: PlayersComponent},
-  {path: 'Tips', component: TipstricksComponent},
-  {path: 'Events/:name', component: EventDetailComponent},
-  {path: '', redirectTo: '/Dashboard', pathMatch:'full'},
+  {path: 'login', component: LoginComponent},
+  {path: 'dashboard', component: DashboardComponent},
+  {path: 'events', component: EventsComponent},
+  {path: 'players', component: PlayersComponent},
+  {path: 'players/newplayer', component: PlayerDetailsComponent},
+  {path: 'players/:name', component: PlayerDetailsComponent},
+  {path: 'tips', component: TipstricksComponent},
+  {path: 'events/:name', component: EventDetailComponent},
+  {path: '', redirectTo: '/dashboard', pathMatch:'full'},
   {path: '**', component: DashboardComponent, pathMatch:'full'}
 
 
