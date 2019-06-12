@@ -7,6 +7,7 @@ import { Observable } from 'rxjs';
 
 export class DbService {
     items: Observable<any[]>;
+    playerName: string;
 
 
 
@@ -22,7 +23,24 @@ export class DbService {
   
     return this.items;
 
+   }
+
+   getPlayer(playerName){
+
+    return this.db.collection('fcmonos').doc('players').collection('players').doc(playerName).get();
+
+   }
+
+
+  addPlayer(player){
+
+
+    return this.db.collection("fcmonos").doc("players").collection("players")
+    .doc(player.name).set(Object.assign({},player));
+
+
+  }
+
 }
 
 
-}

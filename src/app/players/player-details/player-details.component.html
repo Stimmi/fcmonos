@@ -1,13 +1,31 @@
+<p><a [routerLink]="['/players']"><---- Get back to overview</a></p>
+<div *ngIf="updateMode" class="container">
+    <form (ngSubmit)="onSubmit()" #playerForm="ngForm">
+        <div class="form-group">
+          <label for="name">Name</label>
 
-<div *ngIf="updateMode">
+          <input type="text" class="form-control" id="name" required [(ngModel)]="model.name" name="name" #name="ngModel">
+          <div [hidden]="name.valid || name.pristine"
+          class="alert alert-danger">
+       Name is required
+     </div>
+        </div>
 
+   
+        <div class="form-group">
+          <label for="playerNumber">Shirt Number</label>
 
-  <button>Confirm</button>
-  <button>Cancel</button>
+          <input type="text" class="form-control" [(ngModel)]="model.playerNumber" id="playerNumber" name="playerNumber">
+        </div>
+   
+        <button type="submit" class="btn btn-success" [disabled]="!playerForm.form.valid">Submit</button>
+        <button class="btn btn-danger">Cancel</button>
 
-
+      </form>
 </div>
+<p>{{foutmelding}}</p>
+<p>{{docRef}}</p>
 <div *ngIf="!updateMode">
-  <p>{{playerName}}</p>
-
+  <p>{{model.name}}</p>
+  <p>{{model.playerNumber}}</p>
 </div>
