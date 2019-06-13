@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { DbService } from '../services/db.service';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 export class Player {
   public name:string;
@@ -8,9 +9,8 @@ export class Player {
 
 
 
-  constructor (name: string, playerNumber: string) {
-    this.name = name;
-    this.playerNumber = playerNumber;
+  constructor () {
+
   }
 
 
@@ -24,9 +24,10 @@ export class Player {
   templateUrl: './players.component.html',
   styleUrls: ['./players.component.css']
 })
-export class PlayersComponent implements OnInit {
+export class PlayersComponent implements OnInit, OnDestroy {
 
   players: Player[];
+  subscriptionPlayers: Subscription;
 
   constructor(private dbService: DbService,
     private router:  Router) { }
@@ -35,7 +36,7 @@ export class PlayersComponent implements OnInit {
 
   ngOnInit() {
 
-    this.players = [new Player("John", "33"),
+    /*this.players = [new Player("John", "33"),
     new Player("John","33"),
     new Player("Rudy", "33"),
     new Player("John","33"),
@@ -45,16 +46,28 @@ export class PlayersComponent implements OnInit {
     new Player("John","33"),
     new Player("John","33"), 
   
-  ]
+  ]*/
 
-  /*this.dbService.getPlayers().subscribe(x => console.log(x));*/
+  this.subscriptionPlayers = this.dbService.getPlayers().subscribe(x => this.displayPlayers(x));
 
 
+  }
+
+  ngOnDestroy(){
+    this.subscriptionPlayers.unsubscribe();
   }
 
   addAPlayer() {
     this.router.navigate(['/players/newplayer']);
   }
+
+  displayPlayers(players) {
+
+    this.players = players;
+
+    console.log(this.players);
+  }
+
 
 
 

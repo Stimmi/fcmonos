@@ -27,6 +27,8 @@ export class DbService {
 
    getPlayer(playerName){
 
+    this.upperCaser(playerName);
+
     return this.db.collection('fcmonos').doc('players').collection('players').doc(playerName).get();
 
    }
@@ -34,11 +36,17 @@ export class DbService {
 
   addPlayer(player){
 
+    this.upperCaser(player.name);
+
 
     return this.db.collection("fcmonos").doc("players").collection("players")
-    .doc(player.name).set(Object.assign({},player));
+    .doc(this.playerName.toUpperCase()).set(Object.assign({},player));
 
+  }
 
+  upperCaser(playerName) {
+    this.playerName = playerName;
+    this.playerName.toUpperCase();
   }
 
 }

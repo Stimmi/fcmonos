@@ -16,6 +16,7 @@ const routes: Routes = [
   {path: 'players', component: PlayersComponent},
   {path: 'players/newplayer', component: PlayerDetailsComponent},
   {path: 'players/:name', component: PlayerDetailsComponent},
+  {path: 'players/newplayer', component: PlayerDetailsComponent},
   {path: 'tips', component: TipstricksComponent},
   {path: 'events/:name', component: EventDetailComponent},
   {path: '', redirectTo: '/dashboard', pathMatch:'full'},

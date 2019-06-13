@@ -1,7 +1,7 @@
 <p><a [routerLink]="['/players']"><---- Get back to overview</a></p>
 <div *ngIf="updateMode" class="container">
     <form (ngSubmit)="onSubmit()" #playerForm="ngForm">
-        <div class="form-group">
+        <div class="form-group" *ngIf="newPlayerMode">
           <label for="name">Name</label>
 
           <input type="text" class="form-control" id="name" required [(ngModel)]="model.name" name="name" #name="ngModel">
@@ -10,6 +10,7 @@
        Name is required
      </div>
         </div>
+        <p *ngIf="!newPlayerMode">{{model.name}}</p>
 
    
         <div class="form-group">
@@ -19,13 +20,13 @@
         </div>
    
         <button type="submit" class="btn btn-success" [disabled]="!playerForm.form.valid">Submit</button>
-        <button class="btn btn-danger">Cancel</button>
+        <button class="btn btn-danger" (click)="cancelFunction()">Cancel</button>
 
       </form>
 </div>
 <p>{{foutmelding}}</p>
-<p>{{docRef}}</p>
 <div *ngIf="!updateMode">
   <p>{{model.name}}</p>
   <p>{{model.playerNumber}}</p>
+  <button class="btn btn-primary" (click)="updateModeFunction()">Edit</button>
 </div>

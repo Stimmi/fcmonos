@@ -1,19 +1,22 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Player } from '../players.component';
 import { DbService } from 'src/app/services/db.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-player-details',
   templateUrl: './player-details.component.html',
   styleUrls: ['./player-details.component.css']
 })
-export class PlayerDetailsComponent implements OnInit {
+export class PlayerDetailsComponent implements OnInit, OnDestroy {
 
   playerName: string;
   updateMode: boolean = false;
-  model = new Player("Ronaldo", "18");
+  newPlayerMode: boolean;
+  model:Player = new Player();
   foutmelding:string;
+  subsciptionPlayer:Subscription;
 
   constructor(private route: ActivatedRoute,
      private router: Router,
@@ -26,19 +29,33 @@ export class PlayerDetailsComponent implements OnInit {
   ngOnInit() {
 
     if (this.router.url ==="/players/newplayer") {
-      this.updateMode= true;
+      this.newPlayerMode = true;
+    } else {
+      this.newPlayerMode = false;
+    }
 
+
+    if (this.newPlayerMode) {
+      this.updateMode= true;
 
     } else {
       this.playerName = this.route.snapshot.paramMap.get('name');
       this.updateMode= false;
 
-      //Niet afgewerkt!!!!
-      this.dbService.getPlayer(this.playerName).subscribe(x => this.model.name = x.data().name);
+      this.subsciptionPlayer = this.dbService.getPlayer(this.playerName.toUpperCase())
+      .subscribe(x => this.displayPlayer(x.data()));
 
     }
 
 
+  }
+
+
+  ngOnDestroy() {
+    if(this.subsciptionPlayer){
+      this.subsciptionPlayer.unsubscribe();
+
+    }
   }
 
   onSubmit() {
@@ -46,16 +63,42 @@ export class PlayerDetailsComponent implements OnInit {
     console.log("formsubmitted")
     console.log(this.model);
 
-    this.dbService.getPlayer(this.model.name).subscribe(x => {
-      if(x.exists){
-        this.foutmelding = "bestaat reeds";
-      } else {
-        this.dbService.addPlayer(this.model).then((x) => this.updateMode = !this.updateMode);
-      }
-    });
+    if (this.newPlayerMode) {
+      this.dbService.getPlayer(this.model.name.toUpperCase()).subscribe(x => {
+        if(x.exists){
+          this.foutmelding = "bestaat reeds";
+        } else {
+          this.dbService.addPlayer(this.model).finally(() => this.router.navigate(['/players']));
+        }
+      });
+    } else {
+      this.dbService.addPlayer(this.model).finally(() => this.updateModeFunction());
+    }
+
+
+
 
 
   }
+
+  displayPlayer(player) {
+    console.log(player);
+    this.model = player;
+  }
+
+
+  updateModeFunction() {
+    this.updateMode = !this.updateMode;
+  }
+
+  cancelFunction() {
+    if(this.newPlayerMode) {
+      this.router.navigate(['/players']);
+    } else {
+      this.updateModeFunction();
+    }
+  }
+
 
 
 
