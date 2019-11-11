@@ -1,3 +1,32 @@
 <p>
   <a [routerLink]="['/dashboard']">login works! continue to dashboard</a>
 </p>
+<form (ngSubmit)="onSubmit()" #loginForm="ngForm">
+    <label for="name">E-mail</label>
+
+    <input type="text" id="mail" required [(ngModel)]="mail" name="mail">
+
+  <label for="name">Password</label>
+
+  <input type="password" id="password" required [(ngModel)]="password" name="password">
+
+
+  <button type="submit" class="btn btn-success">Submit</button>
+
+</form>
+
+<form (ngSubmit)="onSubmitLogin()">
+  <label for="name">E-mail</label>
+
+  <input type="text" id="mail" required [(ngModel)]="mail" name="mail">
+
+<label for="name">Password</label>
+
+<input type="password" id="password" required [(ngModel)]="password" name="password">
+
+
+<button type="submit" class="btn btn-success">Submit</button>
+<label>{{errorMessage}}</label>
+
+
+</form>

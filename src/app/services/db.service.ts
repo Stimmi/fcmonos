@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
-import { Observable } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 
 
 @Injectable()
@@ -8,6 +8,8 @@ import { Observable } from 'rxjs';
 export class DbService {
     items: Observable<any[]>;
     playerName: string;
+    private playerSource = new BehaviorSubject('default message');
+    currentPlayers = this.playerSource.asObservable();
 
 
 
@@ -18,10 +20,10 @@ export class DbService {
    }
 
    getPlayers() {
-    this.items = this.db.collection('fcmonos').doc('players').collection('players').valueChanges();
 
-  
-    return this.items;
+    this.db.collection('fcmonos').doc('players').collection('players').valueChanges()
+    .subscribe(players => this.changePlayers(players));
+
 
    }
 
@@ -47,6 +49,11 @@ export class DbService {
   upperCaser(playerName) {
     this.playerName = playerName;
     this.playerName.toUpperCase();
+  }
+
+  changePlayers(message: any) {
+
+    this.playerSource.next(message)
   }
 
 }

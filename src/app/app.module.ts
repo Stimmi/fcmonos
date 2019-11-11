@@ -15,8 +15,10 @@ import { TipstricksComponent } from './tipstricks/tipstricks.component';
 import { AngularFireModule } from '@angular/fire';
 import { environment } from '../environments/environment';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
+import { AngularFireAuthModule } from '@angular/fire/auth';
 import { DbService } from './services/db.service';
 import { FormsModule }   from '@angular/forms';
+import { AuthService } from './services/auth.service';
 
 @NgModule({
   declarations: [
@@ -36,10 +38,11 @@ import { FormsModule }   from '@angular/forms';
     AppRoutingModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
+    AngularFireAuthModule,
     FormsModule
 
   ],
-  providers: [DbService],
+  providers: [DbService, AuthService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
