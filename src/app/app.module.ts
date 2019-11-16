@@ -19,6 +19,11 @@ import { AngularFireAuthModule } from '@angular/fire/auth';
 import { DbService } from './services/db.service';
 import { FormsModule }   from '@angular/forms';
 import { AuthService } from './services/auth.service';
+import { SignupComponent } from './login/signup/signup.component';
+import { LinkAuthPlayerComponent } from './login/link-auth-player/link-auth-player.component';
+import { RouterService } from './services/router.service';
+import { PlayerDbService } from './services/playerDb.service';
+
 
 @NgModule({
   declarations: [
@@ -31,7 +36,9 @@ import { AuthService } from './services/auth.service';
     PlayersComponent,
     PlayerDetailsComponent,
     EventDashboardComponent,
-    TipstricksComponent
+    TipstricksComponent,
+    SignupComponent,
+    LinkAuthPlayerComponent
     ],
   imports: [
     BrowserModule,
@@ -42,7 +49,7 @@ import { AuthService } from './services/auth.service';
     FormsModule
 
   ],
-  providers: [DbService, AuthService],
+  providers: [DbService,PlayerDbService, AuthService, RouterService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -1,46 +1,55 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AuthService } from '../services/auth.service';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
+import { Subscription } from 'rxjs';
+import { DbService } from '../services/db.service';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, OnDestroy {
 
   password: String;
   mail: String;
   errorMessage: String;
+  subscriptionAuth: Subscription;
+  team: String;
 
   
 
 
   constructor(private authService: AuthService,
-    private router: Router) {
+    private router: Router,
+    private route: ActivatedRoute,
+    private dbService: DbService) {
 
 
    }
 
   ngOnInit() {
 
+    this.team = this.route.snapshot.paramMap.get('team');
 
-  }
-  onSubmit() {
+    this.dbService.changeTeam(this.team);
 
-
-    console.log(this.mail + '  ' + this.password);
-
-
-    this.authService.createPlayerClassicMethod(this.mail,this.password).then().catch(
-      error => console.log("CCConsole:" + error)
-    );
+    this.dbService.currentTeam.subscribe(x => console.log(x));
 
 
+    this.subscriptionAuth = this.authService.currentAuth.subscribe(message => this.checkAuth(message));
 
 
 
   }
+
+  ngOnDestroy() {
+
+    this.subscriptionAuth.unsubscribe();
+
+  }
+
+
 
   onSubmitLogin() {
 
@@ -62,7 +71,35 @@ export class LoginComponent implements OnInit {
 
   }
 
+  proceedtoSignUp() {
+    this.router.navigate(['/signup']);
 
+  }
+
+  checkAuth(message) {
+
+    console.log('Check auth in login')
+
+    console.log(message);
+
+    if (message === 'default') {
+
+      // Wacht de onStateChanged heeft nog geen resultaat
+
+
+    } else if (message === null) {
+
+      // Geen sessie gaan naar login pagina
+
+      /*this.router.navigate(['/login']);*/
+
+    } else {
+
+      // auth sessie binnen
+      this.router.navigate(['/dashboard']);
+
+    }
+  }
 
 
 }

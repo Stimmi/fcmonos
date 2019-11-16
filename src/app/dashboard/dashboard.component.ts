@@ -10,6 +10,8 @@ import { Event } from '../events/events.component';
 export class DashboardComponent implements OnInit {
   events: Event[];
 
+
+
   constructor() {
 
 

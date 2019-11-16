@@ -1,21 +1,16 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { DbService } from '../services/db.service';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { AuthService } from '../services/auth.service';
+import { PlayerDbService } from '../services/playerDb.service';
 
 export class Player {
   public name:string;
   public playerNumber:string;
 
-
-
   constructor () {
 
-  }
-
-
-  
+  }  
 
 }
 
@@ -30,8 +25,12 @@ export class PlayersComponent implements OnInit, OnDestroy {
   players: Player[];
   subscriptionPlayers: Subscription;
   subscriptionAuth: Subscription;
+  currentPlayer: String;
 
-  constructor(private dbService: DbService,
+
+
+
+  constructor(private playerDb: PlayerDbService,
     private router:  Router,
     private auth: AuthService) { }
 
@@ -53,14 +52,18 @@ export class PlayersComponent implements OnInit, OnDestroy {
   
   ]*/
 
-  this.subscriptionPlayers = this.dbService.currentPlayers.subscribe(x => this.displayPlayers(x));
+  this.subscriptionPlayers = this.playerDb.currentPlayers.subscribe(x => this.displayPlayers(x));
 
   this.subscriptionAuth = this.auth.currentAuth.subscribe(message => this.checkAuth(message));
+
+
   }
 
   ngOnDestroy(){
     this.subscriptionPlayers.unsubscribe();
-    this.subscriptionAuth.unsubscribe() }
+    this.subscriptionAuth.unsubscribe();
+
+   }
 
   addAPlayer() {
     this.router.navigate(['/players/newplayer']);
@@ -68,29 +71,54 @@ export class PlayersComponent implements OnInit, OnDestroy {
 
   }
 
+  /*
+
+
+  */
+
   displayPlayers(players) {
 
-    if(players === 'default message') {
-
-      // Player list is empty so db function is triggered. Check that this doesn't happen twice?
-      this.dbService.getPlayers();
-      /* Insert waiting symbol */
-    } else {
-
+    if (players != 'default') {
       this.players = players;
-
-      console.log(this.players);
     }
-
 
   }
 
   checkAuth(message) {
 
-    if (message === 'default message') {
-      this.router.navigate(['/login']);
+
+    if (message === 'default') {
+
+      // Wacht de onStateChanged heeft nog geen resultaat
+
+
+    } else if (message === null) {
+
+      // Geen sessie gaan naar login pagina
+
+      this.router.navigate(['/fcmonos/login']);
+
+    } else {
+
+      this.currentPlayer = message.name 
+      console.log(this.currentPlayer);
+
+
+      // auth sessie binnen
+
+
+
     }
 
+  }
+
+  checkUser (message: any) {
+    console.log(message);
+  }
+
+  logOut() {
+
+    this.auth.logOut();
   }
 
 

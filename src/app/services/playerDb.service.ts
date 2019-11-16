@@ -5,23 +5,21 @@ import { Observable, BehaviorSubject } from 'rxjs';
 
 @Injectable()
 
-export class DbService {
+export class PlayerDbService {
     playerName: string;
     private playerSource = new BehaviorSubject('default');
     currentPlayers = this.playerSource.asObservable();
 
-    private teamSource = new BehaviorSubject('default');
-    currentTeam = this.teamSource.asObservable();
 
 
 
   constructor(private db: AngularFirestore) {
 
-
+    this.getPlayers();
 
    }
 
-   /*getPlayers() {
+   getPlayers() {
 
     this.db.collection('fcmonos').doc('players').collection('players').valueChanges()
     .subscribe(players => this.changePlayers(players));
@@ -29,52 +27,34 @@ export class DbService {
 
    }
 
-
-
-
-  addPlayer(player){
-
-    this.upperCaser(player.name);
-
-
-    return this.db.collection("fcmonos").doc("players").collection("players")
-    .doc(this.playerName.toUpperCase()).set(Object.assign({},player));
-
-  }
-
-
-
-  changePlayers(message: any) {
-
-    this.playerSource.next(message)
-  }*/
-
-  addPlayer(player){
-
-    this.upperCaser(player.name);
-
-
-    return this.db.collection("fcmonos").doc("players").collection("players")
-    .doc(this.playerName.toUpperCase()).set(Object.assign({},player));
-
-  }
-  upperCaser(playerName) {
-    this.playerName = playerName;
-    this.playerName.toUpperCase();
-  }
-
-  getPlayer(uid){
+   getPlayer(uid){
 
 
     return this.db.collection('fcmonos').doc('players').collection('players').doc(uid).get();
 
    }
 
-  changeTeam(message: any) {
 
-    this.teamSource.next(message)
+  addPlayer(player){
+
+    this.upperCaser(player.name);
+
+
+    return this.db.collection("fcmonos").doc("players").collection("players")
+    .doc(this.playerName.toUpperCase()).set(Object.assign({},player));
+
   }
 
+  upperCaser(playerName) {
+    this.playerName = playerName;
+    this.playerName.toUpperCase();
+  }
+
+  changePlayers(message: any) {
+
+    this.playerSource.next(message)
+  }
+
+
+
 }
-
-

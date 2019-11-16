@@ -7,10 +7,12 @@ import { PlayersComponent } from './players/players.component';
 import { EventsComponent } from './events/events.component';
 import { TipstricksComponent } from './tipstricks/tipstricks.component';
 import { PlayerDetailsComponent } from './players/player-details/player-details.component';
+import { SignupComponent } from './login/signup/signup.component';
+import { LinkAuthPlayerComponent } from './login/link-auth-player/link-auth-player.component';
 
 
 const routes: Routes = [
-  {path: 'login', component: LoginComponent},
+  {path: ':team/login', component: LoginComponent},
   {path: 'dashboard', component: DashboardComponent},
   {path: 'events', component: EventsComponent},
   {path: 'players', component: PlayersComponent},
@@ -18,6 +20,8 @@ const routes: Routes = [
   {path: 'players/:name', component: PlayerDetailsComponent},
   {path: 'players/newplayer', component: PlayerDetailsComponent},
   {path: 'tips', component: TipstricksComponent},
+  {path: 'signup', component: SignupComponent},
+  {path: 'linkplayer', component: LinkAuthPlayerComponent},
   {path: 'events/:name', component: EventDetailComponent},
   {path: '', redirectTo: '/dashboard', pathMatch:'full'},
   {path: '**', component: DashboardComponent, pathMatch:'full'}
