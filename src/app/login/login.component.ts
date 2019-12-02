@@ -1,8 +1,9 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AuthService } from '../services/auth.service';
-import { Router, ActivatedRoute } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { DbService } from '../services/db.service';
+import { RouterService } from '../services/router.service';
 
 @Component({
   selector: 'app-login',
@@ -21,8 +22,8 @@ export class LoginComponent implements OnInit, OnDestroy {
 
 
   constructor(private authService: AuthService,
-    private router: Router,
     private route: ActivatedRoute,
+    private routerService: RouterService,
     private dbService: DbService) {
 
 
@@ -36,7 +37,6 @@ export class LoginComponent implements OnInit, OnDestroy {
 
     this.dbService.currentTeam.subscribe(x => console.log(x));
 
-
     this.subscriptionAuth = this.authService.currentAuth.subscribe(message => this.checkAuth(message));
 
 
@@ -46,6 +46,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
 
     this.subscriptionAuth.unsubscribe();
+    console.log('Ng destroy van login pagina');
 
   }
 
@@ -67,12 +68,12 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   proceedToDashboard() {
 
-    this.router.navigate(['/Dashboard']);
+    this.routerService.proceedToDashboard();
 
   }
 
   proceedtoSignUp() {
-    this.router.navigate(['/signup']);
+    this.routerService.proceedToSignUp();
 
   }
 
@@ -93,10 +94,13 @@ export class LoginComponent implements OnInit, OnDestroy {
 
       /*this.router.navigate(['/login']);*/
 
+    } else if(message === 'linkPlayer') {
+      this.routerService.proceedToLinkPlayer();
+    
     } else {
 
       // auth sessie binnen
-      this.router.navigate(['/dashboard']);
+      this.routerService.proceedToDashboard();
 
     }
   }

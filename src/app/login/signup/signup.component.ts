@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/services/auth.service';
-import { Router } from '@angular/router';
 import { RouterService } from 'src/app/services/router.service';
 
 @Component({
@@ -20,7 +19,7 @@ export class SignupComponent implements OnInit {
 
 
   constructor(private authService: AuthService,
-    private router: Router) {
+    private routerService: RouterService) {
 
 
    }
@@ -66,18 +65,19 @@ export class SignupComponent implements OnInit {
 
   proceedToDashboard() {
 
-    this.router.navigate(['/Dashboard']);
+-    this.routerService.proceedToDashboard();
+    
 
   }
 
   proceedToSignIn() {
-    this.router.navigate(['/login']);
+    this.routerService.proceedToLogin();
 
   }
 
   proceedToLinkPlayer() {
 
-    this.router.navigate(['/linkplayer']);
+    this.routerService.proceedToLinkPlayer();
 
   }
 
@@ -101,7 +101,7 @@ export class SignupComponent implements OnInit {
     } else {
 
       // auth sessie binnen
-      this.router.navigate(['/dashboard']);
+      this.routerService.proceedToDashboard();
 
     }
   }

@@ -22,7 +22,7 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit() {
 
-    this.events = [new Event("Event1"), new Event("Event2")];
+    this.events = [new Event(), new Event()];
 
   }
 

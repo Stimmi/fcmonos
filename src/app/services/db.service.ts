@@ -5,10 +5,11 @@ import { Observable, BehaviorSubject } from 'rxjs';
 
 @Injectable()
 
+//Service for single DB action, without creating Observables
+
 export class DbService {
     playerName: string;
-    private playerSource = new BehaviorSubject('default');
-    currentPlayers = this.playerSource.asObservable();
+
 
     private teamSource = new BehaviorSubject('default');
     currentTeam = this.teamSource.asObservable();
@@ -66,9 +67,41 @@ export class DbService {
   getPlayer(uid){
 
 
-    return this.db.collection('fcmonos').doc('players').collection('players').doc(uid).get();
+    /*return this.db.collection('fcmonos').doc('players').collection('players').doc(uid).get();*/
 
-   }
+    console.log('Get player');
+    console.log(uid);
+
+    return this.db.collection('fcmonos').doc('players')
+    .collection('players', ref => ref.where('uid', '==', uid).limit(1)).valueChanges();
+
+  }
+
+  getPlayerByName(name){
+
+
+    /*return this.db.collection('fcmonos').doc('players').collection('players').doc(uid).get();*/
+
+    console.log('Get player by name');
+    console.log(name);
+
+    return this.db.collection('fcmonos').doc('players')
+    .collection('players').doc(name.toUpperCase()).get();
+
+  }
+
+  linkPlayerAndAuth(playerName,uid,email) {
+
+    console.log('Db service link player auth');
+    console.log(playerName.toUpperCase());
+
+   return this.db.collection('fcmonos').doc('players').collection('players')
+   .doc(playerName.toUpperCase()).update({uid: uid, email: email});
+
+
+
+    
+  }
 
   changeTeam(message: any) {
 

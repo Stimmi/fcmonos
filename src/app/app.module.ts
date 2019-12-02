@@ -23,6 +23,8 @@ import { SignupComponent } from './login/signup/signup.component';
 import { LinkAuthPlayerComponent } from './login/link-auth-player/link-auth-player.component';
 import { RouterService } from './services/router.service';
 import { PlayerDbService } from './services/playerDb.service';
+import { CreatePlayerComponent } from './players/create-player/create-player.component';
+import { EventDbService } from './services/playerDb.service copy';
 
 
 @NgModule({
@@ -38,7 +40,8 @@ import { PlayerDbService } from './services/playerDb.service';
     EventDashboardComponent,
     TipstricksComponent,
     SignupComponent,
-    LinkAuthPlayerComponent
+    LinkAuthPlayerComponent,
+    CreatePlayerComponent
     ],
   imports: [
     BrowserModule,
@@ -49,7 +52,7 @@ import { PlayerDbService } from './services/playerDb.service';
     FormsModule
 
   ],
-  providers: [DbService,PlayerDbService, AuthService, RouterService],
+  providers: [DbService,PlayerDbService,EventDbService, AuthService, RouterService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

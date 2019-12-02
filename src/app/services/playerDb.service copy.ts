@@ -5,29 +5,36 @@ import { BehaviorSubject } from 'rxjs';
 
 @Injectable()
 
-export class PlayerDbService {
+export class EventDbService {
+
     playerName: string;
-    private playerSource = new BehaviorSubject([]);
-    currentPlayers = this.playerSource.asObservable();
+    private eventSource = new BehaviorSubject([]);
+    currentEvents = this.eventSource.asObservable();
 
 
 
 
   constructor(private db: AngularFirestore) {
 
-    this.getPlayers();
+    this.getEvents();
 
    }
 
-   getPlayers() {
+   getEvents() {
 
-    this.db.collection('fcmonos').doc('players').collection('players').valueChanges()
-    .subscribe(players => this.changePlayers(players));
+    this.db.collection('fcmonos').doc('events').collection('events').valueChanges()
+    .subscribe(events => this.changeEvents(events));
 
 
    }
 
-   getPlayer(uid){
+   changeEvents(message: any) {
+
+    this.eventSource.next(message)
+  }
+
+
+   /*getPlayer(uid){
 
 
     return this.db.collection('fcmonos').doc('players').collection('players').doc(uid).get();
@@ -50,12 +57,8 @@ export class PlayerDbService {
   upperCaser(playerName) {
     this.playerName = playerName;
     this.playerName.toUpperCase();
-  }
+  }*/
 
-  changePlayers(message: any) {
-
-    this.playerSource.next(message)
-  }
 
 
 

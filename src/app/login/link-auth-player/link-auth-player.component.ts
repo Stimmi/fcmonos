@@ -2,8 +2,9 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
 import { Subscription } from 'rxjs';
 import { RouterService } from 'src/app/services/router.service';
-import { DbService } from 'src/app/services/db.service';
 import { PlayerDbService } from 'src/app/services/playerDb.service';
+import { Player } from 'src/app/players/players.component';
+import { DbService } from 'src/app/services/db.service';
 
 @Component({
   selector: 'app-link-auth-player',
@@ -15,13 +16,14 @@ export class LinkAuthPlayerComponent implements OnInit, OnDestroy {
   subscriptionAuth: Subscription;
   subscriptionDB: Subscription;
 
-  authJSON: any;
   uid: any;
-  playerList: any;
+  playerList: Player[];
+  selectedPlayer: String;
 
   constructor(private auth: AuthService,
     private router: RouterService,
-    private playerDb: PlayerDbService) { }
+    private playerDb: PlayerDbService,
+    private db: DbService) { }
 
   ngOnInit() {
 
@@ -34,6 +36,7 @@ export class LinkAuthPlayerComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
 
     this.subscriptionAuth.unsubscribe();
+    this.subscriptionDB.unsubscribe();
 
   }
 
@@ -46,12 +49,18 @@ export class LinkAuthPlayerComponent implements OnInit, OnDestroy {
     if (message === 'default') {
 
 
-    } else if (message) {
+    } else if (message === 'linkPlayer') {
 
-      this.authJSON = JSON.parse(JSON.stringify(message));
-      this.uid = this.authJSON.uid;
+      this.uid = this.auth.getUid();
+
+      console.log('UID in link comp')
 
       console.log(this.uid);
+
+    } else if (message = 'session') {
+
+      this.router.proceedToDashboard();
+
 
     } else {
 
@@ -63,8 +72,21 @@ export class LinkAuthPlayerComponent implements OnInit, OnDestroy {
 
   checkPlayers(x) {
 
+
     this.playerList = x;
+    this.playerList = this.playerList.filter(x => x.uid === null || x.uid === undefined || x.uid === '0' || x.uid === '');
+    this.playerList.unshift(new Player('Select Option','0'));
+    console.log('Link player comp player list')
     console.log(this.playerList);
+
+
+  }
+
+  linkPlayer(){
+
+      this.db.linkPlayerAndAuth(this.selectedPlayer,this.auth.getUid(),this.auth.getMailAdress())
+      .then(() => this.router.proceedToDashboard()).catch(y => console.log(y));
+
 
   }
 

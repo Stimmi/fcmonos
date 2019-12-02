@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { RouterService } from '../services/router.service';
 
 @Component({
   selector: 'app-menu',
@@ -8,9 +9,15 @@ import { Component, OnInit } from '@angular/core';
 export class MenuComponent implements OnInit {
 
 
-  constructor() { }
+  constructor(private router: RouterService) { }
 
   ngOnInit() {
   }
+
+  proceedToPlayers() {
+    this.router.proceedToPlayers();
+  }
+
+
 
 }

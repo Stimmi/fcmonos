@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Player } from '../players.component';
 import { DbService } from 'src/app/services/db.service';
 import { Subscription } from 'rxjs';
+import { RouterService } from 'src/app/services/router.service';
 
 @Component({
   selector: 'app-player-details',
@@ -14,12 +15,14 @@ export class PlayerDetailsComponent implements OnInit, OnDestroy {
   playerName: string;
   updateMode: boolean = false;
   newPlayerMode: boolean;
-  model:Player = new Player();
+  uid: String;
+  model:Player = new Player(this.playerName, this.uid);/* AANPASSING CONSTRUCTOR */
   foutmelding:string;
   subsciptionPlayer:Subscription;
 
   constructor(private route: ActivatedRoute,
      private router: Router,
+     private routerService: RouterService,
      private dbService: DbService) {
 
 
@@ -43,7 +46,7 @@ export class PlayerDetailsComponent implements OnInit, OnDestroy {
       this.updateMode= false;
 
       this.subsciptionPlayer = this.dbService.getPlayer(this.playerName.toUpperCase())
-      .subscribe(x => this.displayPlayer(x.data()));
+      .subscribe(x => this.displayPlayer(x));
 
     }
 
@@ -65,7 +68,7 @@ export class PlayerDetailsComponent implements OnInit, OnDestroy {
 
     if (this.newPlayerMode) {
       this.dbService.getPlayer(this.model.name.toUpperCase()).subscribe(x => {
-        if(x.exists){
+        if(x){
           this.foutmelding = "bestaat reeds";
         } else {
           this.dbService.addPlayer(this.model).finally(() => this.router.navigate(['/players']));
@@ -93,7 +96,7 @@ export class PlayerDetailsComponent implements OnInit, OnDestroy {
 
   cancelFunction() {
     if(this.newPlayerMode) {
-      this.router.navigate(['/players']);
+      this.routerService.proceedToPlayers();
     } else {
       this.updateModeFunction();
     }

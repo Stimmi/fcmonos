@@ -1,4 +1,12 @@
-<p>
-  link-auth-player works!
-</p>
+<div *ngIf="playerList">
+<p>Your team has some members that are not you linked to an account. You can link your account to one of the following members: </p>
+<div class="row select">
+  <select class="col-8 offset-2 btn" [(ngModel)]="selectedPlayer" name="selectedPlayer">
+      <option [value]="player.name" *ngFor='let player of playerList'>{{player.name}} {{player.playerNumber}}</option>
+  </select>
+</div>
+<button (click)="linkPlayer()">Link player and proceed</button>
+</div>
 <button (click)="logOut()">Log out</button>
+<p>Create a new member for this team:</p>
+<app-create-player></app-create-player>

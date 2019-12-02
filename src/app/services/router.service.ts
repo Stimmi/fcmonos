@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Injectable({
@@ -7,13 +7,38 @@ import { Router } from '@angular/router';
 export class RouterService {
 
 
-  constructor(private router: Router) {
+  constructor(private router: Router,
+    private zone: NgZone) {
  
   }
 
 
   proceedToLogin() {
-    this.router.navigate(['/fcmonos/login']);
+    this.zone.run(() => this.router.navigate(['/fcmonos/login']));
+
   }
+
+  proceedToSignUp() {
+    this.zone.run(() => this.router.navigate(['/signup']));
+
+  }
+
+
+  proceedToLinkPlayer() {
+    this.zone.run(() => this.router.navigate(['/linkplayer']));
+  }
+
+  proceedToPlayers() {
+    this.zone.run(() => this.router.navigate(['/players']));
+  }
+
+  proceedToDashboard() {
+    this.zone.run(() => this.router.navigate(['/dashboard']));
+  }
+
+  proceedToNewPlayer() {
+    this.zone.run(() => this.router.navigate(['/players/newplayer']));
+  }
+
 
 }
