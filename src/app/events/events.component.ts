@@ -2,13 +2,14 @@ import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { AuthService } from '../services/auth.service';
 import { Subscription } from 'rxjs';
 import { RouterService } from '../services/router.service';
-import { EventDbService } from '../services/playerDb.service copy';
+import { EventDbService } from '../services/eventDbService';
 
 export class Event {
   public name:string;
-  public date: Date;
+  public startTime: Date;
   public description: string;
   public location: string;
+  public id: string;
 
   constructor () {
   }
@@ -24,6 +25,7 @@ export class Event {
 export class EventsComponent implements OnInit, OnDestroy {
 
   public subscriptionAuth: Subscription;
+  private events: Event[];
 
 
   @Input() event: Event;
@@ -57,6 +59,12 @@ export class EventsComponent implements OnInit, OnDestroy {
 
     console.log(x);
 
+    this.events = x;
+
+  }
+
+  addEvent() {
+    this.router.proceedToEventDetails('newevent');
   }
 
 }

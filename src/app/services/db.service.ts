@@ -98,9 +98,23 @@ export class DbService {
    return this.db.collection('fcmonos').doc('players').collection('players')
    .doc(playerName.toUpperCase()).update({uid: uid, email: email});
 
-
-
     
+  }
+
+  addEvent(event) {
+
+    return this.db.collection("fcmonos").doc("events").collection("events")
+    .doc().set(Object.assign({},event));
+
+
+  }
+
+  getEvent(eventID) {
+
+    return this.db.collection('fcmonos').doc('events')
+    .collection('events').doc(eventID).valueChanges();
+
+
   }
 
   changeTeam(message: any) {

@@ -22,7 +22,7 @@ const routes: Routes = [
   {path: 'tips', component: TipstricksComponent},
   {path: 'signup', component: SignupComponent},
   {path: 'linkplayer', component: LinkAuthPlayerComponent},
-  {path: 'events/:name', component: EventDetailComponent},
+  {path: 'events/:id', component: EventDetailComponent},
   {path: '', redirectTo: '/dashboard', pathMatch:'full'},
   {path: '**', component: DashboardComponent, pathMatch:'full'}
 

@@ -40,5 +40,16 @@ export class RouterService {
     this.zone.run(() => this.router.navigate(['/players/newplayer']));
   }
 
+  proceedToEvents() {
+    this.zone.run(() => this.router.navigate(['/events']));
+  }
+
+  /*proceedToEventDetails() {
+    this.zone.run(() => this.router.navigate(['/events/:new']));
+  }*/
+
+  proceedToEventDetails(event: string) {
+    this.zone.run(() => this.router.navigate(['/events/' + event]));
+  }
 
 }

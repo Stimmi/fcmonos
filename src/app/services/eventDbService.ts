@@ -22,11 +22,12 @@ export class EventDbService {
 
    getEvents() {
 
-    this.db.collection('fcmonos').doc('events').collection('events').valueChanges()
+    this.db.collection('fcmonos').doc('events').collection('events').valueChanges({ idField: 'id' })
     .subscribe(events => this.changeEvents(events));
 
 
    }
+
 
    changeEvents(message: any) {
 

@@ -24,8 +24,8 @@ import { LinkAuthPlayerComponent } from './login/link-auth-player/link-auth-play
 import { RouterService } from './services/router.service';
 import { PlayerDbService } from './services/playerDb.service';
 import { CreatePlayerComponent } from './players/create-player/create-player.component';
-import { EventDbService } from './services/playerDb.service copy';
-
+import { EventDbService } from './services/eventDbService';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -49,7 +49,8 @@ import { EventDbService } from './services/playerDb.service copy';
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
     AngularFireAuthModule,
-    FormsModule
+    FormsModule,
+    NgbModule
 
   ],
   providers: [DbService,PlayerDbService,EventDbService, AuthService, RouterService],

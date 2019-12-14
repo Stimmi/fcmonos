@@ -1,4 +1,34 @@
 <app-menu></app-menu>
-<p>
-  event-detail works! {{eventName}}
-</p>
+<form class="form-inline">
+  <div class="form-group">
+    <div class="input-group">
+      <input class="form-control" placeholder="yyyy-mm-dd"
+             name="dp" [(ngModel)]="datePicked" ngbDatepicker #d="ngbDatepicker" [attr.disabled]="!newEventMode ? '' : null"/>
+      <div class="input-group-append">
+        <button class="btn btn-outline-secondary calendar" (click)="d.toggle()" type="button"></button>
+      </div>
+    </div>
+    <div class="input-group">
+        <label>Start Time</label>
+        <input name="startTime1" [(ngModel)]="startTime1" [attr.disabled]="!newEventMode ? '' : null"/>
+        <input name="startTime2" [(ngModel)]="startTime2" [attr.disabled]="!newEventMode ? '' : null"/>
+      </div>
+    <div class="input-group">
+      <label>Name</label>
+      <input name="name" [(ngModel)]="event.name" [attr.disabled]="!newEventMode ? '' : null"/>
+    </div>
+    <div class="input-group">
+      <label>Location</label>
+      <input name="location" [(ngModel)]="event.location" [attr.disabled]="!newEventMode ? '' : null"/>
+    </div>
+    <div class="input-group">
+        <label>Description</label>
+        <input name="description" [(ngModel)]="event.description" [attr.disabled]="!newEventMode ? '' : null"/>
+      </div>
+  </div>
+  <button (click)="submitForm()">Submit</button>
+</form>
+<button (click)="editEvent()">Edit</button>
+
+<p>{{datePicked | json}}</p>
+
