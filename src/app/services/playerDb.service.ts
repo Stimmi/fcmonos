@@ -21,36 +21,13 @@ export class PlayerDbService {
 
    getPlayers() {
 
-    this.db.collection('fcmonos').doc('players').collection('players').valueChanges()
+    this.db.collection('fcmonos').doc('players').collection('players').valueChanges({ idField: 'id' })
     .subscribe(players => this.changePlayers(players));
 
 
    }
 
-   getPlayer(uid){
 
-
-    return this.db.collection('fcmonos').doc('players').collection('players').doc(uid).get();
-
-   }
-
-
-  addPlayer(player){
-
-    this.upperCaser(player.name);
-
-
-    return this.db.collection("fcmonos").doc("players").collection("players")
-    .doc(this.playerName.toUpperCase()).set(Object.assign({},player));
-
-  }
-
-
-
-  upperCaser(playerName) {
-    this.playerName = playerName;
-    this.playerName.toUpperCase();
-  }
 
   changePlayers(message: any) {
 

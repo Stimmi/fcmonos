@@ -2,7 +2,7 @@
 <p>Your team has some members that are not you linked to an account. You can link your account to one of the following members: </p>
 <div class="row select">
   <select class="col-8 offset-2 btn" [(ngModel)]="selectedPlayer" name="selectedPlayer">
-      <option [value]="player.name" *ngFor='let player of playerList'>{{player.name}} {{player.playerNumber}}</option>
+      <option [value]="player.id" *ngFor='let player of playerList'>{{player.name}} {{player.playerNumber}}</option>
   </select>
 </div>
 <button (click)="linkPlayer()">Link player and proceed</button>

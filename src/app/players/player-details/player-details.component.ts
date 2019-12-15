@@ -12,11 +12,11 @@ import { RouterService } from 'src/app/services/router.service';
 })
 export class PlayerDetailsComponent implements OnInit, OnDestroy {
 
-  playerName: string;
+  playerId: string;
   updateMode: boolean = false;
   newPlayerMode: boolean;
   uid: String;
-  model:Player = new Player(this.playerName, this.uid);/* AANPASSING CONSTRUCTOR */
+  model:Player = new Player(this.playerId, this.uid);/* AANPASSING CONSTRUCTOR */
   foutmelding:string;
   subsciptionPlayer:Subscription;
 
@@ -42,10 +42,10 @@ export class PlayerDetailsComponent implements OnInit, OnDestroy {
       this.updateMode= true;
 
     } else {
-      this.playerName = this.route.snapshot.paramMap.get('name');
+      this.playerId = this.route.snapshot.paramMap.get('id');
       this.updateMode= false;
 
-      this.subsciptionPlayer = this.dbService.getPlayer(this.playerName.toUpperCase())
+      this.subsciptionPlayer = this.dbService.getPlayerById(this.playerId)
       .subscribe(x => this.displayPlayer(x));
 
     }
@@ -67,13 +67,9 @@ export class PlayerDetailsComponent implements OnInit, OnDestroy {
     console.log(this.model);
 
     if (this.newPlayerMode) {
-      this.dbService.getPlayer(this.model.name.toUpperCase()).subscribe(x => {
-        if(x){
-          this.foutmelding = "bestaat reeds";
-        } else {
-          this.dbService.addPlayer(this.model).finally(() => this.router.navigate(['/players']));
-        }
-      });
+ 
+      this.dbService.addPlayer(this.model).finally(() => this.router.navigate(['/players']));
+
     } else {
       this.dbService.addPlayer(this.model).finally(() => this.updateModeFunction());
     }

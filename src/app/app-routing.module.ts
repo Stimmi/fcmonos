@@ -18,7 +18,7 @@ const routes: Routes = [
   {path: 'events', component: EventsComponent},
   {path: 'players', component: PlayersComponent},
   {path: 'players/newplayer', component: CreatePlayerComponent},
-  {path: 'players/:name', component: PlayerDetailsComponent},
+  {path: 'players/:id', component: PlayerDetailsComponent},
   {path: 'tips', component: TipstricksComponent},
   {path: 'signup', component: SignupComponent},
   {path: 'linkplayer', component: LinkAuthPlayerComponent},

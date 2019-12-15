@@ -29,11 +29,8 @@ export class CreatePlayerComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
 
-      this.subsciptionAuth = this.auth.currentAuth.subscribe(x => this.processAuth(x)); 
-    
-
-
-
+    this.subsciptionAuth = this.auth.currentAuth.subscribe(x => this.processAuth(x)); 
+  
 
   }
 
@@ -50,29 +47,16 @@ export class CreatePlayerComponent implements OnInit, OnDestroy {
 
     console.log("formsubmitted")
     console.log(this.model);
+    this.model.email = '';
+    this.dbService.addPlayer(this.model).then(x => this.afterSubmit(x.id));
 
-      this.dbService.getPlayerByName(this.model.name.toUpperCase()).subscribe(x =>
-
-        {if(x.data()) {
-          this.errorMessage = 'Looks like there is already a member with this name'
-          
-        } else  {
-
-          this.model.email ='';
-
-          this.dbService.addPlayer(this.model).finally(() => this.afterSubmit());
-
-
-        }
-
-        })
     }
         
         
-  afterSubmit() {
+  afterSubmit(id) {
 
     if(this.linkPlayerMode) {
-      this.dbService.linkPlayerAndAuth(this.model.name, this.auth.getUid(), this.auth.getMailAdress())
+      this.dbService.linkPlayerAndAuth(id, this.auth.getUid(), this.auth.getMailAdress())
       .then(() =>this.router.proceedToDashboard());
       
 

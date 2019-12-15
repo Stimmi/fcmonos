@@ -52,22 +52,13 @@ export class DbService {
 
   addPlayer(player){
 
-    this.upperCaser(player.name);
-
-
     return this.db.collection("fcmonos").doc("players").collection("players")
-    .doc(this.playerName.toUpperCase()).set(Object.assign({},player));
+    .add(Object.assign({},player));
 
   }
-  upperCaser(playerName) {
-    this.playerName = playerName;
-    this.playerName.toUpperCase();
-  }
-
-  getPlayer(uid){
 
 
-    /*return this.db.collection('fcmonos').doc('players').collection('players').doc(uid).get();*/
+  getPlayerByUid(uid){
 
     console.log('Get player');
     console.log(uid);
@@ -75,6 +66,10 @@ export class DbService {
     return this.db.collection('fcmonos').doc('players')
     .collection('players', ref => ref.where('uid', '==', uid).limit(1)).valueChanges();
 
+  }
+
+  getPlayerById(id) {
+    return this.db.collection('fcmonos').doc('players').collection('players').doc(id).valueChanges();
   }
 
   getPlayerByName(name){
@@ -85,28 +80,31 @@ export class DbService {
     console.log('Get player by name');
     console.log(name);
 
-    return this.db.collection('fcmonos').doc('players')
-    .collection('players').doc(name.toUpperCase()).get();
+    /*return this.db.collection('fcmonos').doc('players')
+    .collection('players').doc(name.toUpperCase()).get();*/
 
   }
 
-  linkPlayerAndAuth(playerName,uid,email) {
+  linkPlayerAndAuth(id,uid,email) {
 
     console.log('Db service link player auth');
-    console.log(playerName.toUpperCase());
 
    return this.db.collection('fcmonos').doc('players').collection('players')
-   .doc(playerName.toUpperCase()).update({uid: uid, email: email});
+   .doc(id).update({uid: uid, email: email});
 
     
   }
 
   addEvent(event) {
 
+    return this.db.collection("fcmonos").doc("events").collection("events").add(Object.assign({},event));
+
+
+  }
+
+  updateEvent(eventID,event) {
     return this.db.collection("fcmonos").doc("events").collection("events")
-    .doc().set(Object.assign({},event));
-
-
+    .doc(eventID).set(Object.assign({},event));
   }
 
   getEvent(eventID) {

@@ -69,11 +69,32 @@ export class EventDetailComponent implements OnInit, OnDestroy {
     this.event.startTime.setHours(this.startTime1);
     this.event.startTime.setMinutes(this.startTime2);
 
+    this.processDateFields();
+
 
 
     this.dbService.addEvent(this.event).then(() => this.router.proceedToEvents());
 
 
+
+  }
+
+  updateEvent() {
+
+    this.processDateFields();
+
+    console.log(this.event);
+    this.dbService.updateEvent(this.eventID,this.event).then(() => this.router.proceedToEvents());
+
+  }
+
+  processDateFields() {
+
+    this.event.startTime = new Date();
+
+    this.event.startTime.setFullYear(this.datePicked.year, this.datePicked.month-1, this.datePicked.day);
+    this.event.startTime.setHours(this.startTime1);
+    this.event.startTime.setMinutes(this.startTime2);
 
   }
 

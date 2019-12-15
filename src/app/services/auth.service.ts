@@ -17,8 +17,6 @@ export class AuthService {
   playerJSON: any;
   currentPlayer: any;
 
-
-
   constructor(private afAuth: AngularFireAuth,
     private db: DbService) {
 
@@ -46,7 +44,6 @@ export class AuthService {
 
         return this.afAuth.auth.signOut().then(x => this.playerJSON = null);
 
-
       }
 
       processAuth(message: any) {
@@ -71,7 +68,7 @@ export class AuthService {
           /*this.changeAuth(message);*/
           this.authJSON = JSON.parse(JSON.stringify(message));
           this.uid = this.authJSON.uid;
-          this.db.getPlayer(this.uid).subscribe(x => this.checkPlayer(x));
+          this.db.getPlayerByUid(this.uid).subscribe(x => this.checkPlayer(x));
 
 
         } else {

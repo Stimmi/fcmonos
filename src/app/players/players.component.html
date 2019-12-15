@@ -11,7 +11,7 @@
             </div>
             <div *ngFor='let player of players' class="card d-inline-flex flex-wrap flex-fill" style="width: 150px;height: 150px;">
                 <div class="card-body">
-                  <h5 class="card-title"><a [routerLink]="['/players', player.name]">{{player.name}}</a></h5>
+                  <h5 class="card-title"><a [routerLink]="['/players', player.id]">{{player.name}}</a></h5>
                   <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
                   <p class="card-text">{{player.playerNumber}}</p>
                 </div>
