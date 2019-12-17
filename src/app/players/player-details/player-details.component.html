@@ -1,33 +1,6 @@
 <app-menu></app-menu>
 <p><a [routerLink]="['/players']"><---- Get back to overview</a></p>
-<div *ngIf="updateMode" class="container">
-    <form (ngSubmit)="onSubmit()" #playerForm="ngForm">
-        <div class="form-group" *ngIf="newPlayerMode">
-          <label for="name">Name</label>
-
-          <input type="text" class="form-control" id="name" required [(ngModel)]="model.name" name="name" #name="ngModel">
-          <div [hidden]="name.valid || name.pristine"
-          class="alert alert-danger">
-       Name is required
-     </div>
-        </div>
-        <p *ngIf="!newPlayerMode">{{model.name}}</p>
-
-   
-        <div class="form-group">
-          <label for="playerNumber">Shirt Number</label>
-
-          <input type="text" class="form-control" [(ngModel)]="model.playerNumber" id="playerNumber" name="playerNumber">
-        </div>
-   
-        <button type="submit" class="btn btn-success" [disabled]="!playerForm.form.valid">Submit</button>
-        <button class="btn btn-danger" (click)="cancelFunction()">Cancel</button>
-
-      </form>
-</div>
-<p>{{foutmelding}}</p>
-<div *ngIf="!updateMode">
-  <p>{{model.name}}</p>
-  <p>{{model.playerNumber}}</p>
-  <button class="btn btn-primary" (click)="updateModeFunction()">Edit</button>
-</div>
+<app-create-player [player]="player" [update]="updateMode"></app-create-player>
+<button *ngIf="!updateMode" type="button" class="btn btn-primary" (click)="updateModeFunction()">Update</button>
+<button *ngIf="updateMode" type="button" class="btn btn-danger" (click)="updateModeFunction()">Cancel</button>
+<button *ngIf="updateMode" type="button" class="btn btn-success" (click)="submitFunction()">Submit</button>

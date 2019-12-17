@@ -1,15 +1,17 @@
 <form (ngSubmit)="onSubmit()" #playerForm="ngForm">
 <div class="form-group">
     <label for="name">Name</label>
-    <input type="text" class="form-control" id="name" required [(ngModel)]="model.name" name="name" #name="ngModel">
+    <input type="text" class="form-control" id="name" required [(ngModel)]="player.name" name="name" #name="ngModel" [attr.disabled]="!update ? '' : null">
     <div [hidden]="name.valid || name.pristine"
     class="alert alert-danger">
  Name is required
     </div>
     <label for="name">Number</label>
-    <input type="text" class="form-control" id="playerNumber" required [(ngModel)]="model.playerNumber" name="playerNumber" #name="ngModel">
+    <input type="text" class="form-control" id="playerNumber" required [(ngModel)]="player.playerNumber" name="playerNumber" #name="ngModel" [attr.disabled]="!update ? '' : null">
 </div>
-<p>{{errorMessage}}</p>
-<button>Submit</button>
+<div class="form-group">
+    <label for="email">Email</label>
+    <input type="text" class="form-control" id="email" name="email" [(ngModel)]="player.email" disabled>
+</div>
 </form>
-<p>LinkPlayerMode {{linkPlayerMode}}</p>
+<p>{{update}}</p>

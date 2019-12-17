@@ -57,6 +57,10 @@ export class DbService {
 
   }
 
+  updatePlayer(id, player) {
+    return this.db.collection("fcmonos").doc("players").collection("players").doc(id).set(Object.assign({},player))
+  }
+
 
   getPlayerByUid(uid){
 
