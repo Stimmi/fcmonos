@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { AuthService } from '../services/auth.service';
-import { PlayerDbService } from '../services/playerDb.service';
+import { PlayerDbService } from '../services/playerDbService';
 import { RouterService } from '../services/router.service';
 
 export class Player {
@@ -9,13 +9,19 @@ export class Player {
   public playerNumber:string;
   public uid:string;
   public email:string;
+  public id:string;
+  public administrator: boolean = false;
+  public presence: string;
 
 
-  constructor (name, uid) {
-    this.name = name;
-    this.uid = uid;
+
+
+  constructor () {
+    this.name = this.name;
+    this.uid = this.uid;
     this.playerNumber = this.playerNumber;
     this.email = this.email;
+    this.administrator = this.administrator;
 
 
   }
@@ -30,26 +36,22 @@ export class Player {
 })
 export class PlayersComponent implements OnInit, OnDestroy {
 
-  players: Player[];
-  subscriptionPlayers: Subscription;
-  subscriptionAuth: Subscription;
-  currentPlayer: Player = new Player('0','0');
-
-
+  private players: Player[];
+  private subscriptionPlayers: Subscription;
+  private subscriptionAuth: Subscription;
+  private currentPlayer: Player = new Player();
+  private administrator: boolean = false;
 
 
   constructor(private playerDb: PlayerDbService,
     private routerService: RouterService,
-    private auth: AuthService) { }
+    private auth: AuthService) {
 
-
+  }
 
   ngOnInit() {
 
-  this.subscriptionPlayers = this.playerDb.currentPlayers.subscribe(x => this.displayPlayers(x));
-
   this.subscriptionAuth = this.auth.currentAuth.subscribe(message => this.checkAuth(message));
-
 
   }
 
@@ -61,54 +63,31 @@ export class PlayersComponent implements OnInit, OnDestroy {
 
   addAPlayer() {
     this.routerService.proceedToNewPlayer();
-
-
   }
 
-  /*
-
-
-  */
-
-  displayPlayers(players) {
-
-    this.players = players;
-    
-
-  }
 
   checkAuth(message) {
 
-    console.log('Check aut in Players');
-    console.log(message);
-
-
-    if (message === 'default') {
-
-      // Wacht de onStateChanged heeft nog geen resultaat
-
-    } else if (message === null) {
-
-      // Geen sessie gaan naar login pagina
-
-      this.routerService.proceedToLogin();
-
-    } else if(message === 'linkPlayer') {
-
-      this.routerService.proceedToLinkPlayer();
-
-    } else {
-
-      this.currentPlayer = this.auth.getCurrentPlayer();
-      console.log('Player comp: laden naam');
-      console.log(this.currentPlayer);
-
-
-      // auth sessie binnen
-
-
+    switch(message) {
+      case "default": break;
+      case null: this.routerService.proceedToLogin(); break;
+      case "linkPlayer": this.routerService.proceedToLinkPlayer(); break;
+      case "session": this.loadData();break;
 
     }
+
+
+  }
+
+  loadData () {
+    this.currentPlayer = this.auth.getCurrentPlayer();
+    this.subscriptionPlayers = this.playerDb.currentPlayers.subscribe(x => this.displayPlayers(x));
+    this.administrator = this.auth.getAdministrator();
+
+  }
+
+  displayPlayers(players) {
+    this.players = players;
 
   }
 

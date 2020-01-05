@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
 import { Subscription } from 'rxjs';
 import { RouterService } from 'src/app/services/router.service';
-import { PlayerDbService } from 'src/app/services/playerDb.service';
+import { PlayerDbService } from 'src/app/services/playerDbService';
 import { Player } from 'src/app/players/players.component';
 import { DbService } from 'src/app/services/db.service';
 
@@ -19,6 +19,8 @@ export class LinkAuthPlayerComponent implements OnInit, OnDestroy {
   uid: any;
   playerList: Player[];
   selectedPlayer: String;
+  player: Player;
+  updateMode: boolean = true;
 
   constructor(private auth: AuthService,
     private router: RouterService,
@@ -29,6 +31,7 @@ export class LinkAuthPlayerComponent implements OnInit, OnDestroy {
 
     this.subscriptionAuth = this.auth.currentAuth.subscribe(message => this.checkAuth(message));
     this.subscriptionDB = this.playerDb.currentPlayers.subscribe(x => this.checkPlayers(x));
+    this.player = new Player();
 
 
   }
@@ -75,7 +78,7 @@ export class LinkAuthPlayerComponent implements OnInit, OnDestroy {
 
     this.playerList = x;
     this.playerList = this.playerList.filter(x => x.uid === null || x.uid === undefined || x.uid === '0' || x.uid === '');
-    this.playerList.unshift(new Player('Select Option','0'));
+    /*this.playerList.unshift();*/
     console.log('Link player comp player list')
     console.log(this.playerList);
 
@@ -84,10 +87,18 @@ export class LinkAuthPlayerComponent implements OnInit, OnDestroy {
 
   linkPlayer(){
 
+
       this.db.linkPlayerAndAuth(this.selectedPlayer,this.auth.getUid(),this.auth.getMailAdress())
       .then(() => this.router.proceedToDashboard()).catch(y => console.log(y));
 
 
+  }
+
+  linkNewPlayer() {
+
+    this.player.uid = this.auth.getUid();
+    this.player.email = this.auth.getMailAdress();
+    this.db.addPlayer(this.player)
   }
 
 }

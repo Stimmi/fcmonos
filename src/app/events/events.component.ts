@@ -13,9 +13,17 @@ export class Event {
 
   constructor () {
   }
-
-
 }
+
+export class Presence {
+
+  public id:string;
+  public presence: string;
+
+  constructor () {
+  }
+}
+
 
 @Component({
   selector: 'events',
@@ -26,6 +34,7 @@ export class EventsComponent implements OnInit, OnDestroy {
 
   public subscriptionAuth: Subscription;
   private events: Event[];
+  private administrator: boolean = false;
 
 
   @Input() event: Event;
@@ -56,11 +65,8 @@ export class EventsComponent implements OnInit, OnDestroy {
   }
 
   processEvents(x){
-
-    console.log(x);
-
+    this.administrator = this.auth.getAdministrator()
     this.events = x;
-
   }
 
   addEvent() {

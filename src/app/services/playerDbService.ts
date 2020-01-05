@@ -15,7 +15,9 @@ export class PlayerDbService {
 
   constructor(private db: AngularFirestore) {
 
-    this.getPlayers();
+      this.getPlayers();
+    
+
 
    }
 

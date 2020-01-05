@@ -22,10 +22,12 @@ import { AuthService } from './services/auth.service';
 import { SignupComponent } from './login/signup/signup.component';
 import { LinkAuthPlayerComponent } from './login/link-auth-player/link-auth-player.component';
 import { RouterService } from './services/router.service';
-import { PlayerDbService } from './services/playerDb.service';
+import { PlayerDbService } from './services/playerDbService';
 import { CreatePlayerComponent } from './players/create-player/create-player.component';
 import { EventDbService } from './services/eventDbService';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import { EventPresenceComponent } from './events/event-presence/event-presence.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @NgModule({
   declarations: [
@@ -41,7 +43,8 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
     TipstricksComponent,
     SignupComponent,
     LinkAuthPlayerComponent,
-    CreatePlayerComponent
+    CreatePlayerComponent,
+    EventPresenceComponent
     ],
   imports: [
     BrowserModule,
@@ -50,7 +53,8 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
     AngularFirestoreModule,
     AngularFireAuthModule,
     FormsModule,
-    NgbModule
+    NgbModule,
+    FontAwesomeModule
 
   ],
   providers: [DbService,PlayerDbService,EventDbService, AuthService, RouterService],

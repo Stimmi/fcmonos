@@ -1,6 +1,6 @@
 <app-menu></app-menu>
 
-        <div class="card d-inline-flex flex-wrap flex-fill" style="width: 150px;height: 150px;" (click)='addAPlayer()'>
+        <div *ngIf="administrator" class="card d-inline-flex flex-wrap flex-fill" style="width: 150px;height: 150px;" (click)='addAPlayer()'>
                 <div class="card-body">
                   <h5 class="card-title">Add a player</h5>
                   <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>

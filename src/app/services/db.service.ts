@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
-import { Observable, BehaviorSubject } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 
 
 @Injectable()
@@ -22,33 +22,6 @@ export class DbService {
 
    }
 
-   /*getPlayers() {
-
-    this.db.collection('fcmonos').doc('players').collection('players').valueChanges()
-    .subscribe(players => this.changePlayers(players));
-
-
-   }
-
-
-
-
-  addPlayer(player){
-
-    this.upperCaser(player.name);
-
-
-    return this.db.collection("fcmonos").doc("players").collection("players")
-    .doc(this.playerName.toUpperCase()).set(Object.assign({},player));
-
-  }
-
-
-
-  changePlayers(message: any) {
-
-    this.playerSource.next(message)
-  }*/
 
   addPlayer(player){
 
@@ -76,18 +49,6 @@ export class DbService {
     return this.db.collection('fcmonos').doc('players').collection('players').doc(id).valueChanges();
   }
 
-  getPlayerByName(name){
-
-
-    /*return this.db.collection('fcmonos').doc('players').collection('players').doc(uid).get();*/
-
-    console.log('Get player by name');
-    console.log(name);
-
-    /*return this.db.collection('fcmonos').doc('players')
-    .collection('players').doc(name.toUpperCase()).get();*/
-
-  }
 
   linkPlayerAndAuth(id,uid,email) {
 
@@ -116,7 +77,22 @@ export class DbService {
     return this.db.collection('fcmonos').doc('events')
     .collection('events').doc(eventID).valueChanges();
 
+  }
 
+  getEventPrecenses(eventId2) {
+
+    return this.db.collection('fcmonos').doc('events')
+    .collection('events').doc(eventId2).collection('presences').valueChanges({ idField: 'id' });
+  }
+
+  setEventPresence(eventId3,playerId,eventPresence) {
+
+    this.db.collection('fcmonos').doc('players')
+    .collection('players').doc(playerId).collection('presences').doc(eventId3).set(Object.assign({},eventPresence));
+
+    return this.db.collection('fcmonos').doc('events')
+    .collection('events').doc(eventId3).collection('presences').doc(playerId).set(Object.assign({},eventPresence));
+  
   }
 
   changeTeam(message: any) {

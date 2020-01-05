@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { BehaviorSubject } from 'rxjs';
 import { DbService } from './db.service';
+import { Player } from '../players/players.component';
 
 @Injectable({
   providedIn: 'root'
@@ -12,10 +13,9 @@ export class AuthService {
   private authSource = new BehaviorSubject('default');
   currentAuth = this.authSource.asObservable();
 
-  uid: String;
+  uid: string;
   authJSON: any;
-  playerJSON: any;
-  currentPlayer: any;
+  currentPlayer: Player = new Player;
 
   constructor(private afAuth: AngularFireAuth,
     private db: DbService) {
@@ -42,41 +42,30 @@ export class AuthService {
 
       logOut() {
 
-        return this.afAuth.auth.signOut().then(x => this.playerJSON = null);
+        return this.afAuth.auth.signOut().then(x => this.currentPlayer = null);
 
       }
 
       processAuth(message: any) {
-        console.log('process Auth:');
+        
+        console.log('process Auth in Auth');
         console.log(message);
 
-        if (message === 'default') {
-
-          /*this.changeAuth(message)*/
-
-        } else if(message ==='linkPlayer') {
-
-          /*this.routerService.proceedToLinkPlayer();*/
-
-        } else if (message === 'session') {
-
-          console.log('process Auth message = session');
-
-
-        }else if (message) {
-
-          /*this.changeAuth(message);*/
-          this.authJSON = JSON.parse(JSON.stringify(message));
-          this.uid = this.authJSON.uid;
-          this.db.getPlayerByUid(this.uid).subscribe(x => this.checkPlayer(x));
-
-
-        } else {
-
-          this.changeAuth(null)
+        switch (message) {
+          case  "default": break;
+          case "linkPlayer": break;
+          case "session": break;
+          case null: this.changeAuth(null);break;
+          case message: this.loadLinkedPlayer(message); break;
+          default: this.changeAuth(null);
 
         }
+      }
 
+      loadLinkedPlayer(authMessage) {
+        this.authJSON = JSON.parse(JSON.stringify(authMessage));
+        this.uid = this.authJSON.uid;
+        this.db.getPlayerByUid(this.uid).subscribe(x => this.checkPlayer(x));
       }
 
       checkPlayer(x) {
@@ -85,23 +74,13 @@ export class AuthService {
         console.log(x);
 
         if (x[0]) {
-          this.playerJSON = x[0];
+          this.currentPlayer = x[0];
         }
 
-        console.log('Player opgeladen in auth');
-        console.log(this.playerJSON);
-
-
-        if (this.playerJSON) {
-
+        if (this.currentPlayer) {
           this.changeAuth('session');
-          this.setCurrentPlayer(this.playerJSON);
-
         } else {
-
           this.changeAuth('linkPlayer')
-
-          /*this.routerService.proceedToLinkPlayer();*/
         }
 
       }
@@ -118,15 +97,20 @@ export class AuthService {
         return this.uid;
       } 
 
-      setCurrentPlayer(player) {
+      getAdministrator(){
 
+        return this.currentPlayer.administrator;
 
-        this.currentPlayer = player;
+      } 
+
+      setCurrentPlayer(playerJ: Player) {
+
+        this.currentPlayer = playerJ;
 
       }
 
       getCurrentPlayer() {
-        return this.playerJSON;
+        return this.currentPlayer;
       }
 
       getMailAdress() {

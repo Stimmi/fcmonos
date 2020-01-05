@@ -16,7 +16,7 @@ export class PlayerDetailsComponent implements OnInit, OnDestroy {
   updateMode: boolean = false;
   newPlayerMode: boolean;
   uid: String;
-  player:Player = new Player(this.playerId, this.uid);/* AANPASSING CONSTRUCTOR */
+  player:Player = new Player();
   foutmelding:string;
   subsciptionPlayer:Subscription;
 
@@ -67,18 +67,23 @@ export class PlayerDetailsComponent implements OnInit, OnDestroy {
     console.log(this.player);
 
     if (this.newPlayerMode) {
- 
+
       this.dbService.addPlayer(this.player).finally(() => this.router.navigate(['/players']));
 
     } else {
       this.dbService.updatePlayer(this.playerId, this.player).finally(() => this.updateModeFunction());
     }
 
+  }
+  
+  createFunction() {
+    this.player.uid = '/';
+    this.player.email = '/';
 
-
-
+    this.dbService.addPlayer(this.player).then(() => this.routerService.proceedToPlayers());
 
   }
+
 
   displayPlayer(player) {
     this.player = player;

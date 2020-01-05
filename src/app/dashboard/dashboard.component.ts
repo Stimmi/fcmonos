@@ -8,7 +8,7 @@ import { Event } from '../events/events.component';
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent implements OnInit {
-  events: Event[];
+  private events: Event[];
 
 
 

@@ -9,7 +9,6 @@ import { TipstricksComponent } from './tipstricks/tipstricks.component';
 import { PlayerDetailsComponent } from './players/player-details/player-details.component';
 import { SignupComponent } from './login/signup/signup.component';
 import { LinkAuthPlayerComponent } from './login/link-auth-player/link-auth-player.component';
-import { CreatePlayerComponent } from './players/create-player/create-player.component';
 
 
 const routes: Routes = [
