@@ -9,7 +9,7 @@ export class Player {
   public playerNumber:string;
   public uid:string;
   public email:string;
-  public id:string;
+  public id : string;
   public administrator: boolean = false;
   public presence: string;
 
@@ -89,11 +89,6 @@ export class PlayersComponent implements OnInit, OnDestroy {
   displayPlayers(players) {
     this.players = players;
 
-  }
-
-  checkUser (message: any) {
-    console.log('Check user function in players')
-    console.log(message);
   }
 
   logOut() {

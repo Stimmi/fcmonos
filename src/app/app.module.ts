@@ -1,8 +1,8 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { AuthService } from './services/auth.service';
 import { LoginComponent } from './login/login.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { MenuComponent } from './menu/menu.component';
@@ -10,7 +10,6 @@ import { EventsComponent } from './events/events.component';
 import { EventDetailComponent } from './events/event-detail/event-detail.component';
 import { PlayersComponent } from './players/players.component';
 import { PlayerDetailsComponent } from './players/player-details/player-details.component';
-import { EventDashboardComponent } from './events/event-dashboard/event-dashboard.component';
 import { TipstricksComponent } from './tipstricks/tipstricks.component';
 import { AngularFireModule } from '@angular/fire';
 import { environment } from '../environments/environment';
@@ -18,7 +17,6 @@ import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { DbService } from './services/db.service';
 import { FormsModule }   from '@angular/forms';
-import { AuthService } from './services/auth.service';
 import { SignupComponent } from './login/signup/signup.component';
 import { LinkAuthPlayerComponent } from './login/link-auth-player/link-auth-player.component';
 import { RouterService } from './services/router.service';
@@ -39,7 +37,6 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     EventDetailComponent,
     PlayersComponent,
     PlayerDetailsComponent,
-    EventDashboardComponent,
     TipstricksComponent,
     SignupComponent,
     LinkAuthPlayerComponent,
@@ -57,7 +54,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     FontAwesomeModule
 
   ],
-  providers: [DbService,PlayerDbService,EventDbService, AuthService, RouterService],
+  providers: [AuthService,DbService,PlayerDbService,EventDbService, RouterService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

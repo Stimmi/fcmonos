@@ -10,9 +10,16 @@ export class Event {
   public description: string;
   public location: string;
   public id: string;
+  public presence: string;
+  public gDate: Date;
+  public amountYes: number;
+  public amountNo: number;
+
 
   constructor () {
   }
+
+  
 }
 
 export class Presence {

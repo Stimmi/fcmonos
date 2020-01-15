@@ -43,11 +43,11 @@
 
 <div *ngFor="let player of players" class="presence">
   <h4>{{player.name}}  </h4>
-  <fa-icon [icon]="faCheckCircle" *ngIf="player.presence!=='YES'" (click)="changeToYes(player.id)"></fa-icon>
+  <fa-icon [icon]="faCheckCircle" *ngIf="player.presence!=='YES'" (click)="changeToYes(player.id, player.presence)"></fa-icon>
   <fa-icon [icon]="faCheckCircleSol" *ngIf="player.presence=='YES'" class="green"></fa-icon>
-  <fa-icon [icon]="faCircle" *ngIf="player.presence=='YES' || player.presence=='NO'" (click)="changeToMaybe(player.id)"></fa-icon>
+  <fa-icon [icon]="faCircle" *ngIf="player.presence=='YES' || player.presence=='NO'" (click)="changeToMaybe(player.id, player.presence)"></fa-icon>
   <fa-icon [icon]="faCircleSol" *ngIf="player.presence!=='YES' && player.presence!=='NO'" class="orange"></fa-icon>
-  <fa-icon [icon]="faTimesCircle" *ngIf="player.presence!=='NO'" (click)="changeToNo(player.id)"></fa-icon>
+  <fa-icon [icon]="faTimesCircle" *ngIf="player.presence!=='NO'" (click)="changeToNo(player.id, player.presence)"></fa-icon>
   <fa-icon [icon]="faTimesCircleSol" *ngIf="player.presence=='NO'" class="red"></fa-icon>
 </div>
 

@@ -40,6 +40,7 @@ export class EventDetailComponent implements OnInit, OnDestroy {
   faCircle = faCircle;
   faCircleSol = faCircleSol;
   presence: Presence;
+  oldPresence: Presence;
 
 
 
@@ -55,6 +56,8 @@ export class EventDetailComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.event = new Event();
     this.presence = new Presence;
+    this.oldPresence = new Presence;
+
 
 
     if(this.eventID === 'newevent') {
@@ -98,6 +101,8 @@ export class EventDetailComponent implements OnInit, OnDestroy {
     this.event.startTime.setFullYear(this.datePicked.year, this.datePicked.month-1, this.datePicked.day);
     this.event.startTime.setHours(this.startTime1);
     this.event.startTime.setMinutes(this.startTime2);
+    this.event.amountYes = 0;
+    this.event.amountNo = 0;
 
     this.processDateFields();
 
@@ -173,17 +178,32 @@ export class EventDetailComponent implements OnInit, OnDestroy {
 
   }
 
-  changeToYes(id) {
+  changeToYes(id, oldPresence) {
+    if (!oldPresence){
+      this.oldPresence.presence = 'MAYBE';
+    } else {
+      this.oldPresence.presence = oldPresence;
+    };
     this.presence.presence = 'YES';
-    this.dbService.setEventPresence(this.eventID, id,this.presence)
+    this.dbService.setEventPresence(this.eventID, id,this.presence, this.oldPresence)
   }
-  changeToMaybe(id) {
+  changeToMaybe(id, oldPresence) {
+    if (!oldPresence){
+      this.oldPresence.presence = 'MAYBE';
+    } else {
+      this.oldPresence.presence = oldPresence;
+    };
     this.presence.presence = 'MAYBE';
-    this.dbService.setEventPresence(this.eventID, id,this.presence)
+    this.dbService.setEventPresence(this.eventID, id,this.presence, this.oldPresence)
   }
-  changeToNo(id) {
+  changeToNo(id, oldPresence) {
+    if (!oldPresence){
+      this.oldPresence.presence = 'MAYBE';
+    } else {
+      this.oldPresence.presence = oldPresence;
+    };
     this.presence.presence = 'NO';
-    this.dbService.setEventPresence(this.eventID, id,this.presence)
+    this.dbService.setEventPresence(this.eventID, id,this.presence, this.oldPresence)
   }
 
 

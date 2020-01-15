@@ -16,11 +16,7 @@ export class EventDbService {
 
   constructor(private db: AngularFirestore) {
 
-    if(this.currentEvents) {
-      this.getEvents();
-
-    }
-
+    this.getEvents()
 
    }
 

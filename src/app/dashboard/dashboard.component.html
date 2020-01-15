@@ -1,5 +1,18 @@
 <app-menu></app-menu>
-<p>
-  dashboard works!
-</p>
-<app-event-dashboard *ngFor="let event of events"></app-event-dashboard>
+
+<div *ngFor='let event of events' class="card d-block-flex flex-wrap flex-fill">
+    <div class="card-body">
+
+    <h5 class="card-title">{{event.name}}</h5>
+    <h6>{{event.location}}</h6>
+    <h6>{{event.gDate | date:'medium'}}</h6>
+    <p>{{event.description}}</p>
+    <p>{{event.amountYes}} - {{event.amountNo}}</p>
+    <fa-icon [icon]="faCheckCircle" *ngIf="event.presence!=='YES'" (click)="changeToYes(event.id,event.presence)"></fa-icon>
+    <fa-icon [icon]="faCheckCircleSol" *ngIf="event.presence=='YES'" class="green"></fa-icon>
+    <fa-icon [icon]="faCircle" *ngIf="event.presence=='YES' || event.presence=='NO'" (click)="changeToMaybe(event.id,event.presence)"></fa-icon>
+    <fa-icon [icon]="faCircleSol" *ngIf="event.presence!=='YES' && event.presence!=='NO'" class="orange"></fa-icon>
+    <fa-icon [icon]="faTimesCircle" *ngIf="event.presence!=='NO'" (click)="changeToNo(event.id, event.presence)"></fa-icon>
+    <fa-icon [icon]="faTimesCircleSol" *ngIf="event.presence=='NO'" class="red"></fa-icon>
+</div>
+</div>

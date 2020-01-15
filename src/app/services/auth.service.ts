@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { BehaviorSubject } from 'rxjs';
 import { DbService } from './db.service';
-import { Player } from '../players/players.component';
+/*import { Player } from '../players/players.component';*/
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +15,7 @@ export class AuthService {
 
   uid: string;
   authJSON: any;
-  currentPlayer: Player = new Player;
+  private currentPlayer: any /*Player = new Player*/;
 
   constructor(private afAuth: AngularFireAuth,
     private db: DbService) {
@@ -25,11 +25,7 @@ export class AuthService {
     }
 
       createPlayerClassicMethod(email, password) {
-
-
         return this.afAuth.auth.createUserWithEmailAndPassword(email,password);
-
-
       }
 
       login(email2, password2) {
@@ -103,7 +99,7 @@ export class AuthService {
 
       } 
 
-      setCurrentPlayer(playerJ: Player) {
+      setCurrentPlayer(playerJ: any) {
 
         this.currentPlayer = playerJ;
 
