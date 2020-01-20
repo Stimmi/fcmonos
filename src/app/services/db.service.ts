@@ -22,16 +22,32 @@ export class DbService {
 
    }
 
+   getTeam() {
+
+    return this.db.collection("fcmonos").doc('IqrnITdri7beif3d5c4s').valueChanges();
+
+   }
+
 
   addPlayer(player){
 
-    return this.db.collection("fcmonos").doc("players").collection("players")
+    this.updateTeamInfo();
+
+    return this.db.collection("fcmonos").doc('IqrnITdri7beif3d5c4s').collection("players")
     .add(Object.assign({},player));
+
+
+  }
+
+  updateTeamInfo(){
+
+    return this.db.collection("fcmonos").doc('IqrnITdri7beif3d5c4s').update({
+      amountPlayers: firebase.firestore.FieldValue.increment(1)});
 
   }
 
   updatePlayer(id, player) {
-    return this.db.collection("fcmonos").doc("players").collection("players").doc(id).set(Object.assign({},player))
+    return this.db.collection("fcmonos").doc('IqrnITdri7beif3d5c4s').collection("players").doc(id).set(Object.assign({},player))
   }
 
 
@@ -40,13 +56,13 @@ export class DbService {
     console.log('Get player');
     console.log(uid);
 
-    return this.db.collection('fcmonos').doc('players')
+    return this.db.collection("fcmonos").doc('IqrnITdri7beif3d5c4s')
     .collection('players', ref => ref.where('uid', '==', uid).limit(1)).valueChanges({ idField: 'id' });
 
   }
 
   getPlayerById(id) {
-    return this.db.collection('fcmonos').doc('players').collection('players').doc(id).valueChanges();
+    return this.db.collection("fcmonos").doc('IqrnITdri7beif3d5c4s').collection('players').doc(id).valueChanges();
   }
 
 
@@ -54,7 +70,7 @@ export class DbService {
 
     console.log('Db service link player auth');
 
-   return this.db.collection('fcmonos').doc('players').collection('players')
+   return this.db.collection("fcmonos").doc('IqrnITdri7beif3d5c4s').collection('players')
    .doc(id).update({uid: uid, email: email});
 
     
@@ -62,32 +78,32 @@ export class DbService {
 
   addEvent(event) {
 
-    return this.db.collection("fcmonos").doc("events").collection("events").add(Object.assign({},event));
+    return this.db.collection("fcmonos").doc('IqrnITdri7beif3d5c4s').collection("events").add(Object.assign({},event));
 
 
   }
 
   updateEvent(eventID,event) {
-    return this.db.collection("fcmonos").doc("events").collection("events")
+    return this.db.collection("fcmonos").doc('IqrnITdri7beif3d5c4s').collection("events")
     .doc(eventID).set(Object.assign({},event));
   }
 
   getEvent(eventID) {
 
-    return this.db.collection('fcmonos').doc('events')
+    return this.db.collection("fcmonos").doc('IqrnITdri7beif3d5c4s')
     .collection('events').doc(eventID).valueChanges();
 
   }
 
   getEventPrecenses(eventId2) {
 
-    return this.db.collection('fcmonos').doc('events')
+    return this.db.collection("fcmonos").doc('IqrnITdri7beif3d5c4s')
     .collection('events').doc(eventId2).collection('presences').valueChanges({ idField: 'id' });
   }
 
   getEventPrecensesPlayer(playerId) {
 
-    return this.db.collection('fcmonos').doc('players')
+    return this.db.collection("fcmonos").doc('IqrnITdri7beif3d5c4s')
     .collection('players').doc(playerId).collection('presences').valueChanges({ idField: 'id' });
   }
 
@@ -95,10 +111,10 @@ export class DbService {
 
     this.changeEventTotals(eventId3, eventPresence, oldPresence);
 
-    this.db.collection('fcmonos').doc('players')
+    this.db.collection("fcmonos").doc('IqrnITdri7beif3d5c4s')
     .collection('players').doc(playerId).collection('presences').doc(eventId3).set(Object.assign({},eventPresence));
 
-    return this.db.collection('fcmonos').doc('events')
+    return this.db.collection("fcmonos").doc('IqrnITdri7beif3d5c4s')
     .collection('events').doc(eventId3).collection('presences').doc(playerId).set(Object.assign({},eventPresence));
   
   
@@ -106,42 +122,31 @@ export class DbService {
 
   changeEventTotals(eventId3, eventPresence, oldPresence) {
 
-    if (oldPresence.presence === 'YES' && eventPresence.presence === 'NO') {
+    let incrementYes = 0;
+    let incrementNo = 0;
+    let incrementMaybe = 0;
 
-      return this.db.collection('fcmonos').doc('events')
-    .collection('events').doc(eventId3).update({amountYes: firebase.firestore.FieldValue.increment(-1), 
-    amountNo: firebase.firestore.FieldValue.increment(1)});
+    switch (oldPresence.presence) {
+      case 'YES': incrementYes = -1;
+        break;
+      case 'NO': incrementNo = -1;
+        break;
+      case 'MAYBE': incrementMaybe = -1;
+        break;
     }
-    if (oldPresence.presence === 'YES' && eventPresence.presence === 'MAYBE') {
-
-      return this.db.collection('fcmonos').doc('events')
-    .collection('events').doc(eventId3).update({amountYes: firebase.firestore.FieldValue.increment(-1)});
-    }
-    if (oldPresence.presence === 'NO' && eventPresence.presence === 'YES') {
-
-      return this.db.collection('fcmonos').doc('events')
-    .collection('events').doc(eventId3).update({amountYes: firebase.firestore.FieldValue.increment(1), 
-    amountNo: firebase.firestore.FieldValue.increment(-1)});
-    }
-    if (oldPresence.presence === 'NO' && eventPresence.presence === 'MAYBE') {
-
-      return this.db.collection('fcmonos').doc('events')
-    .collection('events').doc(eventId3).update({amountNo: firebase.firestore.FieldValue.increment(-1)});
-    }
-    if (oldPresence.presence === 'MAYBE' && eventPresence.presence === 'YES') {
-
-      return this.db.collection('fcmonos').doc('events')
-    .collection('events').doc(eventId3).update({amountYes: firebase.firestore.FieldValue.increment(1)});
-    }
-    if (oldPresence.presence === 'MAYBE' && eventPresence.presence === 'NO') {
-
-      return this.db.collection('fcmonos').doc('events')
-    .collection('events').doc(eventId3).update({amountNo: firebase.firestore.FieldValue.increment(1)});
+    switch (eventPresence.presence) {
+      case 'YES': incrementYes = 1;
+        break;
+      case 'NO': incrementNo = 1;
+        break;
+      case 'MAYBE': incrementMaybe = 1;
+        break;
     }
 
-
-
-
+    return this.db.collection("fcmonos").doc('IqrnITdri7beif3d5c4s')
+    .collection('events').doc(eventId3).update({amountYes: firebase.firestore.FieldValue.increment(incrementYes), 
+    amountNo: firebase.firestore.FieldValue.increment(incrementNo),
+    amountMaybe: firebase.firestore.FieldValue.increment(incrementMaybe)});
 
   }
 

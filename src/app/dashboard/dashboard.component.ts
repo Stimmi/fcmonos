@@ -6,8 +6,9 @@ import { AuthService } from '../services/auth.service';
 import { RouterService } from '../services/router.service';
 import { EventDbService } from '../services/eventDbService';
 import { DbService } from 'src/app/services/db.service';
-import { faCheckCircle, faCircle, faTimesCircle } from '@fortawesome/free-regular-svg-icons';
-import { faCheckCircle as faCheckCircleSol, faCircle as faCircleSol, faTimesCircle as faTimesCircleSol} from '@fortawesome/free-solid-svg-icons';
+import { faCheckCircle, faCircle, faTimesCircle, faQuestionCircle } from '@fortawesome/free-regular-svg-icons';
+import { faCheckCircle as faCheckCircleSol, faCircle as faCircleSol, faTimesCircle as faTimesCircleSol,
+faQuestionCircle as faQuestionCircleSol, faUsers} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-dashboard',
@@ -21,10 +22,12 @@ export class DashboardComponent implements OnInit, OnDestroy {
   private presence: Presence;
   private oldPresence: Presence;
   private inbetweenDate: Date;
+  private countPlayers: number;
 
   public subscriptionAuth: Subscription;
   public subscriptionEvents: Subscription;
   public subscriptionPresences: Subscription;
+
 
   faCheckCircle = faCheckCircle;
   faCheckCircleSol = faCheckCircleSol;
@@ -32,7 +35,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
   faTimesCircleSol = faTimesCircleSol;
   faCircle = faCircle;
   faCircleSol = faCircleSol;
-
+  faQuestionCircle = faQuestionCircle;
+  faQuestionCircleSol = faQuestionCircleSol;
+  faUsers = faUsers;
 
 
   constructor(private auth: AuthService,
@@ -44,6 +49,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.presence = new Presence;
     this.oldPresence = new Presence;
     this.subscriptionAuth = this.auth.currentAuth.subscribe(x => this.processAuth(x));
+    this.countPlayers = 0;
 
   }
 
@@ -57,8 +63,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
     if (this.subscriptionPresences) {
       this.subscriptionPresences.unsubscribe();
-
     }
+
 
   }
 
@@ -84,6 +90,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.subscriptionPresences = this.dbService.
     getEventPrecensesPlayer(this.currentPlayer.id).subscribe(y => this.processPresences(y));
 
+
   }
 
   processEvents(x) {
@@ -99,16 +106,23 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.presences = y;
     this.createDashboardList();
 
+
   }
+
+
 
   createDashboardList() {
   let index = 0;
   let indexx = 0;
 
   for (index = 0; index < this.events.length; index++) {
-    this.events[index].presence = 'MAYBE';
+    this.events[index].presence = null;
+
     this.events[index].gDate = this.changeDateField(this.events[index].startTime);
 
+    this.events[index].amountUnknown = this.auth.getAmountPlayers() - this.events[index].amountMaybe
+    - this.events[index].amountYes - this.events[index].amountNo;
+    
     for (indexx = 0; indexx < this.presences.length; indexx++) {
       if (this.events[index].id === this.presences[indexx].id) {
         this.events[index].presence = this.presences[indexx].presence;
@@ -121,45 +135,23 @@ changeDateField(gDate) {
 
 return this.inbetweenDate = new Date(gDate.seconds*1000);
 
-
-}
-
-changeToYes(id, oldPresence) {
-
-  if (!oldPresence){
-    this.oldPresence.presence = 'MAYBE';
-  } else {
-    this.oldPresence.presence = oldPresence;
-  };
-
-  this.presence.presence = 'YES';
-
-  this.dbService.setEventPresence(id, this.currentPlayer.id,this.presence, this.oldPresence)
-}
-changeToMaybe(id, oldPresence) {
-
-  if (!oldPresence){
-    this.oldPresence.presence = 'MAYBE';
-  } else {
-    this.oldPresence.presence = oldPresence;
-  };
-
-  this.presence.presence = 'MAYBE';
-
-  this.dbService.setEventPresence(id, this.currentPlayer.id,this.presence, this.oldPresence)
-}
-changeToNo(id, oldPresence) {
-
-  if (!oldPresence){
-    this.oldPresence.presence = 'MAYBE';
-  } else {
-    this.oldPresence.presence = oldPresence;
-  };
-
-  this.presence.presence = 'NO';
-
-  this.dbService.setEventPresence(id, this.currentPlayer.id,this.presence, this.oldPresence);
 }
 
 
+changePresence(oldPresence, newPresence, eventID ) {
+
+  this.presence.presence = newPresence;
+  this.oldPresence.presence = oldPresence;
+
+  this.dbService.setEventPresence(eventID, this.currentPlayer.id ,this.presence, this.oldPresence);
+
+  let index = 0;
+
+  for (index = 0; index < this.events.length; index++) {
+    if (this.events[index].id === eventID) {
+      this.events[index].presence = this.presence.presence;
+    }
+  }
+
+}
 }

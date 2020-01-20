@@ -6,8 +6,9 @@ import { RouterService } from 'src/app/services/router.service';
 import { Subscription } from 'rxjs';
 import { PlayerDbService } from 'src/app/services/playerDbService';
 import { Player } from '../../players/players.component';
-import { faCheckCircle, faCircle, faTimesCircle } from '@fortawesome/free-regular-svg-icons';
-import { faCheckCircle as faCheckCircleSol, faCircle as faCircleSol, faTimesCircle as faTimesCircleSol} from '@fortawesome/free-solid-svg-icons';
+import { faCheckCircle, faCircle, faTimesCircle, faQuestionCircle } from '@fortawesome/free-regular-svg-icons';
+import { faCheckCircle as faCheckCircleSol, faCircle as faCircleSol, faTimesCircle as faTimesCircleSol,
+faQuestionCircle as faQuestionCircleSol, faCalendar} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-event-detail',
@@ -33,12 +34,17 @@ export class EventDetailComponent implements OnInit, OnDestroy {
   inbetweenDate: Date;
   precenses: Presence[] = [];
   players: Player[];
+
   faCheckCircle = faCheckCircle;
   faCheckCircleSol = faCheckCircleSol;
   faTimesCircle = faTimesCircle;
   faTimesCircleSol = faTimesCircleSol;
   faCircle = faCircle;
   faCircleSol = faCircleSol;
+  faQuestionCircle = faQuestionCircle;
+  faQuestionCircleSol = faQuestionCircleSol;
+  faCalendar = faCalendar;
+
   presence: Presence;
   oldPresence: Presence;
 
@@ -103,6 +109,8 @@ export class EventDetailComponent implements OnInit, OnDestroy {
     this.event.startTime.setMinutes(this.startTime2);
     this.event.amountYes = 0;
     this.event.amountNo = 0;
+    this.event.amountMaybe = 0;
+
 
     this.processDateFields();
 
@@ -168,7 +176,7 @@ export class EventDetailComponent implements OnInit, OnDestroy {
     let indexx = 0;
 
     for (index = 0; index < this.players.length; index++) {
-      this.players[index].presence = 'MAYBE';
+      this.players[index].presence = null;
       for (indexx = 0; indexx < this.precenses.length; indexx++) {
         if (this.players[index].id === this.precenses[indexx].id) {
           this.players[index].presence = this.precenses[indexx].presence;
@@ -178,32 +186,22 @@ export class EventDetailComponent implements OnInit, OnDestroy {
 
   }
 
-  changeToYes(id, oldPresence) {
-    if (!oldPresence){
-      this.oldPresence.presence = 'MAYBE';
-    } else {
-      this.oldPresence.presence = oldPresence;
-    };
-    this.presence.presence = 'YES';
-    this.dbService.setEventPresence(this.eventID, id,this.presence, this.oldPresence)
+  changePresence(oldPresence, newPresence, playerID ) {
+
+    this.presence.presence = newPresence;
+    this.oldPresence.presence = oldPresence;
+
+    this.dbService.setEventPresence(this.eventID, playerID ,this.presence, this.oldPresence);
+
+    let index = 0;
+
+    for (index = 0; index < this.players.length; index++) {
+      if (this.players[index].id === playerID) {
+        this.players[index].presence = this.presence.presence;
+    }
   }
-  changeToMaybe(id, oldPresence) {
-    if (!oldPresence){
-      this.oldPresence.presence = 'MAYBE';
-    } else {
-      this.oldPresence.presence = oldPresence;
-    };
-    this.presence.presence = 'MAYBE';
-    this.dbService.setEventPresence(this.eventID, id,this.presence, this.oldPresence)
-  }
-  changeToNo(id, oldPresence) {
-    if (!oldPresence){
-      this.oldPresence.presence = 'MAYBE';
-    } else {
-      this.oldPresence.presence = oldPresence;
-    };
-    this.presence.presence = 'NO';
-    this.dbService.setEventPresence(this.eventID, id,this.presence, this.oldPresence)
+
+
   }
 
 

@@ -1,20 +1,3 @@
-
-fa-icon {
-    font-size: 25px;
-}
-
-.green {
-    color: green;
-}
-
-.orange {
-    color: orange;
-}
-
-.red {
-    color: red;
-}
-
-h4 {
-    display: inline;
+button  {
+    margin: 5px;
 }

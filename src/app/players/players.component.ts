@@ -36,11 +36,11 @@ export class Player {
 })
 export class PlayersComponent implements OnInit, OnDestroy {
 
-  private players: Player[];
-  private subscriptionPlayers: Subscription;
-  private subscriptionAuth: Subscription;
-  private currentPlayer: Player = new Player();
-  private administrator: boolean = false;
+  public players: Player[];
+  public subscriptionPlayers: Subscription;
+  public subscriptionAuth: Subscription;
+  public currentPlayer: Player = new Player();
+  public administrator: boolean = false;
 
 
   constructor(private playerDb: PlayerDbService,

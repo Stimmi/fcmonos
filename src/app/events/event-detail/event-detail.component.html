@@ -1,35 +1,58 @@
 <app-menu></app-menu>
-<form class="form-inline">
-  <div class="form-group">
-    <div class="input-group">
-      <input class="form-control" placeholder="yyyy-mm-dd"
-             name="dp" [(ngModel)]="datePicked" ngbDatepicker #d="ngbDatepicker" [attr.disabled]="!newEventMode ? '' : null"/>
-      <div class="input-group-append">
-        <button class="btn btn-outline-secondary calendar" (click)="d.toggle()" type="button"></button>
-      </div>
+
+
+<form class="text-center border border-light p-5">
+  
+  <div class="form-group row">
+    <label for="name" class="col-2 col-form-label">Name</label>
+    <div class="col-10">
+      <input type="text" class="form-control mb-4" name="name" [(ngModel)]="event.name" [attr.disabled]="!newEventMode ? '' : null">
     </div>
-    <div class="input-group">
-        <label>Start Time</label>
-        <input name="startTime1" [(ngModel)]="startTime1" [attr.disabled]="!newEventMode ? '' : null"/>
-        <input name="startTime2" [(ngModel)]="startTime2" [attr.disabled]="!newEventMode ? '' : null"/>
-      </div>
-    <div class="input-group">
-      <label>Name</label>
-      <input name="name" [(ngModel)]="event.name" [attr.disabled]="!newEventMode ? '' : null"/>
-    </div>
-    <div class="input-group">
-      <label>Location</label>
-      <input name="location" [(ngModel)]="event.location" [attr.disabled]="!newEventMode ? '' : null"/>
-    </div>
-    <div class="input-group">
-        <label>Description</label>
-        <input name="description" [(ngModel)]="event.description" [attr.disabled]="!newEventMode ? '' : null"/>
-      </div>
   </div>
-  <button (click)="submitForm()">Submit</button>
+
+  <div class="form-group row">
+    <label for="dp" class="col-2 col-form-label">Date</label>
+    <div class="col-8">
+      <input class="form-control" placeholder="yyyy-mm-dd"
+      name="dp" [(ngModel)]="datePicked" ngbDatepicker #d="ngbDatepicker" [attr.disabled]="!newEventMode ? '' : null"/>
+    </div>
+    <div class="col-2 input-group-append">
+      <button class="btn btn-outline-secondary calendar" (click)="d.toggle()" type="button"><fa-icon [icon]="faCalendar"></fa-icon>
+      </button>
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <label for="name" class="col-2 col-form-label">Start</label>
+    <div class="col-5">
+      <input class="form-control mb-4" name="startTime1" [(ngModel)]="startTime1" [attr.disabled]="!newEventMode ? '' : null"/>
+    </div>
+    <div class="col-5">
+      <input class="form-control mb-4" name="startTime2" [(ngModel)]="startTime2" [attr.disabled]="!newEventMode ? '' : null"/>
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <label for="location" class="col-2 col-form-label">Location</label>
+    <div class="col-10">
+      <input class="form-control mb-4" name="location" [(ngModel)]="event.location" [attr.disabled]="!newEventMode ? '' : null"/>
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <label for="description" class="col-2 col-form-label">Description</label>
+    <div class="col-10">
+      <input class="form-control mb-4" name="description" [(ngModel)]="event.description" [attr.disabled]="!newEventMode ? '' : null"/>
+    </div>
+  </div>
+
+
+  <button type="button" type="submit" class="btn col-12" (click)="editEvent()">Edit Event</button>
+  <button type="button" type="submit" class="btn col-12" (click)="updateEvent()">Update Event</button>
+  <button type="button" type="submit" class="btn col-12" (click)="submitForm()">Submit new event</button>
+
+
 </form>
-<button (click)="editEvent()">Edit</button>
-<button (click)="updateEvent()">Update</button>
 
 <p>{{datePicked | json}}</p>
 
@@ -43,11 +66,13 @@
 
 <div *ngFor="let player of players" class="presence">
   <h4>{{player.name}}  </h4>
-  <fa-icon [icon]="faCheckCircle" *ngIf="player.presence!=='YES'" (click)="changeToYes(player.id, player.presence)"></fa-icon>
+  <fa-icon [icon]="faCheckCircle" *ngIf="player.presence!=='YES'" (click)="changePresence(player.presence,'YES',player.id )"></fa-icon>
   <fa-icon [icon]="faCheckCircleSol" *ngIf="player.presence=='YES'" class="green"></fa-icon>
-  <fa-icon [icon]="faCircle" *ngIf="player.presence=='YES' || player.presence=='NO'" (click)="changeToMaybe(player.id, player.presence)"></fa-icon>
-  <fa-icon [icon]="faCircleSol" *ngIf="player.presence!=='YES' && player.presence!=='NO'" class="orange"></fa-icon>
-  <fa-icon [icon]="faTimesCircle" *ngIf="player.presence!=='NO'" (click)="changeToNo(player.id, player.presence)"></fa-icon>
+  <fa-icon [icon]="faQuestionCircle" *ngIf="player.presence!=='MAYBE'" (click)="changePresence(player.presence,'MAYBE',player.id )"></fa-icon>
+  <fa-icon [icon]="faQuestionCircleSol" *ngIf="player.presence=='MAYBE'" class="orange"></fa-icon>
+  <fa-icon [icon]="faTimesCircle" *ngIf="player.presence!=='NO'" (click)="changePresence(player.presence,'NO',player.id )"></fa-icon>
   <fa-icon [icon]="faTimesCircleSol" *ngIf="player.presence=='NO'" class="red"></fa-icon>
+  <fa-icon [icon]="faCircle" *ngIf="player.presence=='YES' || player.presence=='NO' || player.presence=='MAYBE'"></fa-icon>
+  <fa-icon [icon]="faCircleSol" *ngIf="player.presence!=='YES' && player.presence!=='NO' && player.presence!=='MAYBE'" class="grey"></fa-icon>
 </div>
 

@@ -1,3 +1,36 @@
 /* You can add global styles to this file, and also import other style files */
 html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif;
+background-color:  rgb(136, 210, 227);}
+
+
+span {
+    color: rgb(226,91,69);
+    cursor: pointer;
+}
+
+
+.btn {
+    background-color: rgb(226,91,69) ;
+    color: white;
+}
+
+
+/*Colors used to indicate player presence*/
+
+.green {
+    color: rgb(173, 201, 101);
+}
+
+.orange {
+    color: rgb(250,193,114);
+}
+
+.red {
+    color: rgb(226,91,69);
+}
+
+.grey {
+    color: grey;
+}

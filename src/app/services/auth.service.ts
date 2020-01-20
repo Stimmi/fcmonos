@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Subscription } from 'rxjs';
 import { DbService } from './db.service';
 /*import { Player } from '../players/players.component';*/
 
@@ -16,6 +16,8 @@ export class AuthService {
   uid: string;
   authJSON: any;
   private currentPlayer: any /*Player = new Player*/;
+  subscriptionTeam: Subscription;
+  currentTeam: any;
 
   constructor(private afAuth: AngularFireAuth,
     private db: DbService) {
@@ -52,7 +54,8 @@ export class AuthService {
           case "linkPlayer": break;
           case "session": break;
           case null: this.changeAuth(null);break;
-          case message: this.loadLinkedPlayer(message); break;
+          case message: this.loadLinkedPlayer(message)
+          this.subscriptionTeam = this.db.getTeam().subscribe(z => this.processTeam(z)); break;
           default: this.changeAuth(null);
 
         }
@@ -111,6 +114,18 @@ export class AuthService {
 
       getMailAdress() {
         return this.authJSON.email;
+      }
+
+      processTeam(z) {
+        
+        this.currentTeam = z;
+
+      }
+
+      getAmountPlayers() {
+
+        return this.currentTeam.amountPlayers;
+
       }
 
 

@@ -1,4 +1,4 @@
-<form (ngSubmit)="onSubmit()" #playerForm="ngForm">
+<form #playerForm="ngForm">
 <div class="form-group">
     <label for="name">Name</label>
     <input type="text" class="form-control" id="name" required [(ngModel)]="player.name" name="name" #name="ngModel" [attr.disabled]="!update ? '' : null">

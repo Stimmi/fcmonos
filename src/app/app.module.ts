@@ -26,6 +26,10 @@ import { EventDbService } from './services/eventDbService';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import { EventPresenceComponent } from './events/event-presence/event-presence.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { LOCALE_ID } from '@angular/core';
+import localeNl from '@angular/common/locales/nl';
+import { registerLocaleData } from '@angular/common';
+registerLocaleData(localeNl, 'nl-NL');
 
 @NgModule({
   declarations: [
@@ -54,7 +58,10 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     FontAwesomeModule
 
   ],
-  providers: [AuthService,DbService,PlayerDbService,EventDbService, RouterService],
+  providers: [AuthService,DbService,PlayerDbService,EventDbService, RouterService,
+    { provide: LOCALE_ID, useValue: "nl-NL" }],
   bootstrap: [AppComponent]
+
+
 })
 export class AppModule { }

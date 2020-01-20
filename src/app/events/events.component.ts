@@ -14,6 +14,10 @@ export class Event {
   public gDate: Date;
   public amountYes: number;
   public amountNo: number;
+  public amountMaybe: number;
+  public amountUnknown: number;
+
+
 
 
   constructor () {
@@ -40,8 +44,8 @@ export class Presence {
 export class EventsComponent implements OnInit, OnDestroy {
 
   public subscriptionAuth: Subscription;
-  private events: Event[];
-  private administrator: boolean = false;
+  public events: Event[];
+  public administrator: boolean = false;
 
 
   @Input() event: Event;

@@ -23,7 +23,7 @@ export class PlayerDbService {
 
    getPlayers() {
 
-    this.db.collection('fcmonos').doc('players').collection('players').valueChanges({ idField: 'id' })
+    this.db.collection("fcmonos").doc('IqrnITdri7beif3d5c4s').collection('players').valueChanges({ idField: 'id' })
     .subscribe(players => this.changePlayers(players));
 
 

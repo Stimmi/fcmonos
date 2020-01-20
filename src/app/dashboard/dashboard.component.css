@@ -1,19 +1,10 @@
 fa-icon {
-    font-size: 25px;
+    margin: 5px;
+    font-size: 55px;
+
 }
 
-.green {
-    color: green;
-}
-
-.orange {
-    color: orange;
-}
-
-.red {
-    color: red;
-}
-
-h4 {
-    display: inline;
+.card  {
+    margin: 15px;
+    text-align: center;
 }
