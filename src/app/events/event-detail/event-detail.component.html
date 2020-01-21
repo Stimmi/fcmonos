@@ -1,78 +1,125 @@
 <app-menu></app-menu>
 
-
-<form class="text-center border border-light p-5">
+<form class="text-center p-4">
   
   <div class="form-group row">
-    <label for="name" class="col-2 col-form-label">Name</label>
+    <label for="name" class="col-2 col-form-label"><fa-icon [icon]="faQuoteLeft"></fa-icon></label>
     <div class="col-10">
-      <input type="text" class="form-control mb-4" name="name" [(ngModel)]="event.name" [attr.disabled]="!newEventMode ? '' : null">
+      <input type="text" class="form-control mb-4" name="name" placeholder="Name" [(ngModel)]="event.name" [attr.disabled]="!newEventMode ? '' : null">
     </div>
   </div>
 
+
   <div class="form-group row">
-    <label for="dp" class="col-2 col-form-label">Date</label>
-    <div class="col-8">
-      <input class="form-control" placeholder="yyyy-mm-dd"
-      name="dp" [(ngModel)]="datePicked" ngbDatepicker #d="ngbDatepicker" [attr.disabled]="!newEventMode ? '' : null"/>
-    </div>
-    <div class="col-2 input-group-append">
+    <div class="col-2">
       <button class="btn btn-outline-secondary calendar" (click)="d.toggle()" type="button"><fa-icon [icon]="faCalendar"></fa-icon>
       </button>
     </div>
-  </div>
-
-  <div class="form-group row">
-    <label for="name" class="col-2 col-form-label">Start</label>
-    <div class="col-5">
-      <input class="form-control mb-4" name="startTime1" [(ngModel)]="startTime1" [attr.disabled]="!newEventMode ? '' : null"/>
-    </div>
-    <div class="col-5">
-      <input class="form-control mb-4" name="startTime2" [(ngModel)]="startTime2" [attr.disabled]="!newEventMode ? '' : null"/>
-    </div>
-  </div>
-
-  <div class="form-group row">
-    <label for="location" class="col-2 col-form-label">Location</label>
     <div class="col-10">
-      <input class="form-control mb-4" name="location" [(ngModel)]="event.location" [attr.disabled]="!newEventMode ? '' : null"/>
+      <input class="form-control" placeholder="yyyy-mm-dd"
+      name="dp" [(ngModel)]="datePicked" ngbDatepicker #d="ngbDatepicker" [attr.disabled]="!newEventMode ? '' : null"/>
     </div>
   </div>
 
   <div class="form-group row">
-    <label for="description" class="col-2 col-form-label">Description</label>
+    <label for="name" class="col-2 col-form-label"><fa-icon [icon]="faClock"></fa-icon></label>
+    <div class="col-5">
+      <input class="form-control mb-4" name="startTime1" placeholder="HH" [(ngModel)]="startTime1" [attr.disabled]="!newEventMode ? '' : null"/>
+    </div>
+    <div class="col-5">
+      <input class="form-control mb-4" name="startTime2" placeholder="MM" [(ngModel)]="startTime2" [attr.disabled]="!newEventMode ? '' : null"/>
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <label for="location" class="col-2 col-form-label"><fa-icon [icon]="faMapMarkerAlt"></fa-icon></label>
     <div class="col-10">
-      <input class="form-control mb-4" name="description" [(ngModel)]="event.description" [attr.disabled]="!newEventMode ? '' : null"/>
+      <input class="form-control mb-4" name="location" placeholder="Location" [(ngModel)]="event.location" [attr.disabled]="!newEventMode ? '' : null">
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <label for="description" class="col-2 col-form-label"><fa-icon [icon]="faCommentAlt"></fa-icon></label>
+    <div class="col-10">
+      <textarea class="form-control mb-4" name="description" placeholder="Comments"  rows="3" [(ngModel)]="event.description" [attr.disabled]="!newEventMode ? '' : null"></textarea>
     </div>
   </div>
 
 
-  <button type="button" type="submit" class="btn col-12" (click)="editEvent()">Edit Event</button>
-  <button type="button" type="submit" class="btn col-12" (click)="updateEvent()">Update Event</button>
-  <button type="button" type="submit" class="btn col-12" (click)="submitForm()">Submit new event</button>
+  <button *ngIf="!newEventMode" type="button" type="submit" class="btn col-8" (click)="editEvent()">Edit Event</button>
 
-
+  <button *ngIf="newEventMode" type="button" type="submit" class="btn col-8" (click)="submitForm()">Submit</button>
+  
 </form>
 
-<p>{{datePicked | json}}</p>
+<!--
+<div class="container text-center p-4">
 
-<h1>Event Presence</h1>
-<div>
-  <fa-icon [icon]="faCheckCircle"></fa-icon>
-  <fa-icon [icon]="faCircle"></fa-icon>
-  <fa-icon [icon]="faTimesCircle"></fa-icon>
-
-</div>
 
 <div *ngFor="let player of players" class="presence">
-  <h4>{{player.name}}  </h4>
-  <fa-icon [icon]="faCheckCircle" *ngIf="player.presence!=='YES'" (click)="changePresence(player.presence,'YES',player.id )"></fa-icon>
-  <fa-icon [icon]="faCheckCircleSol" *ngIf="player.presence=='YES'" class="green"></fa-icon>
+  <div class="row">
+  <h4 class="col-4">{{player.name}} </h4>
+
+ <div class="col-2" *ngIf="player.presence!=='YES'">
+  <fa-icon [icon]="faCheckCircle"  (click)="changePresence(player.presence,'YES',player.id )"></fa-icon>
+</div>
+<div class="col-2" *ngIf="player.presence=='YES'">
+  <fa-icon [icon]="faCheckCircleSol" class="green"></fa-icon>
+</div>
+<div class="col-2">
   <fa-icon [icon]="faQuestionCircle" *ngIf="player.presence!=='MAYBE'" (click)="changePresence(player.presence,'MAYBE',player.id )"></fa-icon>
   <fa-icon [icon]="faQuestionCircleSol" *ngIf="player.presence=='MAYBE'" class="orange"></fa-icon>
+</div>
+<div class="col-2">
   <fa-icon [icon]="faTimesCircle" *ngIf="player.presence!=='NO'" (click)="changePresence(player.presence,'NO',player.id )"></fa-icon>
   <fa-icon [icon]="faTimesCircleSol" *ngIf="player.presence=='NO'" class="red"></fa-icon>
+</div>
+<div class="col-2">
   <fa-icon [icon]="faCircle" *ngIf="player.presence=='YES' || player.presence=='NO' || player.presence=='MAYBE'"></fa-icon>
   <fa-icon [icon]="faCircleSol" *ngIf="player.presence!=='YES' && player.presence!=='NO' && player.presence!=='MAYBE'" class="grey"></fa-icon>
 </div>
+</div>
+</div>
+</div>
 
+-->
+
+<div class="container">
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th colspan="4">Name</th>
+      <th colspan="2">Yes</th>
+      <th colspan="2">Maybe</th>
+      <th colspan="2">No</th>
+      <th colspan="2">Unknown</th>
+
+    </tr>
+  </thead>
+<tbody>
+  <tr *ngFor="let player of players" class="presence">
+    <td colspan="4">
+      {{player.name}}
+    </td>
+    <td colspan="2">
+        <fa-icon [icon]="faCheckCircle" *ngIf="player.presence!=='YES'" (click)="changePresence(player.presence,'YES',player.id )"></fa-icon>
+        <fa-icon [icon]="faCheckCircleSol" *ngIf="player.presence=='YES'" class="green"></fa-icon>
+    </td>
+    <td colspan="2">
+      <fa-icon [icon]="faQuestionCircle" *ngIf="player.presence!=='MAYBE'" (click)="changePresence(player.presence,'MAYBE',player.id )"></fa-icon>
+      <fa-icon [icon]="faQuestionCircleSol" *ngIf="player.presence=='MAYBE'" class="orange"></fa-icon>
+    </td>
+    <td colspan="2">
+      <fa-icon [icon]="faTimesCircle" *ngIf="player.presence!=='NO'" (click)="changePresence(player.presence,'NO',player.id )"></fa-icon>
+      <fa-icon [icon]="faTimesCircleSol" *ngIf="player.presence=='NO'" class="red"></fa-icon>
+    </td>
+    <td colspan="2">
+      <fa-icon [icon]="faCircle" *ngIf="player.presence=='YES' || player.presence=='NO' || player.presence=='MAYBE'"></fa-icon>
+      <fa-icon [icon]="faCircleSol" *ngIf="player.presence!=='YES' && player.presence!=='NO' && player.presence!=='MAYBE'" class="grey"></fa-icon>
+    </td>
+  </tr>
+</tbody>
+
+
+</table>
+</div>

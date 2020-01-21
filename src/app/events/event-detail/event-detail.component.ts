@@ -8,7 +8,7 @@ import { PlayerDbService } from 'src/app/services/playerDbService';
 import { Player } from '../../players/players.component';
 import { faCheckCircle, faCircle, faTimesCircle, faQuestionCircle } from '@fortawesome/free-regular-svg-icons';
 import { faCheckCircle as faCheckCircleSol, faCircle as faCircleSol, faTimesCircle as faTimesCircleSol,
-faQuestionCircle as faQuestionCircleSol, faCalendar} from '@fortawesome/free-solid-svg-icons';
+faQuestionCircle as faQuestionCircleSol, faCalendar, faQuoteLeft, faClock, faMapMarkerAlt, faCommentAlt} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-event-detail',
@@ -44,6 +44,10 @@ export class EventDetailComponent implements OnInit, OnDestroy {
   faQuestionCircle = faQuestionCircle;
   faQuestionCircleSol = faQuestionCircleSol;
   faCalendar = faCalendar;
+  faQuoteLeft = faQuoteLeft;
+  faClock = faClock;
+  faMapMarkerAlt = faMapMarkerAlt;
+  faCommentAlt = faCommentAlt;
 
   presence: Presence;
   oldPresence: Presence;
@@ -101,6 +105,15 @@ export class EventDetailComponent implements OnInit, OnDestroy {
   }
 
   submitForm() {
+    if(this.eventID === 'newevent') {
+      this.addNewEvent();
+    } else {
+      this.updateEvent();
+    }
+
+  }
+
+  addNewEvent() {
 
     this.event.startTime = new Date();
 
