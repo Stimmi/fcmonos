@@ -2,6 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/services/auth.service';
 import { RouterService } from 'src/app/services/router.service';
+import { ActivatedRoute } from '@angular/router';
+import { DbService } from 'src/app/services/db.service';
+
+
 
 @Component({
   selector: 'app-signup',
@@ -9,17 +13,24 @@ import { RouterService } from 'src/app/services/router.service';
   styleUrls: ['./signup.component.css']
 })
 export class SignupComponent implements OnInit {
-  password: String;
-  passwordConf: String;
-  mail: String;
-  errorMessage: String;
+  password: string;
+  passwordConf: string;
+  mail: string;
+  errorMessage: string;
   subscriptionAuth: Subscription;
+  private teamId: string;
+  private teamName: string;
+
 
   
 
 
   constructor(private authService: AuthService,
-    private routerService: RouterService) {
+    private routerService: RouterService,
+    private route: ActivatedRoute,
+    private db: DbService) {
+
+      this.teamId = this.route.snapshot.paramMap.get('id');
 
 
    }
@@ -28,13 +39,24 @@ export class SignupComponent implements OnInit {
 
     this.subscriptionAuth = this.authService.currentAuth.subscribe(message => this.checkAuth(message));
 
+    this.db.getTeam(this.teamId).subscribe(x  => this.processTeam(x));
 
 
   }
 
+
   ngOnDestroy() {
 
     this.subscriptionAuth.unsubscribe();
+
+  }
+
+  processTeam(x) {
+
+    console.log(x);
+
+    this.teamName = x.name;
+
 
   }
 
@@ -51,14 +73,8 @@ export class SignupComponent implements OnInit {
 
       this.errorMessage = 'Something went wrong, please check if your data is correct.'
 
-
     }
-
-
     console.log(this.mail + '  ' + this.password);
-
-
-
 
   }
 
@@ -81,6 +97,7 @@ export class SignupComponent implements OnInit {
 
   }
 
+  
   checkAuth(message) {
 
     console.log('Check auth in signup')

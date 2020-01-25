@@ -84,6 +84,9 @@ export class PlayersComponent implements OnInit, OnDestroy {
     this.subscriptionPlayers = this.playerDb.currentPlayers.subscribe(x => this.displayPlayers(x));
     this.administrator = this.auth.getAdministrator();
 
+    console.log('teamshiz')
+    console.log(this.auth.getTeamId());
+
   }
 
   displayPlayers(players) {
@@ -95,6 +98,12 @@ export class PlayersComponent implements OnInit, OnDestroy {
 
     this.auth.logOut();
   }
+
+  test() {
+    console.log('tr play')
+    this.auth.updateProfile();
+  }
+
 
 
 

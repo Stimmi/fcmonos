@@ -88,7 +88,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     this.subscriptionEvents = this.eventService.currentEvents.subscribe(x => this.processEvents(x));
     this.subscriptionPresences = this.dbService.
-    getEventPrecensesPlayer(this.currentPlayer.id).subscribe(y => this.processPresences(y));
+    getEventPrecensesPlayer(this.auth.getTeamId(),this.currentPlayer.id).subscribe(y => this.processPresences(y));
 
 
   }
@@ -143,7 +143,7 @@ changePresence(oldPresence, newPresence, eventID ) {
   this.presence.presence = newPresence;
   this.oldPresence.presence = oldPresence;
 
-  this.dbService.setEventPresence(eventID, this.currentPlayer.id ,this.presence, this.oldPresence);
+  this.dbService.setEventPresence(this.auth.getTeamId(),eventID, this.currentPlayer.id ,this.presence, this.oldPresence);
 
   let index = 0;
 

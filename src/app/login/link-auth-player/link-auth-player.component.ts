@@ -88,7 +88,7 @@ export class LinkAuthPlayerComponent implements OnInit, OnDestroy {
   linkPlayer(){
 
 
-      this.db.linkPlayerAndAuth(this.selectedPlayer,this.auth.getUid(),this.auth.getMailAdress())
+      this.db.linkPlayerAndAuth(this.auth.getTeamId(),this.selectedPlayer,this.auth.getUid(),this.auth.getMailAdress())
       .then(() => this.router.proceedToDashboard()).catch(y => console.log(y));
 
 
@@ -98,7 +98,11 @@ export class LinkAuthPlayerComponent implements OnInit, OnDestroy {
 
     this.player.uid = this.auth.getUid();
     this.player.email = this.auth.getMailAdress();
-    this.db.addPlayer(this.player)
+    this.db.addPlayer(this.auth.getTeamId(), this.player)
+  }
+
+  setDisplayName() {
+    this.auth.updateProfile();
   }
 
 }

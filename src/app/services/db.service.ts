@@ -3,6 +3,7 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import { BehaviorSubject } from 'rxjs';
 import * as firebase from 'firebase/app';
 
+
 @Injectable()
 
 //Service for single DB action, without creating Observables
@@ -22,105 +23,108 @@ export class DbService {
 
    }
 
-   getTeam() {
+   getTeam(teamId) {
 
-    return this.db.collection("fcmonos").doc('IqrnITdri7beif3d5c4s').valueChanges();
+    return this.db.collection("fcmonos").doc(teamId).valueChanges();
 
    }
 
+   addTeam(team) {
 
-  addPlayer(player){
+    return this.db.collection("fcmonos").add(Object.assign({},team));
+   }
 
-    this.updateTeamInfo();
 
-    return this.db.collection("fcmonos").doc('IqrnITdri7beif3d5c4s').collection("players")
+  addPlayer(teamIdThree,player){
+
+    this.updateTeamInfo(teamIdThree);
+
+    return this.db.collection("fcmonos").doc(teamIdThree).collection("players")
     .add(Object.assign({},player));
 
 
   }
 
-  updateTeamInfo(){
+  updateTeamInfo(teamIdThree){
 
-    return this.db.collection("fcmonos").doc('IqrnITdri7beif3d5c4s').update({
+    return this.db.collection("fcmonos").doc(teamIdThree).update({
       amountPlayers: firebase.firestore.FieldValue.increment(1)});
 
   }
 
-  updatePlayer(id, player) {
-    return this.db.collection("fcmonos").doc('IqrnITdri7beif3d5c4s').collection("players").doc(id).set(Object.assign({},player))
+  updatePlayer(teamIdSix, id, player) {
+    return this.db.collection("fcmonos").doc(teamIdSix).collection("players").doc(id).set(Object.assign({},player))
   }
 
 
-  getPlayerByUid(uid){
+  getPlayerByUid(teamIdTwo, uid){
 
     console.log('Get player');
     console.log(uid);
 
-    return this.db.collection("fcmonos").doc('IqrnITdri7beif3d5c4s')
+    return this.db.collection("fcmonos").doc(teamIdTwo)
     .collection('players', ref => ref.where('uid', '==', uid).limit(1)).valueChanges({ idField: 'id' });
 
   }
 
-  getPlayerById(id) {
-    return this.db.collection("fcmonos").doc('IqrnITdri7beif3d5c4s').collection('players').doc(id).valueChanges();
+  getPlayerById(teamIdSeven,id) {
+    return this.db.collection("fcmonos").doc(teamIdSeven).collection('players').doc(id).valueChanges();
   }
 
 
-  linkPlayerAndAuth(id,uid,email) {
+  linkPlayerAndAuth(teamIdEight, id,uid,email) {
 
     console.log('Db service link player auth');
 
-   return this.db.collection("fcmonos").doc('IqrnITdri7beif3d5c4s').collection('players')
+   return this.db.collection("fcmonos").doc(teamIdEight).collection('players')
    .doc(id).update({uid: uid, email: email});
 
     
   }
 
-  addEvent(event) {
+  addEvent(teamIdFour, eventTwo) {
 
-    return this.db.collection("fcmonos").doc('IqrnITdri7beif3d5c4s').collection("events").add(Object.assign({},event));
+    return this.db.collection("fcmonos").doc(teamIdFour).collection("events").add(Object.assign({},eventTwo));
 
 
   }
 
-  updateEvent(eventID,event) {
-    return this.db.collection("fcmonos").doc('IqrnITdri7beif3d5c4s').collection("events")
+  updateEvent(teamIdNine, eventID,event) {
+    return this.db.collection("fcmonos").doc(teamIdNine).collection("events")
     .doc(eventID).set(Object.assign({},event));
   }
 
-  getEvent(eventID) {
+  getEvent(teamIdTen,eventID) {
 
-    return this.db.collection("fcmonos").doc('IqrnITdri7beif3d5c4s')
+    return this.db.collection("fcmonos").doc(teamIdTen)
     .collection('events').doc(eventID).valueChanges();
 
   }
 
-  getEventPrecenses(eventId2) {
+  getEventPrecenses(teamIdEleven, eventId2) {
 
-    return this.db.collection("fcmonos").doc('IqrnITdri7beif3d5c4s')
+    return this.db.collection("fcmonos").doc(teamIdEleven)
     .collection('events').doc(eventId2).collection('presences').valueChanges({ idField: 'id' });
   }
 
-  getEventPrecensesPlayer(playerId) {
+  getEventPrecensesPlayer(teamIdTwelve,playerId) {
 
-    return this.db.collection("fcmonos").doc('IqrnITdri7beif3d5c4s')
+    return this.db.collection("fcmonos").doc(teamIdTwelve)
     .collection('players').doc(playerId).collection('presences').valueChanges({ idField: 'id' });
   }
 
-  setEventPresence(eventId3,playerId,eventPresence, oldPresence) {
+  setEventPresence(teamIdThirteen, eventId3,playerId,eventPresence, oldPresence) {
 
-    this.changeEventTotals(eventId3, eventPresence, oldPresence);
+    this.changeEventTotals(teamIdThirteen,eventId3, eventPresence, oldPresence);
 
-    this.db.collection("fcmonos").doc('IqrnITdri7beif3d5c4s')
+    this.db.collection("fcmonos").doc(teamIdThirteen)
     .collection('players').doc(playerId).collection('presences').doc(eventId3).set(Object.assign({},eventPresence));
 
-    return this.db.collection("fcmonos").doc('IqrnITdri7beif3d5c4s')
-    .collection('events').doc(eventId3).collection('presences').doc(playerId).set(Object.assign({},eventPresence));
-  
+    return this.db.collection("fcmonos").doc(teamIdThirteen).collection('events').doc(eventId3).collection('presences').doc(playerId).set(Object.assign({},eventPresence));
   
   }
 
-  changeEventTotals(eventId3, eventPresence, oldPresence) {
+  changeEventTotals(teamIdThirteen, eventId3, eventPresence, oldPresence) {
 
     let incrementYes = 0;
     let incrementNo = 0;
@@ -143,7 +147,7 @@ export class DbService {
         break;
     }
 
-    return this.db.collection("fcmonos").doc('IqrnITdri7beif3d5c4s')
+    return this.db.collection("fcmonos").doc(teamIdThirteen)
     .collection('events').doc(eventId3).update({amountYes: firebase.firestore.FieldValue.increment(incrementYes), 
     amountNo: firebase.firestore.FieldValue.increment(incrementNo),
     amountMaybe: firebase.firestore.FieldValue.increment(incrementMaybe)});

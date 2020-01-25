@@ -1,0 +1,22 @@
+<form class="text-center border border-light p-5">
+
+  <p class="h4 mb-4">New Team</p>
+
+
+  <!-- Name -->
+  <div *ngIf='newUserMode'>
+    <p>If you already have an account, please log in first.</p>
+  <input type="text" id="mail" class="form-control mb-4" [(ngModel)]="email" name="email" placeholder="E-mail">
+
+  <!-- Email -->
+  <input type="password" id="password" [(ngModel)]="password" name="password" class="form-control mb-4" placeholder="Password">
+  </div>
+
+  <!-- Sign in button -->
+  <input type="text" id="teamName" class="form-control mb-4" [(ngModel)]="teamName" name="teamName" placeholder="Team Name">
+  <p>{{errorMessage}}</p>
+
+  <button type="button" type="submit" class="btn col-12" (click)="createTeam()">Create Team</button>
+
+
+</form>

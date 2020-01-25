@@ -5,7 +5,7 @@
   <div class="form-group row">
     <label for="name" class="col-2 col-form-label"><fa-icon [icon]="faQuoteLeft"></fa-icon></label>
     <div class="col-10">
-      <input type="text" class="form-control mb-4" name="name" placeholder="Name" [(ngModel)]="event.name" [attr.disabled]="!newEventMode ? '' : null">
+      <input type="text" id="name" class="form-control mb-4" name="name" placeholder="Name" [(ngModel)]="event.name" [attr.disabled]="!newEventMode ? '' : null">
     </div>
   </div>
 
@@ -46,9 +46,9 @@
   </div>
 
 
-  <button *ngIf="!newEventMode" type="button" type="submit" class="btn col-8" (click)="editEvent()">Edit Event</button>
+  <button *ngIf="!newEventMode && currentPlayer.administrator" type="button" type="submit" class="btn col-8" (click)="editEvent()">Edit Event</button>
 
-  <button *ngIf="newEventMode" type="button" type="submit" class="btn col-8" (click)="submitForm()">Submit</button>
+  <button *ngIf="newEventMode && currentPlayer.administrator" type="button" type="submit" class="btn col-8" (click)="submitForm()">Submit</button>
   
 </form>
 
@@ -83,24 +83,35 @@
 </div>
 
 -->
+<div class="container text-center p-1" *ngIf="this.currentPlayer.administrator">
+  <h5><fa-icon [icon]="faExclamationTriangle"></fa-icon> As an administrator you are able to update all event presences!</h5>
+</div>
 
 <div class="container">
 <table class="table table-bordered">
   <thead>
     <tr>
-      <th colspan="4">Name</th>
-      <th colspan="2">Yes</th>
-      <th colspan="2">Maybe</th>
-      <th colspan="2">No</th>
-      <th colspan="2">Unknown</th>
-
+      <th colspan="4" style="width: 20%;">Name</th>
+      <th colspan="2" style="width: 20%;">Yes</th>
+      <th colspan="2" style="width: 20%;">Maybe</th>
+      <th colspan="2" style="width: 20%;">No</th>
+      <th colspan="2" style="width: 20%;">Unknown</th>
+    </tr>
+  </thead>
+  <thead>
+    <tr>
+      <th colspan="4">Total</th>
+      <th colspan="2">{{event.amountYes}}</th>
+      <th colspan="2">{{event.amountMaybe}}</th>
+      <th colspan="2">{{event.amountNo}}</th>
+      <th colspan="2">{{event.amountUnknown}}</th>
     </tr>
   </thead>
 <tbody>
   <tr *ngFor="let player of players" class="presence">
-    <td colspan="4">
+    <th colspan="4" class="names">
       {{player.name}}
-    </td>
+    </th>
     <td colspan="2">
         <fa-icon [icon]="faCheckCircle" *ngIf="player.presence!=='YES'" (click)="changePresence(player.presence,'YES',player.id )"></fa-icon>
         <fa-icon [icon]="faCheckCircleSol" *ngIf="player.presence=='YES'" class="green"></fa-icon>

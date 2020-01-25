@@ -16,13 +16,13 @@ export class EventDbService {
 
   constructor(private db: AngularFirestore) {
 
-    this.getEvents()
+    /*this.getEvents()*/
 
    }
 
-   getEvents() {
+   getEvents(teamId) {
 
-    this.db.collection("fcmonos").doc('IqrnITdri7beif3d5c4s').collection('events').valueChanges({ idField: 'id' })
+    this.db.collection("fcmonos").doc(teamId).collection('events').valueChanges({ idField: 'id' })
     .subscribe(events => this.changeEvents(events));
 
 

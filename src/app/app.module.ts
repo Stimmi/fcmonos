@@ -29,6 +29,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { LOCALE_ID } from '@angular/core';
 import localeNl from '@angular/common/locales/nl';
 import { registerLocaleData } from '@angular/common';
+import { NewteamComponent } from './general/newteam/newteam.component';
 registerLocaleData(localeNl, 'nl-NL');
 
 @NgModule({
@@ -45,7 +46,8 @@ registerLocaleData(localeNl, 'nl-NL');
     SignupComponent,
     LinkAuthPlayerComponent,
     CreatePlayerComponent,
-    EventPresenceComponent
+    EventPresenceComponent,
+    NewteamComponent
     ],
   imports: [
     BrowserModule,

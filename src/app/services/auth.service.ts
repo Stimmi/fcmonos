@@ -2,6 +2,10 @@ import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { DbService } from './db.service';
+import { EventDbService } from './eventDbService';
+import { PlayerDbService } from './playerDbService';
+
+
 /*import { Player } from '../players/players.component';*/
 
 @Injectable({
@@ -20,11 +24,13 @@ export class AuthService {
   currentTeam: any;
 
   constructor(private afAuth: AngularFireAuth,
-    private db: DbService) {
+    private db: DbService,
+    private eventDbService: EventDbService,
+    private playerDbService: PlayerDbService) {
 
       afAuth.auth.onAuthStateChanged((auth) => this.processAuth(auth));
       
-    }
+  }
 
       createPlayerClassicMethod(email, password) {
         return this.afAuth.auth.createUserWithEmailAndPassword(email,password);
@@ -54,17 +60,25 @@ export class AuthService {
           case "linkPlayer": break;
           case "session": break;
           case null: this.changeAuth(null);break;
-          case message: this.loadLinkedPlayer(message)
-          this.subscriptionTeam = this.db.getTeam().subscribe(z => this.processTeam(z)); break;
+          case message: this.loadLinkedTeam(message); break;
           default: this.changeAuth(null);
 
         }
       }
 
-      loadLinkedPlayer(authMessage) {
+      loadLinkedTeam(authMessage) {
         this.authJSON = JSON.parse(JSON.stringify(authMessage));
         this.uid = this.authJSON.uid;
-        this.db.getPlayerByUid(this.uid).subscribe(x => this.checkPlayer(x));
+        this.subscriptionTeam = this.db.getTeam(this.authJSON.displayName).subscribe(z => this.processTeam(z));
+      }
+
+      processTeam(z) {
+      
+        this.currentTeam = z;
+        this.db.getPlayerByUid(this.getTeamId(),this.uid).subscribe(x => this.checkPlayer(x));
+        this.eventDbService.getEvents(this.getTeamId());
+        this.playerDbService.getPlayers(this.getTeamId());
+
       }
 
       checkPlayer(x) {
@@ -88,7 +102,7 @@ export class AuthService {
 
         console.log('Auth Service, change auth to:');
         console.log(message);
-        this.authSource.next(message)
+        this.authSource.next(message);
         
       }
 
@@ -116,15 +130,38 @@ export class AuthService {
         return this.authJSON.email;
       }
 
-      processTeam(z) {
-        
-        this.currentTeam = z;
 
+      setTeamId() {
+
+      }
+
+      getTeamId() {
+        return this.afAuth.auth.currentUser.displayName;
+      }
+
+      getTeamName() {
+        return this.currentTeam.name;
       }
 
       getAmountPlayers() {
 
-        return this.currentTeam.amountPlayers;
+        if (this.currentTeam === undefined) {
+          return 0;
+        } else {
+          return this.currentTeam.amountPlayers;
+
+        }
+
+
+
+      }
+
+      updateProfile () {
+
+        console.log(this.afAuth.auth.currentUser);
+
+        this.afAuth.auth.currentUser.updateProfile({displayName: "IqrnITdri7beif3d5c4s"}).then(x => console.log(x));
+
 
       }
 

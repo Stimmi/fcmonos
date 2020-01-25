@@ -2,50 +2,44 @@
 
 <div *ngFor='let event of events' class="card d-block-flex flex-wrap flex-fill">
     <div class="card-body">
+        <div class="row" >
+            <h5 class="col-3"><fa-icon [icon]="faCheckCircleSol" class="green small"></fa-icon>{{event.amountYes}}</h5>
+            <h5 class="col-6 card-title"><a [routerLink]="['/events', event.id]">{{event.name}}</a></h5>
+            <h5 class="col-3"><fa-icon [icon]="faTimesCircleSol"  class="red small"></fa-icon>{{event.amountNo}}</h5>
 
-    <h5 class="card-title"><a [routerLink]="['/events', event.id]">{{event.name}}</a></h5>
-    <h5>{{event.gDate | date:'short'}}</h5>
-    <h6>{{event.location}}</h6>
+        </div>
+        <div class="row" >
+            <h5 class="col-3"><fa-icon [icon]="faQuestionCircleSol" class="orange small"></fa-icon>{{event.amountMaybe}}</h5>
+            <h5 class="col-6 card-title">{{event.gDate | date:'short'}}</h5>
+            <h5 class="col-3"><fa-icon [icon]="faCircleSol"  class="grey small"></fa-icon>{{event.amountUnknown}}</h5>
+        </div>
+        <div class="row" >
+            <h6 class="col-12">{{event.location}}</h6>
+        </div>
 
 <div class="row" >
-
-    <div *ngIf="event.presence!=='YES'" class="col-3">
+    <div *ngIf="event.presence!=='YES'" class="col-4">
         <fa-icon [icon]="faCheckCircle"  (click)="changePresence(event.presence,'YES',event.id )"></fa-icon>
     </div>
 
-    <div *ngIf="event.presence=='YES'" class="col-3">
+    <div *ngIf="event.presence=='YES'" class="col-4">
         <fa-icon [icon]="faCheckCircleSol" class="green"></fa-icon>
     </div>
 
-    <div *ngIf="event.presence!=='MAYBE'" class="col-3">
+    <div *ngIf="event.presence!=='MAYBE'" class="col-4">
         <fa-icon [icon]="faQuestionCircle"  (click)="changePresence(event.presence,'MAYBE',event.id )"></fa-icon>
     </div>
 
-    <div *ngIf="event.presence=='MAYBE'" class="col-3">
+    <div *ngIf="event.presence=='MAYBE'" class="col-4">
         <fa-icon [icon]="faQuestionCircleSol" class="orange"></fa-icon>
     </div>
 
-    <div *ngIf="event.presence!=='NO'" class="col-3">      
+    <div *ngIf="event.presence!=='NO'" class="col-4">      
         <fa-icon [icon]="faTimesCircle"  (click)="changePresence(event.presence,'NO',event.id )"></fa-icon>
     </div>
-
-    <div *ngIf="event.presence=='NO'" class="col-3">
+    <div *ngIf="event.presence=='NO'" class="col-4">
         <fa-icon [icon]="faTimesCircleSol"  class="red"></fa-icon>
     </div>
-    <div *ngIf="event.presence=='YES' || event.presence=='NO' || event.presence=='MAYBE'" class="col-3">
-        <fa-icon [icon]="faCircle"></fa-icon>
-    </div>
-    <div *ngIf="event.presence!=='YES' && event.presence!=='NO' && event.presence!=='MAYBE'" class="col-3">
-        <fa-icon [icon]="faCircleSol" class="grey"></fa-icon>
-    </div>
-
-</div>
-<div class="row" >
-        <h2 class="col-3">{{event.amountYes}}</h2>
-        <h2 class="col-3">{{event.amountMaybe}}</h2>
-        <h2 class="col-3">{{event.amountNo}}</h2>
-        <h2 class="col-3">{{event.amountUnknown}}</h2>
 </div>
 </div>
-
 </div>

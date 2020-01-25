@@ -2,6 +2,8 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Player } from '../players.component';
 import { DbService } from 'src/app/services/db.service';
+import { AuthService } from 'src/app/services/auth.service';
+
 import { Subscription } from 'rxjs';
 import { RouterService } from 'src/app/services/router.service';
 
@@ -23,7 +25,8 @@ export class PlayerDetailsComponent implements OnInit, OnDestroy {
   constructor(private route: ActivatedRoute,
      private router: Router,
      private routerService: RouterService,
-     private dbService: DbService) {
+     private dbService: DbService,
+     private auth: AuthService) {
 
 
 
@@ -45,7 +48,7 @@ export class PlayerDetailsComponent implements OnInit, OnDestroy {
       this.playerId = this.route.snapshot.paramMap.get('id');
       this.updateMode= false;
 
-      this.subsciptionPlayer = this.dbService.getPlayerById(this.playerId)
+      this.subsciptionPlayer = this.dbService.getPlayerById(this.auth.getTeamId(),this.playerId)
       .subscribe(x => this.displayPlayer(x));
 
     }
@@ -68,10 +71,10 @@ export class PlayerDetailsComponent implements OnInit, OnDestroy {
 
     if (this.newPlayerMode) {
 
-      this.dbService.addPlayer(this.player).finally(() => this.router.navigate(['/players']));
+      this.dbService.addPlayer(this.auth.getTeamId(), this.player).finally(() => this.router.navigate(['/players']));
 
     } else {
-      this.dbService.updatePlayer(this.playerId, this.player).finally(() => this.updateModeFunction());
+      this.dbService.updatePlayer(this.auth.getTeamId(),this.playerId, this.player).finally(() => this.updateModeFunction());
     }
 
   }
@@ -80,7 +83,7 @@ export class PlayerDetailsComponent implements OnInit, OnDestroy {
     this.player.uid = '/';
     this.player.email = '/';
 
-    this.dbService.addPlayer(this.player).then(() => this.routerService.proceedToPlayers());
+    this.dbService.addPlayer(this.auth.getTeamId(),this.player).then(() => this.routerService.proceedToPlayers());
 
   }
 
