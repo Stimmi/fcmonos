@@ -21,6 +21,9 @@ export class PlayerDetailsComponent implements OnInit, OnDestroy {
   player:Player = new Player();
   foutmelding:string;
   subsciptionPlayer:Subscription;
+  subsciptionAuth:Subscription;
+  private administrator = false;
+
 
   constructor(private route: ActivatedRoute,
      private router: Router,
@@ -33,6 +36,34 @@ export class PlayerDetailsComponent implements OnInit, OnDestroy {
    }
 
   ngOnInit() {
+
+    this.subsciptionAuth = this.auth.currentAuth.subscribe(y => this.processAuth(y));
+
+  }
+
+
+  ngOnDestroy() {
+    /*if(this.subsciptionPlayer){
+      this.subsciptionPlayer.unsubscribe();
+    }*/
+
+    if (this.subsciptionAuth) {
+      this.subsciptionAuth.unsubscribe();
+    }
+  }
+
+  processAuth(y) {
+
+    switch(y) {
+      case "default": break;
+      case null: this.routerService.proceedToLogin(); break;
+      case "session": this.loadData() ; break;
+      default: break;
+    }
+
+  }
+
+  loadData() {
 
     if (this.router.url ==="/players/newplayer") {
       this.newPlayerMode = true;
@@ -51,23 +82,14 @@ export class PlayerDetailsComponent implements OnInit, OnDestroy {
       this.subsciptionPlayer = this.dbService.getPlayerById(this.auth.getTeamId(),this.playerId)
       .subscribe(x => this.displayPlayer(x));
 
-    }
-
-
-  }
-
-
-  ngOnDestroy() {
-    if(this.subsciptionPlayer){
-      this.subsciptionPlayer.unsubscribe();
+      this.administrator = this.auth.getAdministrator();
 
     }
+
   }
 
   submitFunction() {
 
-    console.log("formsubmitted")
-    console.log(this.player);
 
     if (this.newPlayerMode) {
 
@@ -90,6 +112,9 @@ export class PlayerDetailsComponent implements OnInit, OnDestroy {
 
   displayPlayer(player) {
     this.player = player;
+    if(this.player.uid === this.auth.getUid()) {
+      this.administrator = true;
+    }
   }
 
 

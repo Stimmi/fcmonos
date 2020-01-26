@@ -20,6 +20,7 @@ export class SignupComponent implements OnInit {
   subscriptionAuth: Subscription;
   private teamId: string;
   private teamName: string;
+  private newAuth: boolean = true;
 
 
   
@@ -51,12 +52,25 @@ export class SignupComponent implements OnInit {
 
   }
 
+  checkAuth(message) {
+
+    switch (message) {
+      case 'default': break;
+      case 'session': this.fillOutForm(); break;
+
+    }
+
+  }
+
   processTeam(x) {
+    this.teamName = x.name
 
-    console.log(x);
+  }
 
-    this.teamName = x.name;
+  fillOutForm() {
 
+    this.mail = this.authService.getMailAdress();
+    this.newAuth = false;
 
   }
 
@@ -66,7 +80,8 @@ export class SignupComponent implements OnInit {
     if (this.password === this.passwordConf) {
 
       
-    this.authService.createPlayerClassicMethod(this.mail,this.password).then(() => this.proceedToLinkPlayer()).catch(
+    this.authService.createPlayerClassicMethod(this.teamId,this.mail,this.password)
+    .then(() => this.proceedToLinkPlayer()).catch(
       error => this.errorMessage = error);
 
     } else {
@@ -74,7 +89,6 @@ export class SignupComponent implements OnInit {
       this.errorMessage = 'Something went wrong, please check if your data is correct.'
 
     }
-    console.log(this.mail + '  ' + this.password);
 
   }
 
@@ -82,7 +96,6 @@ export class SignupComponent implements OnInit {
   proceedToDashboard() {
 
 -    this.routerService.proceedToDashboard();
-    
 
   }
 
@@ -98,30 +111,5 @@ export class SignupComponent implements OnInit {
   }
 
   
-  checkAuth(message) {
-
-    console.log('Check auth in signup')
-
-    console.log(message);
-
-    if (message === 'default') {
-
-      // Wacht de onStateChanged heeft nog geen resultaat
-
-
-    } else if (message === null) {
-
-      // Geen sessie gaan naar login pagina
-
-      /*this.router.navigate(['/login']);*/
-
-    } else {
-
-      // auth sessie binnen
-      this.routerService.proceedToDashboard();
-
-    }
-  }
-
 
 }

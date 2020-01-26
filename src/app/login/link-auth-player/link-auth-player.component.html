@@ -1,14 +1,6 @@
-<div *ngIf="playerList">
-<p>Your team has some members that are not you linked to an account. You can link your account to one of the following members: </p>
-<div class="row select">
-  <select class="col-8 offset-2 btn" [(ngModel)]="selectedPlayer" name="selectedPlayer">
-      <option [value]="player.id" *ngFor='let player of playerList'>{{player.name}} {{player.playerNumber}}</option>
-  </select>
-</div>
-<button (click)="linkPlayer()">Link player and proceed</button>
-</div>
-<button (click)="logOut()">Log out</button>
+<form class="text-center p-5"> 
+  <p class="h4 mb-4 text-center">Sign up step 2/2</p>
 <p>Create a new member for this team:</p>
-<app-create-player [player]="player" [update]="updateMode"></app-create-player>
-<button (click)="linkNewPlayer()">Link new player and proceed</button>
-<button (click)="setDisplayName()">Display</button>
+<app-create-player [player]="player" [update]="updateMode" [linkPlayer]="linkPlayerMode"></app-create-player>
+<button class="btn" (click)="linkNewPlayer()">Confirm</button>
+</form>

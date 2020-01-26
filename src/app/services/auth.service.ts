@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
-import { BehaviorSubject, Subscription } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { DbService } from './db.service';
 import { EventDbService } from './eventDbService';
 import { PlayerDbService } from './playerDbService';
@@ -20,8 +20,8 @@ export class AuthService {
   uid: string;
   authJSON: any;
   private currentPlayer: any /*Player = new Player*/;
-  subscriptionTeam: Subscription;
   currentTeam: any;
+  private teamId: string;
 
   constructor(private afAuth: AngularFireAuth,
     private db: DbService,
@@ -32,8 +32,12 @@ export class AuthService {
       
   }
 
-      createPlayerClassicMethod(email, password) {
-        return this.afAuth.auth.createUserWithEmailAndPassword(email,password);
+      createPlayerClassicMethod(teamId, email, password) {
+
+        this.setTeamId(teamId);
+
+        return this.afAuth.auth.createUserWithEmailAndPassword(email,password)
+        .then(() => this.afAuth.auth.currentUser.updateProfile({displayName: teamId}));
       }
 
       login(email2, password2) {
@@ -69,7 +73,11 @@ export class AuthService {
       loadLinkedTeam(authMessage) {
         this.authJSON = JSON.parse(JSON.stringify(authMessage));
         this.uid = this.authJSON.uid;
-        this.subscriptionTeam = this.db.getTeam(this.authJSON.displayName).subscribe(z => this.processTeam(z));
+        if (this.authJSON.displayName) {
+          this.setTeamId(this.authJSON.displayName)
+        }
+        this.db.getTeam(this.getTeamId()).subscribe(z => this.processTeam(z));
+
       }
 
       processTeam(z) {
@@ -126,17 +134,21 @@ export class AuthService {
         return this.currentPlayer;
       }
 
+      getCurrentPlayerName() {
+        return this.currentPlayer.name;
+      }
+
       getMailAdress() {
         return this.authJSON.email;
       }
 
-
-      setTeamId() {
-
+      setTeamId(teamId) {
+        this.teamId = teamId;
       }
 
+
       getTeamId() {
-        return this.afAuth.auth.currentUser.displayName;
+        return this.teamId;
       }
 
       getTeamName() {
@@ -155,16 +167,6 @@ export class AuthService {
 
 
       }
-
-      updateProfile () {
-
-        console.log(this.afAuth.auth.currentUser);
-
-        this.afAuth.auth.currentUser.updateProfile({displayName: "IqrnITdri7beif3d5c4s"}).then(x => console.log(x));
-
-
-      }
-
 
 
 }

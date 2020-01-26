@@ -14,7 +14,7 @@ export class RouterService {
 
 
   proceedToLogin() {
-    this.zone.run(() => this.router.navigate(['/fcmonos/login']));
+    this.zone.run(() => this.router.navigate(['/login']));
 
   }
 

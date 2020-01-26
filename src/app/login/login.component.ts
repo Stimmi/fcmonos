@@ -55,6 +55,20 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
 
+  checkAuth(message) {
+
+    switch (message) {
+      case 'linkPlayer': this.routerService.proceedToLinkPlayer();
+        break;
+      case 'session': this.routerService.proceedToDashboard();
+        break;
+      default:
+        break;
+    }
+
+  }
+
+
 
   onSubmitLogin() {
 
@@ -76,38 +90,6 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   }
 
-  proceedtoSignUp() {
-    this.routerService.proceedToSignUp();
-
-  }
-
-  checkAuth(message) {
-
-    console.log('Check auth in login')
-
-    console.log(message);
-
-    if (message === 'default') {
-
-      // Wacht de onStateChanged heeft nog geen resultaat
-
-
-    } else if (message === null) {
-
-      // Geen sessie gaan naar login pagina
-
-      /*this.router.navigate(['/login']);*/
-
-    } else if(message === 'linkPlayer') {
-      this.routerService.proceedToLinkPlayer();
-    
-    } else {
-
-      // auth sessie binnen
-      this.routerService.proceedToDashboard();
-
-    }
-  }
 
 
 }

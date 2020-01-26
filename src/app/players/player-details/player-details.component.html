@@ -1,8 +1,9 @@
 <app-menu></app-menu>
-<p><a [routerLink]="['/players']"><---- Get back to overview</a></p>
-<app-create-player [player]="player" [update]="updateMode"></app-create-player>
-<button *ngIf="!updateMode" type="button" class="btn btn-primary" (click)="updateModeFunction()">Update</button>
-<button *ngIf="updateMode" type="button" class="btn btn-danger" (click)="updateModeFunction()">Cancel</button>
-<button *ngIf="updateMode && !newPlayerMode" type="button" class="btn btn-success" (click)="submitFunction()">Submit</button>
-<button *ngIf="newPlayerMode" type="button" class="btn btn-success" (click)="createFunction()">Create</button>
 
+<form class="text-center p-5"> 
+
+<app-create-player [player]="player" [update]="updateMode"></app-create-player>
+<button *ngIf="!updateMode && administrator" type="button" class="btn col-12" (click)="updateModeFunction()">Edit</button>
+<button *ngIf="updateMode && !newPlayerMode && administrator" type="button col-12" class="btn" (click)="submitFunction()">Submit</button>
+<button *ngIf="newPlayerMode" type="button" class="btn col-12" (click)="createFunction()">Create</button>
+</form>

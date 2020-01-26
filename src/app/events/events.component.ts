@@ -46,6 +46,8 @@ export class EventsComponent implements OnInit, OnDestroy {
   public subscriptionAuth: Subscription;
   public events: Event[];
   public administrator: boolean = false;
+  private inbetweenDate: Date;
+
 
 
   @Input() event: Event;
@@ -78,6 +80,21 @@ export class EventsComponent implements OnInit, OnDestroy {
   processEvents(x){
     this.administrator = this.auth.getAdministrator()
     this.events = x;
+    let index = 0;
+
+    for (index = 0; index < this.events.length; index++) {
+  
+      this.events[index].gDate = this.changeDateField(this.events[index].startTime);
+  
+    }
+
+  }
+
+  
+changeDateField(gDate) {
+
+  return this.inbetweenDate = new Date(gDate.seconds*1000);
+  
   }
 
   addEvent() {

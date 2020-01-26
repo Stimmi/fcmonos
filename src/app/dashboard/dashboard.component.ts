@@ -96,6 +96,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   processEvents(x) {
 
     this.events = x;
+
     this.createDashboardList();
     
 
@@ -129,12 +130,18 @@ export class DashboardComponent implements OnInit, OnDestroy {
       }
     }
   }
+
+  this.events.sort((a,b) => this.sortDate(a.startTime, b.startTime)); 
 }
 
 changeDateField(gDate) {
 
 return this.inbetweenDate = new Date(gDate.seconds*1000);
 
+}
+
+sortDate(a,b) {
+  return (a.seconds*1000+a.nanoseconds/1000000) - (b.seconds*1000+b.nanoseconds/1000000);
 }
 
 

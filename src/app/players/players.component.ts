@@ -56,12 +56,16 @@ export class PlayersComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(){
-    this.subscriptionPlayers.unsubscribe();
+
+    if(this.subscriptionPlayers) {
+      this.subscriptionPlayers.unsubscribe();
+    }
     this.subscriptionAuth.unsubscribe();
 
    }
 
-  addAPlayer() {
+   addPlayer() {
+
     this.routerService.proceedToNewPlayer();
   }
 
@@ -80,12 +84,10 @@ export class PlayersComponent implements OnInit, OnDestroy {
   }
 
   loadData () {
+
     this.currentPlayer = this.auth.getCurrentPlayer();
     this.subscriptionPlayers = this.playerDb.currentPlayers.subscribe(x => this.displayPlayers(x));
     this.administrator = this.auth.getAdministrator();
-
-    console.log('teamshiz')
-    console.log(this.auth.getTeamId());
 
   }
 
@@ -99,10 +101,7 @@ export class PlayersComponent implements OnInit, OnDestroy {
     this.auth.logOut();
   }
 
-  test() {
-    console.log('tr play')
-    this.auth.updateProfile();
-  }
+
 
 
 

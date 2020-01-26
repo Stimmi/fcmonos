@@ -1,24 +1,17 @@
 <app-menu></app-menu>
 
-        <div *ngIf="administrator" class="card d-inline-flex flex-wrap flex-fill" style="width: 150px;height: 150px;" (click)='addAPlayer()'>
-                <div class="card-body">
-                  <h5 class="card-title">Add a player</h5>
-                  <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
-                  <p class="card-text">54</p>
-                  <p class="card-text">{{showAddPlayer}}</p>
+<form class="text-center p-3">
+  <button *ngIf="administrator" class="btn col-12"
+ (click)='addPlayer()'>Add a player
+  </button>
+</form>
 
-                </div>
-            </div>
-            <div *ngFor='let player of players' class="card d-inline-flex flex-wrap flex-fill" style="width: 150px;height: 150px;">
+            <div *ngFor='let player of players' class="card d-inline-flex flex-wrap flex-fill" style="min-width: 150px;min-height: 150px;">
                 <div class="card-body">
                   <h5 class="card-title"><a [routerLink]="['/players', player.id]">{{player.name}}</a></h5>
-                  <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
                   <p class="card-text">{{player.playerNumber}}</p>
                 </div>
             </div>
-            <button (click)="logOut()">Log out</button>
-            <p>{{currentPlayer.name}}</p>
-            <button (click)="test()">Test</button>
 
 
 

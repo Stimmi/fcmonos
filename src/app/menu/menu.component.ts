@@ -12,6 +12,7 @@ export class MenuComponent implements OnInit, OnDestroy {
 
 
   teamName;
+  currentPlayer;
 
   subscriptionAuth: Subscription;
 
@@ -44,6 +45,11 @@ export class MenuComponent implements OnInit, OnDestroy {
 
   loadData() {
     this.teamName = this.auth.getTeamName();
+    this.currentPlayer = this.auth.getCurrentPlayerName();
+  }
+
+  logOut() {
+    this.auth.logOut();
   }
 
 }

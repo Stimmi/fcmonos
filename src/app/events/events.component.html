@@ -1,16 +1,17 @@
 <app-menu></app-menu>
-<div *ngIf="administrator" class="card d-inline-flex flex-wrap flex-fill" style="width: 150px;height: 150px;" (click)='addEvent()'>
+
+<form class="text-center p-3">
+  <button *ngIf="administrator" class="btn col-12"
+ (click)='addEvent()'>Add an event
+  </button>
+</form>
+<div *ngFor='let event of events' class="card">
     <div class="card-body">
-      <h5 class="card-title">Add an event</h5>
-      <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
-      <p class="card-text">54</p>
-      <p class="card-text">{{showAddPlayer}}</p>
-    </div>
-</div>
-<div *ngFor='let event of events' class="card d-inline-flex flex-wrap flex-fill" style="width: 150px;height: 150px;">
-    <div class="card-body">
-      <h5 class="card-title"><a [routerLink]="['/events', event.id]">{{event.name}}</a></h5>
-      <h6 class="card-subtitle mb-2 text-muted">{{event.location}}</h6>
-      <p class="card-text">{{event.description}}</p>
-    </div>
+      <div class="row">
+      <h5 class="card-title col-12"><a [routerLink]="['/events', event.id]">{{event.name}}</a></h5>
+      </div>
+      <div class="row">
+        <h5 class="card-title col-8">{{event.gDate | date:'short'}}</h5>
+        <h6 class="card-title mb-2 text-muted col-4">{{event.location}}</h6>
+      </div>
 </div>
