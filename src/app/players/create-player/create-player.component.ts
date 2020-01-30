@@ -11,6 +11,7 @@ export class CreatePlayerComponent implements OnInit {
   @Input() player: Player;
   @Input() update: boolean;
   @Input() linkPlayer: boolean;
+  @Input() admin : boolean;
 
 
   playerName: string;

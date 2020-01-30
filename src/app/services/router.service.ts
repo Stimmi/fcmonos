@@ -52,4 +52,8 @@ export class RouterService {
     this.zone.run(() => this.router.navigate(['/events/' + event]));
   }
 
+  proceedToNewTeam() {
+    this.zone.run(() => this.router.navigate(['/newteam']));
+  }
+
 }

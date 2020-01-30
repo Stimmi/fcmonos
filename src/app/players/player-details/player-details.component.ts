@@ -22,7 +22,9 @@ export class PlayerDetailsComponent implements OnInit, OnDestroy {
   foutmelding:string;
   subsciptionPlayer:Subscription;
   subsciptionAuth:Subscription;
-  private administrator = false;
+  public administrator = false;
+  public administratorAdmin = false;
+
 
 
   constructor(private route: ActivatedRoute,
@@ -83,6 +85,7 @@ export class PlayerDetailsComponent implements OnInit, OnDestroy {
       .subscribe(x => this.displayPlayer(x));
 
       this.administrator = this.auth.getAdministrator();
+      this.administratorAdmin  = this.auth.getAdministrator();
 
     }
 
@@ -96,7 +99,8 @@ export class PlayerDetailsComponent implements OnInit, OnDestroy {
       this.dbService.addPlayer(this.auth.getTeamId(), this.player).finally(() => this.router.navigate(['/players']));
 
     } else {
-      this.dbService.updatePlayer(this.auth.getTeamId(),this.playerId, this.player).finally(() => this.updateModeFunction());
+      this.updateMode = false;
+      this.dbService.updatePlayer(this.auth.getTeamId(),this.playerId, this.player);
     }
 
   }

@@ -29,9 +29,17 @@ export class DbService {
 
    }
 
+   getTeams() {
+
+     return this.db.collection("fcmonos").valueChanges({ idField: 'id' });
+
+
+   }
+
    addTeam(team) {
 
     return this.db.collection("fcmonos").add(Object.assign({},team));
+
    }
 
 

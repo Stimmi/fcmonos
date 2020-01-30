@@ -17,10 +17,10 @@ export class NewteamComponent implements OnInit {
   private subscriptionAuth: Subscription;
   private email: string;
   private password: string;
-  private teamName: string;
-  private newUserMode: boolean = true;
+  public teamName: string;
+  public newUserMode: boolean = true;
   private team :any;
-  private errorMessage: string;
+  public errorMessage: string;
 
   constructor(private auth: AuthService,
     private db: DbService,
@@ -52,9 +52,15 @@ export class NewteamComponent implements OnInit {
       amountPlayers: 0
     };
 
-    this.db.addTeam(this.team).catch(y => this.errorMessage === y)
+    this.db.addTeam(this.team).then(z => this.setNewTeamId(z.id)).catch(y => this.errorMessage === y)
     .then(() => this.router.proceedToLinkPlayer());
 
+  }
+
+  setNewTeamId (z) {
+    this.auth.setTeamId(z);
+    this.auth.loadTeamData();
+    this.auth.setTeamIdDisplayName(z);
   }
 
 }

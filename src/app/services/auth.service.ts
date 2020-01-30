@@ -22,6 +22,9 @@ export class AuthService {
   private currentPlayer: any /*Player = new Player*/;
   currentTeam: any;
   private teamId: string;
+  private orginalTeamId: string;
+  private displayName: string;
+
 
   constructor(private afAuth: AngularFireAuth,
     private db: DbService,
@@ -37,7 +40,21 @@ export class AuthService {
         this.setTeamId(teamId);
 
         return this.afAuth.auth.createUserWithEmailAndPassword(email,password)
-        .then(() => this.afAuth.auth.currentUser.updateProfile({displayName: teamId}));
+        .then(() => this.setTeamIdDisplayName(teamId));
+      }
+
+      setTeamIdDisplayName(teamIdTwo) {
+
+        if(this.afAuth.auth.currentUser.displayName != null || this.afAuth.auth.currentUser.displayName) {
+          this.orginalTeamId = this.afAuth.auth.currentUser.displayName;
+        } else  {
+          this.orginalTeamId = '';
+        }
+
+        this.afAuth.auth.currentUser.updateProfile({displayName:
+          this.orginalTeamId
+          + teamIdTwo + '&&&'}).then(() => this.setDisplayName(this.orginalTeamId+teamIdTwo+'&&&'));
+
       }
 
       login(email2, password2) {
@@ -73,11 +90,17 @@ export class AuthService {
       loadLinkedTeam(authMessage) {
         this.authJSON = JSON.parse(JSON.stringify(authMessage));
         this.uid = this.authJSON.uid;
+        this.setDisplayName(this.authJSON.displayName)
         if (this.authJSON.displayName) {
-          this.setTeamId(this.authJSON.displayName)
+          this.setTeamId(this.authJSON.displayName.toString().substr(0,20));
+          this.setDisplayName(this.authJSON.displayName);
         }
-        this.db.getTeam(this.getTeamId()).subscribe(z => this.processTeam(z));
+        this.loadTeamData();
 
+      }
+
+      loadTeamData() {
+        this.db.getTeam(this.getTeamId()).subscribe(z => this.processTeam(z));
       }
 
       processTeam(z) {
@@ -90,6 +113,8 @@ export class AuthService {
       }
 
       checkPlayer(x) {
+
+        this.currentPlayer = null;
 
         console.log('Check player function in auth');
         console.log(x);
@@ -124,11 +149,6 @@ export class AuthService {
 
       } 
 
-      setCurrentPlayer(playerJ: any) {
-
-        this.currentPlayer = playerJ;
-
-      }
 
       getCurrentPlayer() {
         return this.currentPlayer;
@@ -144,6 +164,14 @@ export class AuthService {
 
       setTeamId(teamId) {
         this.teamId = teamId;
+      }
+
+      setDisplayName(setDisplayName) {
+        this.displayName = setDisplayName;
+      }
+
+      getDisplayName(){
+        return this.displayName;
       }
 
 

@@ -1,4 +1,30 @@
 <app-menu></app-menu>
-<p>
-  tipstricks works!
-</p>
+<form class="text-center">
+
+  <div>
+    <h1>Invite team members</h1>
+
+    <p>Invite new people to this team by sharing following url: <span>https://fcmonos.web.app/signup/{{teamId}}</span>
+
+  </div>
+
+  <div>
+    <h1>Create a new team</h1>
+
+    <p>You can start your own team by following this <a><span (click)="proceedToNewTeam()">link</span></a></p>
+
+  </div>
+
+  <div *ngIf='teams'>
+    <h1>Change your team:</h1>
+
+    <div *ngFor='let team of teams'>
+      <form>
+      <button class="btn" (click)="changeTeam(team.id)">{{team.name}}</button>
+    </form>
+    </div>
+
+
+  </div>
+
+</form>

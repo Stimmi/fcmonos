@@ -231,7 +231,28 @@ export class EventDetailComponent implements OnInit, OnDestroy {
 
   this.event.amountUnknown = this.auth.getAmountPlayers() - this.event.amountYes - this.event.amountMaybe - this.event.amountNo;
 
+  /*this.players.sort((a,b) => this.sortBypresence(a,b));*/
+
   }
+
+  sortBypresence (a,b) {
+    if(!a.presence) {
+      a = 'a'
+    }
+    if(!b.presence) {
+      b = 'a'
+    }
+
+
+    if ( a < b ){
+      return 1;
+    }
+    if ( a > b){
+      return -1;
+    }
+    return 0;  
+  }
+  
 
   changePresence(oldPresence, newPresence, playerID ) {
 

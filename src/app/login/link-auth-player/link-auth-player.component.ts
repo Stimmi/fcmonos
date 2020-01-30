@@ -69,6 +69,11 @@ export class LinkAuthPlayerComponent implements OnInit, OnDestroy {
 
     this.player.uid = this.auth.getUid();
     this.player.email = this.auth.getMailAdress();
+    if(this.auth.getAmountPlayers() < 1) {
+      this.player.administrator = true;
+    } else {
+      this.player.administrator = false;
+    }
     this.db.addPlayer(this.auth.getTeamId(), this.player)
   }
 

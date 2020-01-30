@@ -19,8 +19,8 @@ export class SignupComponent implements OnInit {
   errorMessage: string;
   subscriptionAuth: Subscription;
   private teamId: string;
-  private teamName: string;
-  private newAuth: boolean = true;
+  public teamName: string;
+  public newAuth: boolean = true;
 
 
   
@@ -68,6 +68,11 @@ export class SignupComponent implements OnInit {
   }
 
   fillOutForm() {
+
+    if(this.authService.getTeamId() === this.teamId) {
+      this.routerService.proceedToDashboard();
+
+    }
 
     this.mail = this.authService.getMailAdress();
     this.newAuth = false;

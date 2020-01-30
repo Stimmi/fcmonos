@@ -1,5 +1,11 @@
 <app-menu></app-menu>
 
+<div *ngIf='!events'>
+
+    Seems there are no events yet in this team. Please proceed to the event page to get started.
+
+</div>
+
 <div *ngFor='let event of events' class="card d-block-flex flex-wrap flex-fill">
     <div class="card-body">
         <div class="row" >

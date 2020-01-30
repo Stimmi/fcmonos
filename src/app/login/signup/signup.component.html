@@ -1,8 +1,17 @@
 
 
 <div *ngIf="!newAuth">
+
+  <form class="text-center p-5"> 
+
   <p class="h4 mb-4 text-center">Sign up</p>
 
+  <p>Welcome {{mail}}, you are about to join <span>{{teamName}}</span></p>.
+
+  <button class="btn" (click)="onSubmit()">Sign Up</button>
+
+
+  </form>
 
 
 

@@ -88,6 +88,12 @@ export class EventsComponent implements OnInit, OnDestroy {
   
     }
 
+    this.events.sort((a,b) => this.sortDate(a.startTime, b.startTime)); 
+
+  }
+
+  sortDate(a,b) {
+    return (a.seconds*1000+a.nanoseconds/1000000) - (b.seconds*1000+b.nanoseconds/1000000);
   }
 
   
