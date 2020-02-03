@@ -45,10 +45,9 @@ export class DbService {
 
   addPlayer(teamIdThree,player){
 
-    this.updateTeamInfo(teamIdThree);
 
     return this.db.collection("fcmonos").doc(teamIdThree).collection("players")
-    .add(Object.assign({},player));
+    .add(Object.assign({},player)).then(() => this.updateTeamInfo(teamIdThree));
 
 
   }
@@ -67,9 +66,6 @@ export class DbService {
 
   getPlayerByUid(teamIdTwo, uid){
 
-    console.log('Get player');
-    console.log(uid);
-
     return this.db.collection("fcmonos").doc(teamIdTwo)
     .collection('players', ref => ref.where('uid', '==', uid).limit(1)).valueChanges({ idField: 'id' });
 
@@ -81,8 +77,6 @@ export class DbService {
 
 
   linkPlayerAndAuth(teamIdEight, id,uid,email) {
-
-    console.log('Db service link player auth');
 
    return this.db.collection("fcmonos").doc(teamIdEight).collection('players')
    .doc(id).update({uid: uid, email: email});

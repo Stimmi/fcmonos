@@ -35,8 +35,10 @@ export class TipstricksComponent implements OnInit, OnDestroy {
 
   subscriptionAuth: Subscription;
   teamId: string;
+  teamName: string;
   teamsAuth : string[];
   teams: Team[];
+  defaultTeam: string;
 
   constructor(private router :RouterService,
     private auth: AuthService,
@@ -68,6 +70,7 @@ export class TipstricksComponent implements OnInit, OnDestroy {
   loadData() {
 
     this.teamId = this.auth.getTeamId();
+    this.teamName = this.auth.getTeamName();
     this.db.getTeams().subscribe(y => this.checkTeams(y));
 
 
@@ -82,13 +85,9 @@ export class TipstricksComponent implements OnInit, OnDestroy {
   checkTeams(y) {
 
     this.teamsAuth = this.auth.getDisplayName().split("&&&");
+    this.setDefaultTeam(this.teamsAuth[0]);
 
     this.teams = y;
-
-    console.log(this.teams);
-    console.log(this.teamsAuth);
-
-
     this.teams = this.teams.filter(data => (this.teamsAuth.includes(data.id)));
    
 
@@ -101,5 +100,19 @@ export class TipstricksComponent implements OnInit, OnDestroy {
 
     this.router.proceedToDashboard();
   }
+
+  setDefault(team) {
+    this.auth.changeDefaultTeam(team);
+    this.changeTeam(team);
+  }
+
+  setDefaultTeam(team) {
+    this.defaultTeam = team;
+  }
+
+  getDefaultTeam() {
+    return this.defaultTeam;
+  }
+
 
 }

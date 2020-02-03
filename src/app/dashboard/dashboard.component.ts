@@ -84,8 +84,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     this.currentPlayer = this.auth.getCurrentPlayer();
 
-    console.log(this.currentPlayer);
-
     this.subscriptionEvents = this.eventService.currentEvents.subscribe(x => this.processEvents(x));
     this.subscriptionPresences = this.dbService.
     getEventPrecensesPlayer(this.auth.getTeamId(),this.currentPlayer.id).subscribe(y => this.processPresences(y));
@@ -131,6 +129,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
   }
 
+
+  this.events = this.events.filter(c => c.gDate > new Date(new Date().setDate(new Date().getDate()-1)));
   this.events.sort((a,b) => this.sortDate(a.startTime, b.startTime)); 
 }
 

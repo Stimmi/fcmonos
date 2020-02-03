@@ -74,32 +74,9 @@ export class LinkAuthPlayerComponent implements OnInit, OnDestroy {
     } else {
       this.player.administrator = false;
     }
-    this.db.addPlayer(this.auth.getTeamId(), this.player)
+    this.db.addPlayer(this.auth.getTeamId(), this.player);
   }
 
 
 }
 
-
-/*
-  checkPlayers(x) {
-
-
-    this.playerList = x;
-    this.playerList = this.playerList.filter(x => x.uid === null || x.uid === undefined || x.uid === '0' || x.uid === '');
-    this.playerList.unshift();
-
-
-  }
-  
-
-  linkPlayer(){
-
-
-      this.db.linkPlayerAndAuth(this.auth.getTeamId(),this.selectedPlayer,this.auth.getUid(),this.auth.getMailAdress())
-      .then(() => this.router.proceedToDashboard()).catch(y => console.log(y));
-
-
-  }
-  
-*/

@@ -52,37 +52,6 @@
   
 </form>
 
-<!--
-<div class="container text-center p-4">
-
-
-<div *ngFor="let player of players" class="presence">
-  <div class="row">
-  <h4 class="col-4">{{player.name}} </h4>
-
- <div class="col-2" *ngIf="player.presence!=='YES'">
-  <fa-icon [icon]="faCheckCircle"  (click)="changePresence(player.presence,'YES',player.id )"></fa-icon>
-</div>
-<div class="col-2" *ngIf="player.presence=='YES'">
-  <fa-icon [icon]="faCheckCircleSol" class="green"></fa-icon>
-</div>
-<div class="col-2">
-  <fa-icon [icon]="faQuestionCircle" *ngIf="player.presence!=='MAYBE'" (click)="changePresence(player.presence,'MAYBE',player.id )"></fa-icon>
-  <fa-icon [icon]="faQuestionCircleSol" *ngIf="player.presence=='MAYBE'" class="orange"></fa-icon>
-</div>
-<div class="col-2">
-  <fa-icon [icon]="faTimesCircle" *ngIf="player.presence!=='NO'" (click)="changePresence(player.presence,'NO',player.id )"></fa-icon>
-  <fa-icon [icon]="faTimesCircleSol" *ngIf="player.presence=='NO'" class="red"></fa-icon>
-</div>
-<div class="col-2">
-  <fa-icon [icon]="faCircle" *ngIf="player.presence=='YES' || player.presence=='NO' || player.presence=='MAYBE'"></fa-icon>
-  <fa-icon [icon]="faCircleSol" *ngIf="player.presence!=='YES' && player.presence!=='NO' && player.presence!=='MAYBE'" class="grey"></fa-icon>
-</div>
-</div>
-</div>
-</div>
-
--->
 <div class="container text-center p-1" *ngIf="this.currentPlayer.administrator">
   <h5><fa-icon [icon]="faExclamationTriangle"></fa-icon> As an administrator you are able to update all event presences!</h5>
 </div>
@@ -108,25 +77,25 @@
     </tr>
   </thead>
 <tbody>
-  <tr *ngFor="let player of players" class="presence">
+  <tr *ngFor="let player of players">
     <th colspan="4" class="names">
       {{player.name}}
     </th>
     <td colspan="2">
-        <fa-icon [icon]="faCheckCircle" *ngIf="player.presence!=='YES'" (click)="changePresence(player.presence,'YES',player.id )"></fa-icon>
+        <fa-icon [icon]="faCheckCircle" *ngIf="player.presence!='YES'" (click)="changePresence(player.presence,'YES',player.id )"></fa-icon>
         <fa-icon [icon]="faCheckCircleSol" *ngIf="player.presence=='YES'" class="green"></fa-icon>
     </td>
     <td colspan="2">
-      <fa-icon [icon]="faQuestionCircle" *ngIf="player.presence!=='MAYBE'" (click)="changePresence(player.presence,'MAYBE',player.id )"></fa-icon>
+      <fa-icon [icon]="faQuestionCircle" *ngIf="player.presence!='MAYBE'" (click)="changePresence(player.presence,'MAYBE',player.id )"></fa-icon>
       <fa-icon [icon]="faQuestionCircleSol" *ngIf="player.presence=='MAYBE'" class="orange"></fa-icon>
     </td>
     <td colspan="2">
-      <fa-icon [icon]="faTimesCircle" *ngIf="player.presence!=='NO'" (click)="changePresence(player.presence,'NO',player.id )"></fa-icon>
+      <fa-icon [icon]="faTimesCircle" *ngIf="player.presence!='NO'" (click)="changePresence(player.presence,'NO',player.id )"></fa-icon>
       <fa-icon [icon]="faTimesCircleSol" *ngIf="player.presence=='NO'" class="red"></fa-icon>
     </td>
     <td colspan="2">
       <fa-icon [icon]="faCircle" *ngIf="player.presence=='YES' || player.presence=='NO' || player.presence=='MAYBE'"></fa-icon>
-      <fa-icon [icon]="faCircleSol" *ngIf="player.presence!=='YES' && player.presence!=='NO' && player.presence!=='MAYBE'" class="grey"></fa-icon>
+      <fa-icon [icon]="faCircleSol" *ngIf="player.presence!='YES' && player.presence!='NO' && player.presence!='MAYBE'" class="grey"></fa-icon>
     </td>
   </tr>
 </tbody>

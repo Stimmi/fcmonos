@@ -12,11 +12,11 @@ import { RouterService } from '../services/router.service';
 })
 export class LoginComponent implements OnInit, OnDestroy {
 
-  password: String;
-  mail: String;
-  errorMessage: String;
+  password: string;
+  mail: string;
+  errorMessage: string;
   subscriptionAuth: Subscription;
-  team: String;
+  team: string;
 
   
 
@@ -35,11 +35,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 
     this.dbService.changeTeam(this.team);
 
-    this.dbService.currentTeam.subscribe(x => console.log(x));
-
     this.subscriptionAuth = this.authService.currentAuth.subscribe(message => this.checkAuth(message));
-
-
 
   }
 
@@ -48,7 +44,6 @@ export class LoginComponent implements OnInit, OnDestroy {
     if (this.subscriptionAuth) {
 
       this.subscriptionAuth.unsubscribe();
-      console.log('Ng destroy van login pagina');
     }
 
 
@@ -72,16 +67,10 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   onSubmitLogin() {
 
-    console.log("submit")
-
-    console.log(this.mail + '' + this.password);
-
-
     this.authService.login(this.mail,this.password).then(() => this.proceedToDashboard()).catch(
       error => this.errorMessage = error);
 
       
-
   }
 
   proceedToDashboard() {

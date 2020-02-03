@@ -57,6 +57,8 @@ export class SignupComponent implements OnInit {
     switch (message) {
       case 'default': break;
       case 'session': this.fillOutForm(); break;
+      case 'linkPlayer': this.routerService.proceedToLinkPlayer(); break;
+
 
     }
 
@@ -69,9 +71,10 @@ export class SignupComponent implements OnInit {
 
   fillOutForm() {
 
-    if(this.authService.getTeamId() === this.teamId) {
+    if(this.authService.getDisplayName().includes(this.teamId)) {
+      this.authService.setTeamId(this.teamId);
+      this.authService.loadTeamData();
       this.routerService.proceedToDashboard();
-
     }
 
     this.mail = this.authService.getMailAdress();
@@ -100,7 +103,7 @@ export class SignupComponent implements OnInit {
 
   proceedToDashboard() {
 
--    this.routerService.proceedToDashboard();
+    this.routerService.proceedToDashboard();
 
   }
 

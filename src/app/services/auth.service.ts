@@ -35,11 +35,11 @@ export class AuthService {
       
   }
 
-      createPlayerClassicMethod(teamId, email, password) {
+      createPlayerClassicMethod(teamId, email : string, password) {
 
         this.setTeamId(teamId);
 
-        return this.afAuth.auth.createUserWithEmailAndPassword(email,password)
+        return this.afAuth.auth.createUserWithEmailAndPassword(email.trim(),password)
         .then(() => this.setTeamIdDisplayName(teamId));
       }
 
@@ -57,11 +57,22 @@ export class AuthService {
 
       }
 
-      login(email2, password2) {
+      changeDefaultTeam(teamIdThree) {
 
-        return this.afAuth.auth.signInWithEmailAndPassword(email2, password2).finally(
+        this.orginalTeamId = null;
+        this.orginalTeamId = this.getDisplayName();
+        let pos = this.orginalTeamId.indexOf(teamIdThree);
+        this.orginalTeamId = this.orginalTeamId.substr(pos,23) + this.orginalTeamId.replace(teamIdThree+'&&&','');
+        this.setDisplayName(this.orginalTeamId);
+        this.afAuth.auth.currentUser.updateProfile({displayName:
+          this.orginalTeamId});
+
+      }
+
+      login(email2: string, password2) {
+
+        return this.afAuth.auth.signInWithEmailAndPassword(email2.trim(), password2).finally(
           () => this.afAuth.auth.setPersistence('local'));
-
 
       }
 
@@ -73,9 +84,6 @@ export class AuthService {
 
       processAuth(message: any) {
         
-        console.log('process Auth in Auth');
-        console.log(message);
-
         switch (message) {
           case  "default": break;
           case "linkPlayer": break;
@@ -116,8 +124,6 @@ export class AuthService {
 
         this.currentPlayer = null;
 
-        console.log('Check player function in auth');
-        console.log(x);
 
         if (x[0]) {
           this.currentPlayer = x[0];
@@ -133,8 +139,6 @@ export class AuthService {
 
       changeAuth(message: any) {
 
-        console.log('Auth Service, change auth to:');
-        console.log(message);
         this.authSource.next(message);
         
       }

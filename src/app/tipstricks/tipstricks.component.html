@@ -4,7 +4,7 @@
   <div>
     <h1>Invite team members</h1>
 
-    <p>Invite new people to this team by sharing following url: <span>https://fcmonos.web.app/signup/{{teamId}}</span>
+    <p>Invite new people to {{teamName}} by sharing following url: <span>https://fcmonos.web.app/signup/{{teamId}}</span>
 
   </div>
 
@@ -15,16 +15,17 @@
 
   </div>
 
-  <div *ngIf='teams'>
+  <div *ngIf='teams && teams.length > 1'>
     <h1>Change your team:</h1>
 
     <div *ngFor='let team of teams'>
       <form>
+      <div *ngIf='team.id != teamId'> 
       <button class="btn" (click)="changeTeam(team.id)">{{team.name}}</button>
+      <button *ngIf='team.id != defaultTeam' class="btn" (click)="setDefault(team.id)">Set as default</button>
+      </div>
     </form>
     </div>
-
-
   </div>
 
 </form>

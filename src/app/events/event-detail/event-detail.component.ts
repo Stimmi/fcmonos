@@ -35,7 +35,7 @@ export class EventDetailComponent implements OnInit, OnDestroy {
   subscribtionEventPresences: Subscription;
   subscribtionPlayers: Subscription;
   inbetweenDate: Date;
-  precenses: Presence[] = [];
+  presences: Presence[] = [];
   players: Player[];
   currentPlayer: Player;
 
@@ -158,7 +158,8 @@ export class EventDetailComponent implements OnInit, OnDestroy {
   updateEvent() {
 
     this.processDateFields();
-    this.dbService.updateEvent(this.auth.getTeamId(),this.eventID,this.event).then(() => this.router.proceedToEvents());
+    this.dbService.updateEvent(this.auth.getTeamId(),this.eventID,this.event)
+    .then(() => this.router.proceedToEvents());
 
   }
 
@@ -175,7 +176,6 @@ export class EventDetailComponent implements OnInit, OnDestroy {
   completeTimeFields(startTime) {
 
     this.datePicked = {year:0,month:0, day:0};
-
 
     this.inbetweenDate = new Date(startTime.seconds*1000);
 
@@ -197,52 +197,70 @@ export class EventDetailComponent implements OnInit, OnDestroy {
   }
 
   processEventPresences(y) {
-    this.precenses = y;
+    this.presences = y;
     this.createPresencesList();
 
 
   }
 
   processPlayers(z){
+
     this.players = z;
-    this.createPresencesList();
+
+    if(this.presences.length > 0) {
+      this.createPresencesList();
+    }
   }
 
   createPresencesList() {
     let index = 0;
     let indexx = 0;
+    let indexxx = 0;
     let pos = 0;
 
     for (index = 0; index < this.players.length; index++) {
       this.players[index].presence = null;
-      if (this.players[index].id === this.currentPlayer.id) {
-        pos = index;
-      }
-      for (indexx = 0; indexx < this.precenses.length; indexx++) {
-        if (this.players[index].id === this.precenses[indexx].id) {
-          this.players[index].presence = this.precenses[indexx].presence;
+      for (indexx = 0; indexx < this.presences.length; indexx++) {
+        if (this.players[index].id === this.presences[indexx].id) {
+          this.players[index].presence = this.presences[indexx].presence;
         }
       }
   }
 
-  this.players.unshift(this.players[pos]);
-  this.players.splice(pos+1,1);
-
-
   this.event.amountUnknown = this.auth.getAmountPlayers() - this.event.amountYes - this.event.amountMaybe - this.event.amountNo;
 
-  /*this.players.sort((a,b) => this.sortBypresence(a,b));*/
+  this.players.sort((a,b) => this.sortBypresence(a,b));
+
+  for (indexxx = 0; indexxx < this.players.length; indexxx++) {
+    if (this.players[indexxx].id === this.currentPlayer.id) {
+      pos = indexxx;
+    }
+
+  }
+
+
+  this.players.unshift(this.players[pos]);
+  this.players.splice(pos+1,1);
 
   }
 
   sortBypresence (a,b) {
-    if(!a.presence) {
-      a = 'a'
-    }
-    if(!b.presence) {
-      b = 'a'
+
+    switch (a.presence) {
+      case 'YES': a = 5;break;
+      case 'MAYBE': a = 4;break;
+      case 'NO': a = 3;break;    
+      default: a = 0;
+        break;
     }
 
+    switch (b.presence) {
+      case 'YES': b = 5;break;
+      case 'MAYBE': b = 4;break;
+      case 'NO': b = 3;break;    
+      default: b = 0;
+        break;
+    }
 
     if ( a < b ){
       return 1;
