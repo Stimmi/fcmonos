@@ -1,12 +1,12 @@
 
 
-<div *ngIf="!newAuth">
+<div *ngIf="!newAuth && team">
 
   <form class="text-center p-5"> 
 
   <p class="h4 mb-4 text-center">Sign up</p>
 
-  <p>Welcome {{mail}}, you are about to join <span>{{teamName}}</span></p>.
+  <p>Welcome {{mail}}, you are about to join <span>{{team.name}}</span></p>.
 
   <button class="btn" (click)="onSubmit()">Sign Up</button>
 
@@ -17,12 +17,12 @@
 
 </div>
 
-<div *ngIf="newAuth">
+<div *ngIf="newAuth && team">
 
   <form class="text-center p-5"> 
     <p class="h4 mb-4 text-center">Sign up step 1/2</p>
 
-    <p>Welcome, you are about to join <span>{{teamName}}</span>. Please fill out your log-in details:</p>
+    <p>Welcome, you are about to join <span>{{team.name}}</span>. Please fill out your log-in details:</p>
 
     <input type="text" class="form-control mb-4" id="mail" required [(ngModel)]="mail" name="mail" placeholder="E-mail">
 
@@ -33,5 +33,9 @@
     <label>{{errorMessage}}</label>
 
     <button class="btn btn-success" (click)="onSubmit()">Sign Up</button>
+
+    <p><br>
+      If you're already registered, please proceed to the <a [routerLink]="['/login']"><span>log in page</span></a></p>
+
   </form>
 </div>

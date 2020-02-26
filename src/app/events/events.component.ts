@@ -44,6 +44,7 @@ export class Presence {
 export class EventsComponent implements OnInit, OnDestroy {
 
   public subscriptionAuth: Subscription;
+  public subscriptionEvents: Subscription;
   public events: Event[];
   public administrator: boolean = false;
   private inbetweenDate: Date;
@@ -63,6 +64,9 @@ export class EventsComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.subscriptionAuth.unsubscribe();
+    if(this.subscriptionEvents) {
+      this.subscriptionEvents.unsubscribe();
+    }
 
   }
 
@@ -70,7 +74,7 @@ export class EventsComponent implements OnInit, OnDestroy {
 
     switch(x) {
       case "default": break;
-      case "session": this.eventService.currentEvents.subscribe(x => this.processEvents(x)); break;
+      case "session": this.subscriptionEvents = this.eventService.currentEvents.subscribe(x => this.processEvents(x)); break;
       case "linkPlayer": this.router.proceedToLinkPlayer(); break;
       default: this.router.proceedToLogin();
     }

@@ -2,15 +2,13 @@
 
 <form class="text-center p-4">
   
-  <div class="form-group row">
+  <div class="row">
     <label for="name" class="col-2 col-form-label"><fa-icon [icon]="faQuoteLeft"></fa-icon></label>
     <div class="col-10">
       <input type="text" id="name" class="form-control mb-4" name="name" placeholder="Name" [(ngModel)]="event.name" [attr.disabled]="!newEventMode ? '' : null">
     </div>
   </div>
-
-
-  <div class="form-group row">
+  <div class="row">
     <div class="col-2">
       <button class="btn btn-outline-secondary calendar" (click)="d.toggle()" type="button"><fa-icon [icon]="faCalendar"></fa-icon>
       </button>
@@ -21,7 +19,7 @@
     </div>
   </div>
 
-  <div class="form-group row">
+  <div class="row">
     <label for="name" class="col-2 col-form-label"><fa-icon [icon]="faClock"></fa-icon></label>
     <div class="col-5">
       <input class="form-control mb-4" name="startTime1" placeholder="HH" [(ngModel)]="startTime1" [attr.disabled]="!newEventMode ? '' : null"/>
@@ -31,14 +29,14 @@
     </div>
   </div>
 
-  <div class="form-group row">
+  <div class="row">
     <label for="location" class="col-2 col-form-label"><fa-icon [icon]="faMapMarkerAlt"></fa-icon></label>
     <div class="col-10">
       <input class="form-control mb-4" name="location" placeholder="Location" [(ngModel)]="event.location" [attr.disabled]="!newEventMode ? '' : null">
     </div>
   </div>
 
-  <div class="form-group row">
+  <div class="row">
     <label for="description" class="col-2 col-form-label"><fa-icon [icon]="faCommentAlt"></fa-icon></label>
     <div class="col-10">
       <textarea class="form-control mb-4" name="description" placeholder="Comments"  rows="3" [(ngModel)]="event.description" [attr.disabled]="!newEventMode ? '' : null"></textarea>
@@ -61,10 +59,10 @@
   <thead>
     <tr>
       <th colspan="4" style="width: 20%;">Name</th>
-      <th colspan="2" style="width: 20%;">Yes</th>
-      <th colspan="2" style="width: 20%;">Maybe</th>
-      <th colspan="2" style="width: 20%;">No</th>
-      <th colspan="2" style="width: 20%;">Unknown</th>
+      <th colspan="2" style="width: 20%;"><fa-icon [icon]="faCheckCircleSol"></fa-icon></th>
+      <th colspan="2" style="width: 20%;"><fa-icon [icon]="faQuestionCircleSol"></fa-icon></th>
+      <th colspan="2" style="width: 20%;"><fa-icon [icon]="faTimesCircleSol"></fa-icon></th>
+      <th colspan="2" style="width: 20%;"><fa-icon [icon]="faCircleSol"></fa-icon></th>
     </tr>
   </thead>
   <thead>

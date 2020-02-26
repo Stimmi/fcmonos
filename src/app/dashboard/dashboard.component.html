@@ -5,19 +5,21 @@
     Seems there are no upcoming events. Please proceed to the event page to get started.
 
 </div>
-
 <div *ngFor='let event of events' class="card d-block-flex flex-wrap flex-fill">
     <div class="card-body">
         <div class="row" >
-            <h5 class="col-3"><fa-icon [icon]="faCheckCircleSol" class="green small"></fa-icon>{{event.amountYes}}</h5>
-            <h5 class="col-6 card-title"><a [routerLink]="['/events', event.id]">{{event.name}}</a></h5>
-            <h5 class="col-3"><fa-icon [icon]="faTimesCircleSol"  class="red small"></fa-icon>{{event.amountNo}}</h5>
+            <h5 class="col-12 card-title"><a [routerLink]="['/events', event.id]">{{event.name}}</a></h5>
+        </div>
+        <div class="row" >
+            <h5 class="col-4"><fa-icon [icon]="faCheckCircleSol" class="green small"></fa-icon>{{event.amountYes}}</h5>
+            <h5 class="col-4 card-title"><a [routerLink]="['/events', event.id]">{{event.gDate | date:'d MMM'}}</a></h5>
+            <h5 class="col-4"><fa-icon [icon]="faTimesCircleSol"  class="red small"></fa-icon>{{event.amountNo}}</h5>
 
         </div>
         <div class="row" >
-            <h5 class="col-3"><fa-icon [icon]="faQuestionCircleSol" class="orange small"></fa-icon>{{event.amountMaybe}}</h5>
-            <h5 class="col-6 card-title">{{event.gDate | date:'short'}}</h5>
-            <h5 class="col-3"><fa-icon [icon]="faCircleSol"  class="grey small"></fa-icon>{{event.amountUnknown}}</h5>
+            <h5 class="col-4"><fa-icon [icon]="faQuestionCircleSol" class="orange small"></fa-icon>{{event.amountMaybe}}</h5>
+            <h5 class="col-4 card-title">{{event.gDate | date:'HH'}}:{{event.gDate | date:'mm'}}</h5>
+            <h5 class="col-4"><fa-icon [icon]="faCircleSol"  class="grey small"></fa-icon>{{event.amountUnknown}}</h5>
         </div>
         <div class="row" >
             <h6 class="col-12">{{event.location}}</h6>

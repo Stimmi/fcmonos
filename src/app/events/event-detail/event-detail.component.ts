@@ -192,6 +192,7 @@ export class EventDetailComponent implements OnInit, OnDestroy {
 
   processEvent(x) {
     this.event = x;
+
     this.completeTimeFields(this.event.startTime);
 
   }

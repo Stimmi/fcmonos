@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { DbService } from '../../services/db.service';
 import { RouterService } from '../../services/router.service';
@@ -12,7 +12,7 @@ import { Subscription } from 'rxjs';
   templateUrl: './newteam.component.html',
   styleUrls: ['./newteam.component.css']
 })
-export class NewteamComponent implements OnInit {
+export class NewteamComponent implements OnInit, OnDestroy {
 
   private subscriptionAuth: Subscription;
   private email: string;
@@ -30,6 +30,10 @@ export class NewteamComponent implements OnInit {
 
     this.subscriptionAuth = this.auth.currentAuth.subscribe(x => this.processAuth(x));
 
+  }
+
+  ngOnDestroy() {
+    this.subscriptionAuth.unsubscribe();
   }
 
 

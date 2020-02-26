@@ -4,6 +4,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { RouterService } from 'src/app/services/router.service';
 import { ActivatedRoute } from '@angular/router';
 import { DbService } from 'src/app/services/db.service';
+import { Team } from 'src/app/tipstricks/tipstricks.component';
 
 
 
@@ -18,8 +19,8 @@ export class SignupComponent implements OnInit {
   mail: string;
   errorMessage: string;
   subscriptionAuth: Subscription;
+  public team: Team;
   private teamId: string;
-  public teamName: string;
   public newAuth: boolean = true;
 
 
@@ -65,11 +66,15 @@ export class SignupComponent implements OnInit {
   }
 
   processTeam(x) {
-    this.teamName = x.name
+    this.team= x
 
   }
 
   fillOutForm() {
+
+    console.log(this.authService.getDisplayName());
+    console.log(this.teamId);
+
 
     if(this.authService.getDisplayName().includes(this.teamId)) {
       this.authService.setTeamId(this.teamId);
@@ -84,6 +89,7 @@ export class SignupComponent implements OnInit {
 
 
   onSubmit() {
+
 
     if (this.password === this.passwordConf) {
 

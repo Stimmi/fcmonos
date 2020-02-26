@@ -45,10 +45,9 @@ export class PlayerDetailsComponent implements OnInit, OnDestroy {
 
 
   ngOnDestroy() {
-    /*if(this.subsciptionPlayer){
+    if(this.subsciptionPlayer){
       this.subsciptionPlayer.unsubscribe();
-    }*/
-
+    }
     if (this.subsciptionAuth) {
       this.subsciptionAuth.unsubscribe();
     }

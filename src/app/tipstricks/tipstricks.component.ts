@@ -34,6 +34,8 @@ export class Team {
 export class TipstricksComponent implements OnInit, OnDestroy {
 
   subscriptionAuth: Subscription;
+  subscriptionTeams: Subscription;
+
   teamId: string;
   teamName: string;
   teamsAuth : string[];
@@ -52,6 +54,10 @@ export class TipstricksComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.subscriptionAuth.unsubscribe();
+
+    if(this.subscriptionTeams) {
+      this.subscriptionTeams.unsubscribe()
+    }
   }
 
   processAuth(x) {
@@ -71,8 +77,7 @@ export class TipstricksComponent implements OnInit, OnDestroy {
 
     this.teamId = this.auth.getTeamId();
     this.teamName = this.auth.getTeamName();
-    this.db.getTeams().subscribe(y => this.checkTeams(y));
-
+    this.subscriptionTeams = this.db.getTeams().subscribe(y => this.checkTeams(y));
 
   }
 
