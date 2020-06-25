@@ -1,7 +1,21 @@
 <app-menu></app-menu>
+<div class="container">
 
-<form class="text-center p-4">
-  
+  <div class="dropdown row justify-content-around">
+    <div class="col-6">
+      <input class="invisible" placeholder="Type you mes.">
+    </div>
+    <button class="btn btn-secondary dropdown-toggle col-4" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      <fa-icon [icon]="faCog"></fa-icon> Options</button>
+    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+      <a class="dropdown-item" href="whatsapp://send?text=https://fcmonos.web.app/dashboard" data-action="share/whatsapp/share">Share on Whatsapp <i class="fa fa-whatsapp" aria-hidden="true"></i></a>
+      <a *ngIf="!newEventMode && currentPlayer.administrator" class="dropdown-item" (click)="editEvent()">Edit Event</a>
+      <a *ngIf="currentPlayer.administrator" class="dropdown-item" (click)="addEvent()">Add a new event</a>
+    </div>
+  </div>
+
+<form>
+
   <div class="row">
     <label for="name" class="col-2 col-form-label"><fa-icon [icon]="faQuoteLeft"></fa-icon></label>
     <div class="col-10">
@@ -43,12 +57,18 @@
     </div>
   </div>
 
+  <div class="row justify-content-around">
+  <button *ngIf="newEventMode && currentPlayer.administrator" type="button" type="submit" class="btn col-3" (click)="submitForm()">Save</button>
+  </div>
 
-  <button *ngIf="!newEventMode && currentPlayer.administrator" type="button" type="submit" class="btn col-8" (click)="editEvent()">Edit Event</button>
-
-  <button *ngIf="newEventMode && currentPlayer.administrator" type="button" type="submit" class="btn col-8" (click)="submitForm()">Save</button>
-  
 </form>
+
+</div>
+
+
+
+<app-event-chat [eventID]="eventID"></app-event-chat>
+
 
 <div class="container text-center p-1" *ngIf="this.currentPlayer.administrator">
   <h5><fa-icon [icon]="faExclamationTriangle"></fa-icon> As an administrator you are able to update all event presences!</h5>

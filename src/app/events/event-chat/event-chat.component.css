@@ -1,0 +1,66 @@
+.current {
+    text-align: right;
+}
+
+.currentSpan {
+    background-color: rgb(173, 201, 101);
+}
+
+.time {
+    text-align: center;
+}
+
+.chatbox {
+    height: 200px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    background-color: white;
+    border-radius: 15px;
+    
+}
+
+span {
+    background-color: rgb(250,193,114);
+    color: white;
+    display: inline-block;
+    border-radius: 25px;
+    margin: 3px;
+    padding-right: 15px;
+    padding-left: 15px;
+    padding-bottom: 7px;
+    padding-top: 7px;
+    font-size: 15px;
+    min-height: 13px;
+
+
+}
+
+input {
+    display: block;
+    width: 100%;
+    margin-top: 8px;
+
+
+}
+
+button {
+    display: block;
+    margin-top: 8px;
+    margin-bottom: 10px;
+}
+
+h4 {
+    font-size: 15px;
+    padding-bottom: 0px;
+    margin-bottom: 0px;
+    margin-right: 10px;
+    margin-left: 10px;
+}
+
+h1 {
+    font-size: 25px;
+    font-weight: normal;
+    margin-left: 10px;
+    text-align: center;
+
+}

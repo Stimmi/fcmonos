@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Event, Presence } from '../events.component';
 import { DbService } from 'src/app/services/db.service';
 import { RouterService } from 'src/app/services/router.service';
@@ -10,7 +10,7 @@ import { Player } from '../../players/players.component';
 import { faCheckCircle, faCircle, faTimesCircle, faQuestionCircle } from '@fortawesome/free-regular-svg-icons';
 import { faCheckCircle as faCheckCircleSol, faCircle as faCircleSol, faTimesCircle as faTimesCircleSol,
 faQuestionCircle as faQuestionCircleSol, faCalendar, faQuoteLeft, faClock, faMapMarkerAlt, faCommentAlt,
-faExclamationTriangle} from '@fortawesome/free-solid-svg-icons';
+faExclamationTriangle, faCog} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-event-detail',
@@ -53,6 +53,7 @@ export class EventDetailComponent implements OnInit, OnDestroy {
   faMapMarkerAlt = faMapMarkerAlt;
   faCommentAlt = faCommentAlt;
   faExclamationTriangle = faExclamationTriangle;
+  faCog =  faCog;
 
   presence: Presence;
   oldPresence: Presence;
@@ -63,6 +64,7 @@ export class EventDetailComponent implements OnInit, OnDestroy {
     private dbService: DbService,
     private playerDbService: PlayerDbService,
     private router: RouterService,
+    private redirecter: Router,
     private auth: AuthService) { 
 
     this.eventID = this.route.snapshot.paramMap.get('id');
@@ -82,6 +84,7 @@ export class EventDetailComponent implements OnInit, OnDestroy {
   }
 
   processAuth(a) {
+
   
     switch(a) {
       case "default": break;
@@ -162,6 +165,17 @@ export class EventDetailComponent implements OnInit, OnDestroy {
     .then(() => this.router.proceedToEvents());
 
   }
+
+  addEvent() {
+
+    this.redirecter.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+      this.redirecter.navigate(["/events/newevent"]);
+  }); 
+
+  }
+
+
+  
 
   processDateFields() {
 

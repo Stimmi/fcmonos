@@ -3,6 +3,7 @@
 <form class="text-center p-5"> 
 
 <app-create-player [player]="player" [update]="updateMode" [admin]="administratorAdmin"></app-create-player>
+<p *ngIf="player.lastActive != null" class="text-left">Last active on {{player.lastActive.seconds * 1000 | date:'dd/MM/yyyy H:mm:ss'}}</p>
 <button *ngIf="!updateMode && administrator" type="button" class="btn col-12" (click)="updateModeFunction()">Edit</button>
 <button *ngIf="updateMode && administrator" type="button" class="btn col-12" (click)="submitFunction()">Save</button>
 <button *ngIf="newPlayerMode" type="button" class="btn col-12" (click)="createFunction()">Create</button>

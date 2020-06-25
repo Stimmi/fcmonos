@@ -30,6 +30,7 @@ import { LOCALE_ID } from '@angular/core';
 import localeNl from '@angular/common/locales/nl';
 import { registerLocaleData } from '@angular/common';
 import { NewteamComponent } from './general/newteam/newteam.component';
+import { EventChatComponent } from './events/event-chat/event-chat.component';
 registerLocaleData(localeNl, 'nl-NL');
 
 @NgModule({
@@ -47,7 +48,8 @@ registerLocaleData(localeNl, 'nl-NL');
     LinkAuthPlayerComponent,
     CreatePlayerComponent,
     EventPresenceComponent,
-    NewteamComponent
+    NewteamComponent,
+    EventChatComponent
     ],
   imports: [
     BrowserModule,

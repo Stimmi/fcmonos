@@ -1,7 +1,7 @@
 <form #playerForm="ngForm">
 <div class="form-group">
     <input type="text" class="form-control mb-4" id="name" required [(ngModel)]="player.name" 
-    name="name" #name="ngModel" [attr.disabled]="!update ? '' : null" placeholder="Name">
+    name="name" #name="ngModel" [attr.disabled]="!update ? '' : null" placeholder="Firstname or nickname">
     <div [hidden]="name.valid || name.pristine"
     class="alert alert-danger">
  Name is required
@@ -16,4 +16,5 @@
     <label for="administrator">Administrator</label>
     <input type="checkbox" class="form-control" id="administrator" name="administrator" [(ngModel)]="player.administrator" [attr.disabled]="!update ? '' : null">
 </div>
+
 </form>

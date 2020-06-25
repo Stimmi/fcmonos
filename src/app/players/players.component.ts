@@ -12,6 +12,8 @@ export class Player {
   public id : string;
   public administrator: boolean = false;
   public presence: string;
+  public lastActive;
+
 
 
 

@@ -27,7 +27,9 @@ export class MenuComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
 
-    this.subscriptionAuth.unsubscribe();
+    if (this.subscriptionAuth) {
+      this.subscriptionAuth.unsubscribe();
+    }    
 
   }
 

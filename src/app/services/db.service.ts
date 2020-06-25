@@ -10,6 +10,7 @@ import * as firebase from 'firebase/app';
 
 export class DbService {
     playerName: string;
+    timestamp = firebase.firestore.FieldValue.serverTimestamp();
 
 
     private teamSource = new BehaviorSubject('default');
@@ -61,6 +62,11 @@ export class DbService {
 
   updatePlayer(teamIdSix, id, player) {
     return this.db.collection("fcmonos").doc(teamIdSix).collection("players").doc(id).set(Object.assign({},player))
+  }
+
+  setLastActive(teamId, id) {
+    return this.db.collection("fcmonos").doc(teamId).collection("players").doc(id).update({
+      lastActive: this.timestamp});
   }
 
 
@@ -122,7 +128,8 @@ export class DbService {
     this.db.collection("fcmonos").doc(teamIdThirteen)
     .collection('players').doc(playerId).collection('presences').doc(eventId3).set(Object.assign({},eventPresence));
 
-    return this.db.collection("fcmonos").doc(teamIdThirteen).collection('events').doc(eventId3).collection('presences').doc(playerId).set(Object.assign({},eventPresence));
+    return this.db.collection("fcmonos").doc(teamIdThirteen).collection('events').doc(eventId3)
+    .collection('presences').doc(playerId).set(Object.assign({},eventPresence));
   
   }
 
@@ -156,10 +163,24 @@ export class DbService {
 
   }
 
+  getChatMessages(teamID, eventID) {
+    return this.db.collection("fcmonos").doc(teamID)
+    .collection('events').doc(eventID).collection('chat', message => {
+      return message.orderBy('timestamp').limit(100)}).valueChanges();
+  }
+
+  addChatMessage(teamID, eventID,playerId, message) {
+    this.db.collection("fcmonos").doc(teamID)
+    .collection('events').doc(eventID).collection('chat')
+    .add({playerId : playerId, content : message, timestamp: this.timestamp});
+  }
+
   changeTeam(message: any) {
 
     this.teamSource.next(message)
   }
+
+
 
 }
 

@@ -1,0 +1,45 @@
+<div class="container">
+  <div #scrollMe class="chatbox">
+    <h1>Event Chat</h1>
+  <div *ngFor="let message of messages; let i=index">
+
+    <div *ngIf="i == 0 || (message.timestamp-messages[i-1].timestamp)>43200000" class="row">
+      <div class="col-12 time">
+        <h4>{{message.timestamp | date: 'medium'}}</h4>
+      </div>
+    </div>
+
+    <div *ngIf="!message.currentPlayer">
+      <div *ngIf="i == 0 || message.playerName != messages[i-1].playerName" class="row">
+        <div class="col-12">
+          <h4>{{message.playerName}}</h4>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <span>{{message.content}}</span>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="message.currentPlayer">
+      <div class="row">
+        <div class="col-12 current">
+          <span class="currentSpan">{{message.content}}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+  <div class="row">
+    <div class="col-9">
+      <input [(ngModel)]="message" (keyup.enter)="sendMessage()" class="form-control" placeholder="Type your message here...">
+    </div>
+    <div class="col-2">
+      <button class="btn" (click)="sendMessage()">Send</button>
+    </div>
+  </div>
+</div>
+
+

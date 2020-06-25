@@ -1,6 +1,9 @@
-button  {
-    margin: 3px;
+button {
+    margin-top: 5px;
+    margin-bottom: 5px;
+
 }
+
 
 fa-icon {
     font-size: 20px;
@@ -9,8 +12,10 @@ fa-icon {
 table {
     background-color: white;
     background: white;
+    border: 0;
 }
 
 .names {
     font-weight: normal;
 }
+
