@@ -72,10 +72,6 @@ export class SignupComponent implements OnInit {
 
   fillOutForm() {
 
-    console.log(this.authService.getDisplayName());
-    console.log(this.teamId);
-
-
     if(this.authService.getDisplayName().includes(this.teamId)) {
       this.authService.setTeamId(this.teamId);
       this.authService.loadTeamData();

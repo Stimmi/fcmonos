@@ -6,6 +6,7 @@ import { AuthService } from 'src/app/services/auth.service';
 
 import { Subscription } from 'rxjs';
 import { RouterService } from 'src/app/services/router.service';
+import { faCog, faIdCard, faSignature} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-player-details',
@@ -25,6 +26,9 @@ export class PlayerDetailsComponent implements OnInit, OnDestroy {
   public administrator = false;
   public administratorAdmin = false;
 
+  faCog = faCog;
+  faIdCard = faIdCard;
+  faSignature = faSignature;
 
 
   constructor(private route: ActivatedRoute,

@@ -8,7 +8,7 @@ import { EventDbService } from '../services/eventDbService';
 import { DbService } from 'src/app/services/db.service';
 import { faCheckCircle, faCircle, faTimesCircle, faQuestionCircle } from '@fortawesome/free-regular-svg-icons';
 import { faCheckCircle as faCheckCircleSol, faCircle as faCircleSol, faTimesCircle as faTimesCircleSol,
-faQuestionCircle as faQuestionCircleSol, faUsers} from '@fortawesome/free-solid-svg-icons';
+faQuestionCircle as faQuestionCircleSol, faUsers, faComment, faUserTie, faUserShield, faUserInjured} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-dashboard',
@@ -38,6 +38,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
   faQuestionCircle = faQuestionCircle;
   faQuestionCircleSol = faQuestionCircleSol;
   faUsers = faUsers;
+  faComment = faComment;
+  faUserTie = faUserTie;
+  faUserShield = faUserShield;
+  faUserInjured = faUserInjured;
 
 
   constructor(private auth: AuthService,

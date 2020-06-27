@@ -21,16 +21,15 @@ import { SignupComponent } from './login/signup/signup.component';
 import { LinkAuthPlayerComponent } from './login/link-auth-player/link-auth-player.component';
 import { RouterService } from './services/router.service';
 import { PlayerDbService } from './services/playerDbService';
-import { CreatePlayerComponent } from './players/create-player/create-player.component';
 import { EventDbService } from './services/eventDbService';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
-import { EventPresenceComponent } from './events/event-presence/event-presence.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { LOCALE_ID } from '@angular/core';
 import localeNl from '@angular/common/locales/nl';
 import { registerLocaleData } from '@angular/common';
 import { NewteamComponent } from './general/newteam/newteam.component';
 import { EventChatComponent } from './events/event-chat/event-chat.component';
+
 registerLocaleData(localeNl, 'nl-NL');
 
 @NgModule({
@@ -46,8 +45,6 @@ registerLocaleData(localeNl, 'nl-NL');
     TipstricksComponent,
     SignupComponent,
     LinkAuthPlayerComponent,
-    CreatePlayerComponent,
-    EventPresenceComponent,
     NewteamComponent,
     EventChatComponent
     ],

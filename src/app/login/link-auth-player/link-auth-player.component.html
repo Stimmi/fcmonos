@@ -1,6 +1,12 @@
 <form class="text-center p-5"> 
   <p class="h4 mb-4 text-center">Sign up step 2/2</p>
 <p>Create a new member for this team:</p>
-<app-create-player [player]="player" [update]="updateMode" [linkPlayer]="linkPlayerMode"></app-create-player>
-<button class="btn" (click)="linkNewPlayer()">Confirm</button>
+
+  <div class="row">
+        <input type="text" id="name" class="form-control mb-4" name="name" placeholder="Firstname or nickname" [(ngModel)]="player.name" [attr.disabled]="!updateMode ? '' : null">
+  </div>
+  <div class="row">
+          <input type="text" id="name" class="form-control mb-4" name="playerNumber" placeholder="Number or id" [(ngModel)]="player.playerNumber" [attr.disabled]="!updateMode ? '' : null">
+  </div>
+  <button class="btn" (click)="linkNewPlayer()">Confirm</button>
 </form>
