@@ -1,31 +1,50 @@
 <app-menu></app-menu>
 
-<div *ngIf='!events'>
-
-    Seems there are no upcoming events. Please proceed to the event page to get started.
-
+<div class="card d-block-flex flex-wrap flex-fill">
+    <div class="card-body text-center">
+        <div class="row text-center">
+            <h5 class="col-12 card-title">Totals</h5>
+        </div>
+        <div class="row">        
+            <h3 class="col-6"><fa-icon [icon]="faUserCheck" class="small"></fa-icon> Active: {{amountCount}}</h3>
+            <h3 class="col-6"><fa-icon [icon]="faUserTie" class="small"></fa-icon> Coaches: {{amountTotalCoach}}</h3>
+        </div>
+        <div class="row">
+            <h3 class="col-6"><fa-icon [icon]="faUserShield" class="small"></fa-icon> Goalkeepers: {{amountTotalGoalkeeper}}</h3>
+            <h3 class="col-6"><fa-icon [icon]="faUserInjured" class="small"></fa-icon> Injured: {{amountTotalInjured}}</h3>
+        </div>
+        <div class="row text-center">
+            <h3 class="col-12">Upcoming events: {{amountUpcoming}}</h3>
+        </div>
+    </div>
 </div>
+
 <div *ngFor='let event of events' class="card d-block-flex flex-wrap flex-fill">
-    <div class="card-body">
-
-        <div class="row" >
-            <h5 class="col-12 card-title"><a [routerLink]="['/events', event.id]">{{event.name}}</a></h5>
+    <div class="card-body text-center">
+    <a [routerLink]="['/events', event.id]">
+        <div class="row characteristics" > 
+            <h4 class="col-2 offset-6"><fa-icon [icon]="faUserTie"  class="smaller"></fa-icon> {{event.amountCoach}}</h4>
+            <h4 class="col-2"><fa-icon [icon]="faUserShield"  class="smaller"></fa-icon> {{event.amountGoalkeeper}}</h4>
+            <h4 class="col-2"><fa-icon [icon]="faComment"  class="smaller"></fa-icon> {{event.amountChat}}</h4>
         </div>
         <div class="row" >
-            <h5 class="col-4"><fa-icon [icon]="faCheckCircleSol" class="green small"></fa-icon>{{event.amountYes}}</h5>
-            <h5 class="col-4 card-title"><a [routerLink]="['/events', event.id]">{{event.gDate | date:'d MMM'}}</a></h5>
-            <h5 class="col-4"><fa-icon [icon]="faTimesCircleSol"  class="red small"></fa-icon>{{event.amountNo}}</h5>
+            <h5 class="col-12 card-title title">{{event.name}}</h5>
+        </div>
+        <div class="row" >
+            <h5 class="col-4"><fa-icon [icon]="faCheckCircleSol" class="green small"></fa-icon> {{event.amountYes}}</h5>
+            <h5 class="col-4 card-title">{{event.gDate | date:'dd-MM-yy'}}</h5>
+            <h5 class="col-4"><fa-icon [icon]="faTimesCircleSol"  class="red small"></fa-icon> {{event.amountNo}}</h5>
 
         </div>
         <div class="row" >
-            <h5 class="col-4"><fa-icon [icon]="faQuestionCircleSol" class="orange small"></fa-icon>{{event.amountMaybe}}</h5>
+            <h5 class="col-4"><fa-icon [icon]="faQuestionCircleSol" class="orange small"></fa-icon> {{event.amountMaybe}}</h5>
             <h5 class="col-4 card-title">{{event.gDate | date:'HH'}}:{{event.gDate | date:'mm'}}</h5>
-            <h5 class="col-4"><fa-icon [icon]="faCircleSol"  class="grey small"></fa-icon>{{event.amountUnknown}}</h5>
+            <h5 class="col-4"><fa-icon [icon]="faCircleSol"  class="grey small"></fa-icon> {{event.amountUnknown}}</h5>
         </div>
         <div class="row" >
             <h6 class="col-12">{{event.location}}</h6>
         </div>
-
+    </a>
         <div class="row" >
             <div *ngIf="event.presence!=='YES'" class="col-4">
                 <fa-icon [icon]="faCheckCircle"  (click)="changePresence(event.presence,'YES',event.id )"></fa-icon>

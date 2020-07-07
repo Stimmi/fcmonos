@@ -1,16 +1,23 @@
 <app-menu></app-menu>
+<div class="container">
+  <div class="text-center p-3 row">
+    <button *ngIf="administrator" class="btn col-12"
+   (click)='addPlayer()'>Add a new member
+    </button>
+  </div>
+    <div class="text-center">
+                <div *ngFor='let player of players' class="card d-inline-flex flex-wrap flex-fill">
+                  <div class="card-body">
+                    <div class="row" >
+                        <h5 class="col-4"><fa-icon [icon]="faCameraRetro"></fa-icon></h5>
+                        <h5 class="col-8">{{player.playerNumber}}</h5>
 
-<form class="text-center p-3">
-  <button *ngIf="administrator" class="btn col-12"
- (click)='addPlayer()'>Add a new member
-  </button>
-</form>
-<div class="container text-center">
-            <div *ngFor='let player of players' class="card d-inline-flex flex-wrap flex-fill">
-                <div class="card-body">
-                  <h5 class="card-title"><a [routerLink]="['/players', player.id]">{{player.name}}</a></h5>
-                  <p class="card-text">{{player.playerNumber}}</p>
+                      </div>
+                    <div class="row" >
+                        <h5 class="card-title col-12"><a [routerLink]="['/players', player.id]">{{player.name}}</a></h5>
+                    </div>
                 </div>
-            </div>
+              </div>
+    </div>
 </div>
 

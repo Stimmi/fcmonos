@@ -16,6 +16,10 @@ export class Event {
   public amountNo: number;
   public amountMaybe: number;
   public amountUnknown: number;
+  public amountChat: number;
+  public amountCoach: number;
+  public amountGoalkeeper: number;
+  public amountInjured: number;
 
 
 

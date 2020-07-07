@@ -65,8 +65,16 @@ export class DbService {
   }
 
   setLastActive(teamId, id) {
-    return this.db.collection("fcmonos").doc(teamId).collection("players").doc(id).update({
+    /*return this.db.collection("fcmonos").doc(teamId).collection("players").doc(id).update({
+      lastActive: this.timestamp});*/
+    return this.db.doc(`fcmonos/${teamId}/players/${id}/details/details`).set({
       lastActive: this.timestamp});
+  }
+
+  getLastActive(teamId, id) {
+    /*return this.db.collection("fcmonos").doc(teamId).collection("players").doc(id).update({
+      lastActive: this.timestamp});*/
+    return this.db.doc(`fcmonos/${teamId}/players/${id}/details/details`).valueChanges();
   }
 
 
@@ -123,8 +131,8 @@ export class DbService {
 
   setEventPresence(teamIdThirteen, eventId3,playerId,eventPresence, oldPresence) {
 
-    this.changeEventTotals(teamIdThirteen,eventId3, eventPresence, oldPresence);
-
+    /*this.changeEventTotals(teamIdThirteen,eventId3, eventPresence, oldPresence);*/
+    
     this.db.collection("fcmonos").doc(teamIdThirteen)
     .collection('players').doc(playerId).collection('presences').doc(eventId3).set(Object.assign({},eventPresence));
 

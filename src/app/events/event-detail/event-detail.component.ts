@@ -10,7 +10,7 @@ import { Player } from '../../players/players.component';
 import { faCheckCircle, faCircle, faTimesCircle, faQuestionCircle } from '@fortawesome/free-regular-svg-icons';
 import { faCheckCircle as faCheckCircleSol, faCircle as faCircleSol, faTimesCircle as faTimesCircleSol,
 faQuestionCircle as faQuestionCircleSol, faCalendar, faQuoteLeft, faClock, faMapMarkerAlt, faCommentAlt,
-faExclamationTriangle, faCog} from '@fortawesome/free-solid-svg-icons';
+faExclamationTriangle, faCog, faUserTie, faUserShield, faUserInjured, faUserCog} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-event-detail',
@@ -37,7 +37,11 @@ export class EventDetailComponent implements OnInit, OnDestroy {
   inbetweenDate: Date;
   presences: Presence[] = [];
   players: Player[];
+  playersCount: Player[];
+  playersNoCount: Player[];
   currentPlayer: Player;
+  private totalPlayersCount: number = 0;
+
 
   faCheckCircle = faCheckCircle;
   faCheckCircleSol = faCheckCircleSol;
@@ -54,6 +58,10 @@ export class EventDetailComponent implements OnInit, OnDestroy {
   faCommentAlt = faCommentAlt;
   faExclamationTriangle = faExclamationTriangle;
   faCog =  faCog;
+  faUserTie = faUserTie;
+  faUserShield = faUserShield;
+  faUserInjured = faUserInjured;
+  faUserCog = faUserCog;
 
   presence: Presence;
   oldPresence: Presence;
@@ -78,6 +86,8 @@ export class EventDetailComponent implements OnInit, OnDestroy {
     this.oldPresence = new Presence;
     this.currentPlayer = new Player;
     this.currentPlayer.administrator = false;
+    this.playersNoCount = [];
+    this.playersCount = [];
 
     this.subscribtionAuth = this.auth.currentAuth.subscribe(a => this.processAuth(a));
 
@@ -175,8 +185,6 @@ export class EventDetailComponent implements OnInit, OnDestroy {
   }
 
 
-  
-
   processDateFields() {
 
     this.event.startTime = new Date();
@@ -208,6 +216,7 @@ export class EventDetailComponent implements OnInit, OnDestroy {
     this.event = x;
 
     this.completeTimeFields(this.event.startTime);
+    this.calculateTotals();
 
   }
 
@@ -225,14 +234,17 @@ export class EventDetailComponent implements OnInit, OnDestroy {
     if(this.presences.length > 0) {
       this.createPresencesList();
     }
+
   }
 
   createPresencesList() {
+    
+    this.calculateTotals();
+
     let index = 0;
     let indexx = 0;
-    let indexxx = 0;
-    let pos = 0;
 
+    /*Loop all players and link them with the presences linked to the current event */
     for (index = 0; index < this.players.length; index++) {
       this.players[index].presence = null;
       for (indexx = 0; indexx < this.presences.length; indexx++) {
@@ -240,42 +252,54 @@ export class EventDetailComponent implements OnInit, OnDestroy {
           this.players[index].presence = this.presences[indexx].presence;
         }
       }
-  }
-
-  this.event.amountUnknown = this.auth.getAmountPlayers() - this.event.amountYes - this.event.amountMaybe - this.event.amountNo;
-
-  this.players.sort((a,b) => this.sortBypresence(a,b));
-
-  for (indexxx = 0; indexxx < this.players.length; indexxx++) {
-    if (this.players[indexxx].id === this.currentPlayer.id) {
-      pos = indexxx;
     }
 
+    /*Split the players between those included in the count and those not*/
+    this.playersNoCount = [];
+    this.playersCount = [];
+    index = 0;
+    for (index = 0; index < this.players.length; index++) {
+      if (this.players[index].includeCount === false) {
+          this.playersNoCount.push(this.players[index]);
+      } else {
+          this.playersCount.push(this.players[index]);
+        }
+      }
+
+
+  this.playersCount.sort((a,b) => this.sortBypresence(a,b));
+  this.playersNoCount.sort((a,b) => this.sortBypresence(a,b));
+
+
   }
 
-
-  this.players.unshift(this.players[pos]);
-  this.players.splice(pos+1,1);
-
-  }
-
+  /*Sort method by precense and setting the current player first*/
   sortBypresence (a,b) {
 
-    switch (a.presence) {
-      case 'YES': a = 5;break;
-      case 'MAYBE': a = 4;break;
-      case 'NO': a = 3;break;    
-      default: a = 0;
-        break;
+    if(a.id == this.currentPlayer.id) {
+      a = 6;
+    } else {
+      switch (a.presence) {
+        case 'YES': a = 5;break;
+        case 'MAYBE': a = 4;break;
+        case 'NO': a = 3;break;    
+        default: a = 0;
+          break;
+      }
     }
 
-    switch (b.presence) {
-      case 'YES': b = 5;break;
-      case 'MAYBE': b = 4;break;
-      case 'NO': b = 3;break;    
-      default: b = 0;
-        break;
+    if (b.id == this.currentPlayer.id) {
+     b = 6; 
+    } else {
+      switch (b.presence) {
+        case 'YES': b = 5;break;
+        case 'MAYBE': b = 4;break;
+        case 'NO': b = 3;break;    
+        default: b = 0;
+          break;
+      }
     }
+
 
     if ( a < b ){
       return 1;
@@ -286,6 +310,19 @@ export class EventDetailComponent implements OnInit, OnDestroy {
     return 0;  
   }
   
+  calculateTotals() {
+    let index = 0;
+    let playersCount = 0;
+    this.event.amountUnknown = 0;
+
+    for (index = 0; index < this.players.length; index++) {
+        if(this.players[index].includeCount != false) {
+          playersCount++
+        }
+
+    }
+    this.event.amountUnknown = playersCount - this.event.amountYes - this.event.amountMaybe - this.event.amountNo;
+  }
 
   changePresence(oldPresence, newPresence, playerID ) {
 

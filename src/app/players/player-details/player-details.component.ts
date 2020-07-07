@@ -6,7 +6,7 @@ import { AuthService } from 'src/app/services/auth.service';
 
 import { Subscription } from 'rxjs';
 import { RouterService } from 'src/app/services/router.service';
-import { faCog, faIdCard, faSignature} from '@fortawesome/free-solid-svg-icons';
+import { faCog, faIdCard, faSignature, faUserInjured, faUserShield, faUserTie, faUserCheck, faUserCog} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-player-details',
@@ -22,6 +22,7 @@ export class PlayerDetailsComponent implements OnInit, OnDestroy {
   player:Player = new Player();
   foutmelding:string;
   subsciptionPlayer:Subscription;
+  subscriptionDetails: Subscription;
   subsciptionAuth:Subscription;
   public administrator = false;
   public administratorAdmin = false;
@@ -29,7 +30,11 @@ export class PlayerDetailsComponent implements OnInit, OnDestroy {
   faCog = faCog;
   faIdCard = faIdCard;
   faSignature = faSignature;
-
+  faUserInjured = faUserInjured;
+  faUserShield = faUserShield;
+  faUserTie = faUserTie;
+  faUserCheck = faUserCheck;
+  faUserCog = faUserCog;
 
   constructor(private route: ActivatedRoute,
      private router: Router,
@@ -55,6 +60,9 @@ export class PlayerDetailsComponent implements OnInit, OnDestroy {
     if (this.subsciptionAuth) {
       this.subsciptionAuth.unsubscribe();
     }
+    if (this.subscriptionDetails) {
+      this.subscriptionDetails.unsubscribe();
+    }
   }
 
   processAuth(y) {
@@ -79,6 +87,8 @@ export class PlayerDetailsComponent implements OnInit, OnDestroy {
 
     if (this.newPlayerMode) {
       this.updateMode= true;
+      this.administratorAdmin  = this.auth.getAdministrator();
+
 
     } else {
       this.playerId = this.route.snapshot.paramMap.get('id');
@@ -87,8 +97,11 @@ export class PlayerDetailsComponent implements OnInit, OnDestroy {
       this.subsciptionPlayer = this.dbService.getPlayerById(this.auth.getTeamId(),this.playerId)
       .subscribe(x => this.displayPlayer(x));
 
+      this.subscriptionDetails = this.dbService.getLastActive(this.auth.getTeamId(), this.playerId)
+      .subscribe(y => this.setLastActive(y));
+
       this.administrator = this.auth.getAdministrator();
-      this.administratorAdmin  = this.auth.getAdministrator();
+      this.administratorAdmin  = false;
 
     }
 
@@ -103,6 +116,7 @@ export class PlayerDetailsComponent implements OnInit, OnDestroy {
 
     } else {
       this.updateMode = false;
+      this.administratorAdmin = false;
       this.dbService.updatePlayer(this.auth.getTeamId(),this.playerId, this.player);
     }
 
@@ -124,9 +138,19 @@ export class PlayerDetailsComponent implements OnInit, OnDestroy {
     }
   }
 
+  setLastActive(date) {
+    if(date) {
+      this.player.lastActive = date.lastActive;
+    }
+  }
 
   updateModeFunction() {
     this.updateMode = !this.updateMode;
+    if(this.updateMode) {
+      this.administratorAdmin = this.auth.getAdministrator();
+    } else {
+      this.administratorAdmin = false;
+    }
   }
 
   cancelFunction() {

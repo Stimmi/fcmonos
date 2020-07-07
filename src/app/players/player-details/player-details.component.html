@@ -22,19 +22,50 @@
     <div class="row">
         <label for="playerNumber" class="col-2 col-form-label"><fa-icon [icon]="faIdCard"></fa-icon></label>
         <div class="col-10">
-            <input type="text" id="name" class="form-control mb-4" name="playerNumber" placeholder="Number or id" [(ngModel)]="player.playerNumber" [attr.disabled]="!updateMode ? '' : null">
+            <input type="text" id="number" class="form-control mb-4" name="playerNumber" placeholder="Number or id" [(ngModel)]="player.playerNumber" [attr.disabled]="!updateMode ? '' : null">
         </div>
     </div>
     <div class="form-group">
         <input type="text" class="form-control" id="email" name="email" [(ngModel)]="player.email" disabled>
     </div>
+    <div class="form-row">
+      <div class="col">
+        <div class="form-check">  
+          <input type="checkbox" class="form-check-input" id="includeCount" name="includeCount" [(ngModel)]="player.includeCount" [attr.disabled]="!updateMode ? '' : null">
+          <label for="includeCount" class="form-check-label"><fa-icon [icon]="faUserCheck"></fa-icon> Active (include in count)</label>
+        </div>
+      </div>
+      <div class="col">
+        <div class="form-check">  
+          <input type="checkbox" class="form-check-input" id="injured" name="injured" [(ngModel)]="player.injured" [attr.disabled]="!updateMode ? '' : null">
+          <label for="injured" class="form-check-label"><fa-icon [icon]="faUserInjured"></fa-icon> Injured</label>
+        </div>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="col">
+        <div class="form-check">  
+          <input type="checkbox" class="form-check-input" id="coach" name="coach" [(ngModel)]="player.coach" [attr.disabled]="!updateMode ? '' : null">
+          <label for="coach" class="form-check-label"><fa-icon [icon]="faUserTie"></fa-icon> Coach / Manager</label>
+        </div>
+      </div>
+      <div class="col">
+        <div class="form-check">  
+          <input type="checkbox" class="form-check-input" id="goalkeeper" name="goalkeeper" [(ngModel)]="player.goalkeeper" [attr.disabled]="!updateMode ? '' : null">
+          <label for="goalkeeper" class="form-check-label"><fa-icon [icon]="faUserShield"></fa-icon> Goalkeeper</label>
+        </div>
+      </div>
+    </div>
+
     <div class="form-check">  
         <input type="checkbox" class="form-check-input" id="administrator" name="administrator" [(ngModel)]="player.administrator" [attr.disabled]="!administratorAdmin ? '' : null">
-        <label for="administrator" class="form-check-label">Administrator</label>
+        <label for="administrator" class="form-check-label"><fa-icon [icon]="faUserCog"></fa-icon> Administrator</label>
     </div>
+
     
-<p *ngIf="player.lastActive != null" class="text-left">Last active on {{player.lastActive.seconds * 1000 | date:'dd/MM/yyyy H:mm:ss'}}</p>
 <button *ngIf="updateMode && administrator" type="button" class="btn col-12" (click)="submitFunction()">Save</button>
 <button *ngIf="newPlayerMode" type="button" class="btn col-12" (click)="createFunction()">Create</button>
+
+<p *ngIf="player.lastActive != null" class="text-left"><br>Last active on {{player.lastActive.seconds * 1000 | date:'dd/MM/yyyy H:mm'}}</p>
 </form>
 </div>

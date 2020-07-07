@@ -1,39 +1,86 @@
 <app-menu></app-menu>
 <div class="container">
-
-  <div>
-    <h1>Invite team members</h1>
-
-    <p>Invite new people to {{teamName}} by sharing following url: <span>https://fcmonos.web.app/signup/{{teamId}}</span></p>
-
-  </div>
-
-  <div>
-    <h1>Create a new team</h1>
-
-    <p>You can start your own team by following this <a><span (click)="proceedToNewTeam()">link</span></a></p>
-
-  </div>
-
-  <div *ngIf='teams && teams.length > 1'>
-    <h1>Change your team:</h1>
-
-    <div *ngFor='let team of teams'>
-      <form>
-      <div *ngIf='team.id != teamId'> 
-      <button class="btn" (click)="changeTeam(team.id)">{{team.name}}</button>
-      <button *ngIf='team.id != defaultTeam' class="btn" (click)="setDefault(team.id)">Set as default</button>
+  <div id="accordion">
+    <div class="card">
+      <div class="card-header" id="headingOne">
+        <h5 class="mb-0">
+          <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+            Invite new members
+          </button>
+        </h5>
       </div>
-    </form>
+  
+      <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+        <div class="card-body">
+          Invite new people to {{teamName}} by sharing following url: <span>https://fcmonos.web.app/signup/{{teamId}}</span>
+          <br>The unique code for this team is: <span>{{teamId}}</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header" id="headingTwo">
+        <h5 class="mb-0">
+          <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+            Create a new team
+          </button>
+        </h5>
+      </div>
+      <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+        <div class="card-body">
+          <p>You can start your own team by following this <a><span (click)="proceedToNewTeam()">link</span></a></p>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header" id="headingThree">
+        <h5 class="mb-0">
+          <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+            Add the events of your team to your agenda
+          </button>
+        </h5>
+      </div>
+      <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
+        <div class="card-body">
+          <p>Add this URL to your calendar app like Google Calendar,
+            this way your agenda will synchronize automatically with the events. You can also copy past this URL to your browser and you will get a download of the event in the ICal format.<br>
+            <span>https://us-central1-fcmonos.cloudfunctions.net/fcmonosical/team?id={{teamId}}</span></p>
+      </div>
     </div>
   </div>
-
-  <div>
-    <h1>Add the events to your calendar app (iCal)</h1>
-
-    <p>Add this URL to your calendar app like Google Calendar,
-       this way your agenda will synchronize automatically with the events: 
-       <span>https://us-central1-fcmonos.cloudfunctions.net/fcmonosical/team?id={{teamId}}</span></p>
+  <div class="card" *ngIf='teams && teams.length > 1'>
+    <div class="card-header" id="headingFour">
+      <h5 class="mb-0">
+        <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+          Change to one of your other teams
+        </button>
+      </h5>
+    </div>
+    <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordion">
+      <div class="card-body">
+        <div *ngFor='let team of teams'>
+          <form>
+          <div *ngIf='team.id != teamId'> 
+          <button class="btn" (click)="changeTeam(team.id)">{{team.name}}</button>
+          <button *ngIf='team.id != defaultTeam' class="btn" (click)="setDefault(team.id)">Set as default</button>
+          </div>
+        </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+  <div class="card">
+    <div class="card-header" id="headingFive">
+      <h5 class="mb-0">
+        <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+          About this website
+        </button>
+      </h5>
+    </div>
+    <div id="collapseFive" class="collapse" aria-labelledby="headingFive" data-parent="#accordion">
+      <div class="card-body">
+        <p>This website was created with Angular (front end) and Firestore (back end). All development and design was done by <a href="https://www.linkedin.com/in/vincent-reynaert-4495ab123/">Vincent Reynaert</a>. Don't hesitate to get in touch if you have any questions or remarks.</p>
+      </div>
+    </div>
   </div>
 
 </div>

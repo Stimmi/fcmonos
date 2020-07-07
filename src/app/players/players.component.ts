@@ -3,6 +3,7 @@ import { Subscription } from 'rxjs';
 import { AuthService } from '../services/auth.service';
 import { PlayerDbService } from '../services/playerDbService';
 import { RouterService } from '../services/router.service';
+import { faCameraRetro} from '@fortawesome/free-solid-svg-icons';
 
 export class Player {
   public name:string;
@@ -13,7 +14,10 @@ export class Player {
   public administrator: boolean = false;
   public presence: string;
   public lastActive;
-
+  public includeCount: boolean = true;
+  public coach: boolean = false;
+  public injured: boolean = false;
+  public goalkeeper: boolean = false;
 
 
 
@@ -24,6 +28,7 @@ export class Player {
     this.playerNumber = this.playerNumber;
     this.email = this.email;
     this.administrator = this.administrator;
+    this.includeCount = this.includeCount;
 
 
   }
@@ -43,6 +48,8 @@ export class PlayersComponent implements OnInit, OnDestroy {
   public subscriptionAuth: Subscription;
   public currentPlayer: Player = new Player();
   public administrator: boolean = false;
+
+  faCameraRetro = faCameraRetro;
 
 
   constructor(private playerDb: PlayerDbService,
@@ -95,18 +102,12 @@ export class PlayersComponent implements OnInit, OnDestroy {
 
   displayPlayers(players) {
     this.players = players;
+    
+    this.players.sort((a,b) => {
+    return ('' + a.name).localeCompare(b.name)
+    })
 
   }
-
-  logOut() {
-
-    this.auth.logOut();
-  }
-
-
-
-
-
 
 
 }

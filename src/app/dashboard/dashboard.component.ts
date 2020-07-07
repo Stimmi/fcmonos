@@ -5,10 +5,12 @@ import { Subscription } from 'rxjs';
 import { AuthService } from '../services/auth.service';
 import { RouterService } from '../services/router.service';
 import { EventDbService } from '../services/eventDbService';
+import { PlayerDbService } from '../services/playerDbService';
+
 import { DbService } from 'src/app/services/db.service';
 import { faCheckCircle, faCircle, faTimesCircle, faQuestionCircle } from '@fortawesome/free-regular-svg-icons';
 import { faCheckCircle as faCheckCircleSol, faCircle as faCircleSol, faTimesCircle as faTimesCircleSol,
-faQuestionCircle as faQuestionCircleSol, faUsers, faComment, faUserTie, faUserShield, faUserInjured} from '@fortawesome/free-solid-svg-icons';
+faQuestionCircle as faQuestionCircleSol, faUsers, faComment, faUserTie, faUserShield, faUserInjured, faUserCheck} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-dashboard',
@@ -24,8 +26,18 @@ export class DashboardComponent implements OnInit, OnDestroy {
   private inbetweenDate: Date;
   private countPlayers: number;
 
+  private players: Player[];
+  public amountCount: number;
+  private amountUnknown: number;
+  public amountTotalCoach: number;
+  public amountTotalGoalkeeper: number;
+  public amountTotalInjured: number;
+  public amountUpcoming: number;
+
+
   public subscriptionAuth: Subscription;
   public subscriptionEvents: Subscription;
+  public subscriptionPlayers: Subscription;
   public subscriptionPresences: Subscription;
 
 
@@ -42,10 +54,12 @@ export class DashboardComponent implements OnInit, OnDestroy {
   faUserTie = faUserTie;
   faUserShield = faUserShield;
   faUserInjured = faUserInjured;
+  faUserCheck = faUserCheck;
 
 
   constructor(private auth: AuthService,
     private eventService: EventDbService,
+    private playerService: PlayerDbService,
     private dbService: DbService,
     private router: RouterService) { }
 
@@ -64,6 +78,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
     if (this.subscriptionEvents) {
       this.subscriptionEvents.unsubscribe();
+    }
+    if (this.subscriptionPlayers) {
+      this.subscriptionPlayers.unsubscribe();
     }
     if (this.subscriptionPresences) {
       this.subscriptionPresences.unsubscribe();
@@ -89,6 +106,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.currentPlayer = this.auth.getCurrentPlayer();
 
     this.subscriptionEvents = this.eventService.currentEvents.subscribe(x => this.processEvents(x));
+    this.subscriptionPlayers = this.playerService.currentPlayers.subscribe(z => this.processPlayers(z));
     this.subscriptionPresences = this.dbService.
     getEventPrecensesPlayer(this.auth.getTeamId(),this.currentPlayer.id).subscribe(y => this.processPresences(y));
 
@@ -104,6 +122,32 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   }
 
+  processPlayers(players) {
+    let index = 0;
+    this.amountCount = 0;
+    this.amountTotalCoach = 0;
+    this.amountTotalInjured = 0;
+    this.amountTotalGoalkeeper = 0;
+    this.amountCount = 0;
+
+    this.players = players;
+
+    for (index = 0; index < this.players.length; index++) {
+      if(this.players[index].includeCount == true) {
+        this.amountCount++
+      }
+      if(this.players[index].coach == true) {
+        this.amountTotalCoach++
+      }
+      if(this.players[index].goalkeeper == true) {
+        this.amountTotalGoalkeeper++
+      }
+      if(this.players[index].injured == true) {
+        this.amountTotalInjured++
+      }
+    }
+  }
+
   processPresences(y) {
 
     this.presences = y;
@@ -117,13 +161,14 @@ export class DashboardComponent implements OnInit, OnDestroy {
   createDashboardList() {
   let index = 0;
   let indexx = 0;
+  this.amountUpcoming = 0;
 
   for (index = 0; index < this.events.length; index++) {
     this.events[index].presence = null;
 
     this.events[index].gDate = this.changeDateField(this.events[index].startTime);
 
-    this.events[index].amountUnknown = this.auth.getAmountPlayers() - this.events[index].amountMaybe
+    this.events[index].amountUnknown = this.amountCount - this.events[index].amountMaybe
     - this.events[index].amountYes - this.events[index].amountNo;
     
     for (indexx = 0; indexx < this.presences.length; indexx++) {
@@ -133,8 +178,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
   }
 
-
   this.events = this.events.filter(c => c.gDate > new Date(new Date().setDate(new Date().getDate()-1)));
+  this.amountUpcoming = this.events.length;
   this.events.sort((a,b) => this.sortDate(a.startTime, b.startTime)); 
 }
 
