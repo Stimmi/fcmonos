@@ -23,7 +23,7 @@ export class EventChatComponent implements OnInit, AfterViewChecked {
   currentPlayerId : string;
 
 
-  @Input('eventID') eventID : string;
+  @Input('eventId') eventID : string;
 
 
   constructor(private auth: AuthService,
@@ -57,7 +57,7 @@ export class EventChatComponent implements OnInit, AfterViewChecked {
   }
 
   loadData() {
-    this.dbService.getChatMessages(this.auth.getTeamId(),this.eventID).subscribe(x => this.loadChat(x));
+    this.dbService.getChatMessages(this.eventID).subscribe(x => this.loadChat(x));
     this.currentPlayerId = this.auth.getCurrentPlayerId();
   }
 
@@ -95,7 +95,7 @@ export class EventChatComponent implements OnInit, AfterViewChecked {
     /*Add message to the db. Is it necessary to add message already in local variable? */
 
     if(this.message !== '') {
-      this.dbService.addChatMessage(this.auth.getTeamId(), this.eventID,this.currentPlayerId, this.message)
+      this.dbService.addChatMessage(this.eventID,this.currentPlayerId, this.message)
       this.message = '';
     }
 

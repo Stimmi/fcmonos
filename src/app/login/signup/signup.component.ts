@@ -41,7 +41,7 @@ export class SignupComponent implements OnInit {
 
     this.subscriptionAuth = this.authService.currentAuth.subscribe(message => this.checkAuth(message));
 
-    this.db.getTeam(this.teamId).subscribe(x  => this.processTeam(x));
+    this.db.getTeamWithId(this.teamId).subscribe(x  => this.processTeam(x));
 
 
   }

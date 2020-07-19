@@ -94,10 +94,10 @@ export class PlayerDetailsComponent implements OnInit, OnDestroy {
       this.playerId = this.route.snapshot.paramMap.get('id');
       this.updateMode= false;
 
-      this.subsciptionPlayer = this.dbService.getPlayerById(this.auth.getTeamId(),this.playerId)
+      this.subsciptionPlayer = this.dbService.getPlayerById(this.playerId)
       .subscribe(x => this.displayPlayer(x));
 
-      this.subscriptionDetails = this.dbService.getLastActive(this.auth.getTeamId(), this.playerId)
+      this.subscriptionDetails = this.dbService.getLastActive(this.playerId)
       .subscribe(y => this.setLastActive(y));
 
       this.administrator = this.auth.getAdministrator();
@@ -112,12 +112,12 @@ export class PlayerDetailsComponent implements OnInit, OnDestroy {
 
     if (this.newPlayerMode) {
 
-      this.dbService.addPlayer(this.auth.getTeamId(), this.player).finally(() => this.router.navigate(['/players']));
+      this.dbService.addPlayer(this.player).finally(() => this.router.navigate(['/players']));
 
     } else {
       this.updateMode = false;
       this.administratorAdmin = false;
-      this.dbService.updatePlayer(this.auth.getTeamId(),this.playerId, this.player);
+      this.dbService.updatePlayer(this.playerId, this.player);
     }
 
   }
@@ -126,7 +126,7 @@ export class PlayerDetailsComponent implements OnInit, OnDestroy {
     this.player.uid = '/';
     this.player.email = '/';
 
-    this.dbService.addPlayer(this.auth.getTeamId(),this.player).then(() => this.routerService.proceedToPlayers());
+    this.dbService.addPlayer(this.player).then(() => this.routerService.proceedToPlayers());
 
   }
 
@@ -161,7 +161,10 @@ export class PlayerDetailsComponent implements OnInit, OnDestroy {
     }
   }
 
-
+  deletePlayer() {
+    this.dbService.deletePlayer(this.playerId);
+    this.routerService.proceedToPlayers();
+  }
 
 
 }

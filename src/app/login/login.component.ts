@@ -23,8 +23,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   constructor(private authService: AuthService,
     private route: ActivatedRoute,
-    private routerService: RouterService,
-    private dbService: DbService) {
+    private routerService: RouterService) {
 
 
    }
@@ -32,8 +31,6 @@ export class LoginComponent implements OnInit, OnDestroy {
   ngOnInit() {
 
     this.team = this.route.snapshot.paramMap.get('team');
-
-    this.dbService.changeTeam(this.team);
 
     this.subscriptionAuth = this.authService.currentAuth.subscribe(message => this.checkAuth(message));
 
@@ -79,6 +76,14 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   }
 
+  resetPassword() {
+    if (!this.mail || this.mail.length < 1) {
+      alert('Please fill out the email adress for the account you want to reset')
+    } else {
+      this.authService.resetPassword(this.mail);
+      alert('An email was sent to: ' + this.mail + ' with further instructions. If this doesn\'t work out, please ask your administrator to delete your account and register again.')
+    }
 
+  }
 
 }

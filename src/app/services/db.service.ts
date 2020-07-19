@@ -11,183 +11,129 @@ import * as firebase from 'firebase/app';
 export class DbService {
     playerName: string;
     timestamp = firebase.firestore.FieldValue.serverTimestamp();
-
-
-    private teamSource = new BehaviorSubject('default');
-    currentTeam = this.teamSource.asObservable();
-
+    teamId: string;
 
 
   constructor(private db: AngularFirestore) {
 
+   }
 
+   /*TEAM*/
+   getTeam() {
+
+    return this.db.doc(`fcmonos/${this.teamId}`).valueChanges();
 
    }
 
-   getTeam(teamId) {
+   getTeamWithId(id: string) {
 
-    return this.db.collection("fcmonos").doc(teamId).valueChanges();
+    return this.db.doc(`fcmonos/${id}`).valueChanges();
 
    }
 
    getTeams() {
-
-     return this.db.collection("fcmonos").valueChanges({ idField: 'id' });
-
-
+    return this.db.collection("fcmonos").valueChanges({ idField: 'id' });
    }
 
    addTeam(team) {
-
     return this.db.collection("fcmonos").add(Object.assign({},team));
-
    }
 
+   setTeamId(id: string) {
+    this.teamId = id;
+   }
 
-  addPlayer(teamIdThree,player){
-
-
-    return this.db.collection("fcmonos").doc(teamIdThree).collection("players")
-    .add(Object.assign({},player)).then(() => this.updateTeamInfo(teamIdThree));
-
-
+   /*PLAYERS */
+    addPlayer(player){
+    return this.db.collection(`fcmonos/${this.teamId}/players`)
+    .add(Object.assign({}, player));
   }
 
-  updateTeamInfo(teamIdThree){
 
-    return this.db.collection("fcmonos").doc(teamIdThree).update({
-      amountPlayers: firebase.firestore.FieldValue.increment(1)});
-
+  updatePlayer(id: string, player) {
+    return this.db.doc(`fcmonos/${this.teamId}/players/${id}`).set(Object.assign({},player))
   }
 
-  updatePlayer(teamIdSix, id, player) {
-    return this.db.collection("fcmonos").doc(teamIdSix).collection("players").doc(id).set(Object.assign({},player))
-  }
-
-  setLastActive(teamId, id) {
-    /*return this.db.collection("fcmonos").doc(teamId).collection("players").doc(id).update({
-      lastActive: this.timestamp});*/
-    return this.db.doc(`fcmonos/${teamId}/players/${id}/details/details`).set({
+  setLastActive(id: string) {
+    return this.db.doc(`fcmonos/${this.teamId}/players/${id}/details/details`).set({
       lastActive: this.timestamp});
   }
 
-  getLastActive(teamId, id) {
-    /*return this.db.collection("fcmonos").doc(teamId).collection("players").doc(id).update({
-      lastActive: this.timestamp});*/
-    return this.db.doc(`fcmonos/${teamId}/players/${id}/details/details`).valueChanges();
+  getLastActive(id: string) {
+    return this.db.doc(`fcmonos/${this.teamId}/players/${id}/details/details`).valueChanges();
   }
 
 
-  getPlayerByUid(teamIdTwo, uid){
+  getPlayerByUid(uid: string){
 
-    return this.db.collection("fcmonos").doc(teamIdTwo)
+    return this.db.collection("fcmonos").doc(this.teamId)
     .collection('players', ref => ref.where('uid', '==', uid).limit(1)).valueChanges({ idField: 'id' });
 
   }
 
-  getPlayerById(teamIdSeven,id) {
-    return this.db.collection("fcmonos").doc(teamIdSeven).collection('players').doc(id).valueChanges();
+  getPlayerById(id) {
+    return this.db.doc(`fcmonos/${this.teamId}/players/${id}`).valueChanges();
   }
 
 
-  linkPlayerAndAuth(teamIdEight, id,uid,email) {
+  linkPlayerAndAuth(id: string,uid: string,email: string) {
 
-   return this.db.collection("fcmonos").doc(teamIdEight).collection('players')
-   .doc(id).update({uid: uid, email: email});
-
-    
+   return this.db.doc(`fcmonos/${this.teamId}/players/${id}`).update({uid: uid, email: email});
   }
 
-  addEvent(teamIdFour, eventTwo) {
+  deletePlayer(id: string) {
 
-    return this.db.collection("fcmonos").doc(teamIdFour).collection("events").add(Object.assign({},eventTwo));
-
-
+    return this.db.doc(`fcmonos/${this.teamId}/players/${id}`).delete();
   }
 
-  updateEvent(teamIdNine, eventID,event) {
-    return this.db.collection("fcmonos").doc(teamIdNine).collection("events")
-    .doc(eventID).set(Object.assign({},event));
+  /*EVENTS */
+
+  addEvent(eventTwo) {
+    return this.db.collection(`fcmonos/${this.teamId}/events`).add(Object.assign({},eventTwo));
   }
 
-  getEvent(teamIdTen,eventID) {
-
-    return this.db.collection("fcmonos").doc(teamIdTen)
-    .collection('events').doc(eventID).valueChanges();
-
+  updateEvent(eventId:string, event) {
+    return this.db.doc(`fcmonos/${this.teamId}/events/${eventId}`).set(Object.assign({},event));
   }
 
-  getEventPrecenses(teamIdEleven, eventId2) {
-
-    return this.db.collection("fcmonos").doc(teamIdEleven)
-    .collection('events').doc(eventId2).collection('presences').valueChanges({ idField: 'id' });
+  getEvent(eventId:string) {
+    return this.db.doc(`fcmonos/${this.teamId}/events/${eventId}`).valueChanges();
   }
 
-  getEventPrecensesPlayer(teamIdTwelve,playerId) {
+  deleteEvent(id) {
 
-    return this.db.collection("fcmonos").doc(teamIdTwelve)
-    .collection('players').doc(playerId).collection('presences').valueChanges({ idField: 'id' });
+    return this.db.doc(`fcmonos/${this.teamId}/events/${id}`).delete();
   }
 
-  setEventPresence(teamIdThirteen, eventId3,playerId,eventPresence, oldPresence) {
 
-    /*this.changeEventTotals(teamIdThirteen,eventId3, eventPresence, oldPresence);*/
-    
-    this.db.collection("fcmonos").doc(teamIdThirteen)
-    .collection('players').doc(playerId).collection('presences').doc(eventId3).set(Object.assign({},eventPresence));
+  /* PRESENCES */
+  getEventPrecenses(eventId2) {
 
-    return this.db.collection("fcmonos").doc(teamIdThirteen).collection('events').doc(eventId3)
-    .collection('presences').doc(playerId).set(Object.assign({},eventPresence));
+    return this.db.collection(`fcmonos/${this.teamId}/events/${eventId2}/presences`).valueChanges({ idField: 'id' });
+  }
+
+  getEventPrecensesPlayer(playerId:string) {
+
+    return this.db.collection(`fcmonos/${this.teamId}/players/${playerId}/presences`).valueChanges({ idField: 'id' });
+  }
+
+  setEventPresence(eventId:string,playerId:string,eventPresence) {
+  
+    this.db.doc(`fcmonos/${this.teamId}/players/${playerId}/presences/${eventId}`).set(Object.assign({},eventPresence));
+
+    return this.db.doc(`fcmonos/${this.teamId}/events/${eventId}/presences/${playerId}`).set(Object.assign({},eventPresence));
   
   }
 
-  changeEventTotals(teamIdThirteen, eventId3, eventPresence, oldPresence) {
-
-    let incrementYes = 0;
-    let incrementNo = 0;
-    let incrementMaybe = 0;
-
-    switch (oldPresence.presence) {
-      case 'YES': incrementYes = -1;
-        break;
-      case 'NO': incrementNo = -1;
-        break;
-      case 'MAYBE': incrementMaybe = -1;
-        break;
-    }
-    switch (eventPresence.presence) {
-      case 'YES': incrementYes = 1;
-        break;
-      case 'NO': incrementNo = 1;
-        break;
-      case 'MAYBE': incrementMaybe = 1;
-        break;
-    }
-
-    return this.db.collection("fcmonos").doc(teamIdThirteen)
-    .collection('events').doc(eventId3).update({amountYes: firebase.firestore.FieldValue.increment(incrementYes), 
-    amountNo: firebase.firestore.FieldValue.increment(incrementNo),
-    amountMaybe: firebase.firestore.FieldValue.increment(incrementMaybe)});
-
-  }
-
-  getChatMessages(teamID, eventID) {
-    return this.db.collection("fcmonos").doc(teamID)
-    .collection('events').doc(eventID).collection('chat', message => {
+  /* CHAT */
+  getChatMessages(eventId:string) {
+    return this.db.doc(`fcmonos/${this.teamId}/events/${eventId}`).collection('chat', message => {
       return message.orderBy('timestamp').limit(100)}).valueChanges();
   }
 
-  addChatMessage(teamID, eventID,playerId, message) {
-    this.db.collection("fcmonos").doc(teamID)
-    .collection('events').doc(eventID).collection('chat')
-    .add({playerId : playerId, content : message, timestamp: this.timestamp});
+  addChatMessage(eventId,playerId, message) {
+    this.db.collection(`fcmonos/${this.teamId}/events/${eventId}/chat`).add({playerId : playerId, content : message, timestamp: this.timestamp});
   }
-
-  changeTeam(message: any) {
-
-    this.teamSource.next(message)
-  }
-
 
 
 }

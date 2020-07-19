@@ -80,7 +80,13 @@ export class AuthService {
       logOut() {
 
         return this.afAuth.auth.signOut().then(x => this.currentPlayer = null);
+      }
 
+      resetPassword (email) {
+        var actionCodeSettings = {
+          url: 'https://fcmonos.web.app/login'  
+        }
+        return this.afAuth.auth.sendPasswordResetEmail(email,  actionCodeSettings );
       }
 
       processAuth(message: any) {
@@ -109,13 +115,13 @@ export class AuthService {
       }
 
       loadTeamData() {
-        this.db.getTeam(this.getTeamId()).subscribe(z => this.processTeam(z));
+        this.db.getTeam().subscribe(z => this.processTeam(z));
       }
 
       processTeam(z) {
       
         this.currentTeam = z;
-        this.subscriptionPlayer = this.db.getPlayerByUid(this.getTeamId(),this.uid).subscribe(x => this.checkPlayer(x));
+        this.subscriptionPlayer = this.db.getPlayerByUid(this.uid).subscribe(x => this.checkPlayer(x));
         this.eventDbService.getEvents(this.getTeamId());
         this.playerDbService.getPlayers(this.getTeamId());
 
@@ -133,7 +139,7 @@ export class AuthService {
         if (this.currentPlayer) {
           this.changeAuth('session');
           this.subscriptionPlayer.unsubscribe();
-          this.db.setLastActive(this.teamId,this.currentPlayer.id);
+          this.db.setLastActive(this.currentPlayer.id);
 
 
         } else {
@@ -177,6 +183,7 @@ export class AuthService {
 
       setTeamId(teamId) {
         this.teamId = teamId;
+        this.db.setTeamId(this.teamId);
       }
 
       setDisplayName(setDisplayName) {

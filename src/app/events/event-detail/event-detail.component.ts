@@ -28,7 +28,7 @@ export class EventDetailComponent implements OnInit, OnDestroy {
   startTime1: number;
   startTime2: number;
   event: Event;
-  eventID: string;
+  eventId: string;
   newEventMode: boolean;
   subscribtionEvent: Subscription;
   subscribtionAuth: Subscription;
@@ -64,8 +64,6 @@ export class EventDetailComponent implements OnInit, OnDestroy {
   faUserCog = faUserCog;
 
   presence: Presence;
-  oldPresence: Presence;
-
 
 
   constructor(private route: ActivatedRoute,
@@ -75,7 +73,7 @@ export class EventDetailComponent implements OnInit, OnDestroy {
     private redirecter: Router,
     private auth: AuthService) { 
 
-    this.eventID = this.route.snapshot.paramMap.get('id');
+    this.eventId = this.route.snapshot.paramMap.get('id');
 
   }
 
@@ -83,7 +81,6 @@ export class EventDetailComponent implements OnInit, OnDestroy {
     this.event = new Event();
     this.event.amountUnknown = 0;
     this.presence = new Presence;
-    this.oldPresence = new Presence;
     this.currentPlayer = new Player;
     this.currentPlayer.administrator = false;
     this.playersNoCount = [];
@@ -123,7 +120,7 @@ export class EventDetailComponent implements OnInit, OnDestroy {
     
     this.currentPlayer = this.auth.getCurrentPlayer();
 
-    if(this.eventID === 'newevent') {
+    if(this.eventId === 'newevent') {
 
       this.newEventMode = true;
 
@@ -131,9 +128,9 @@ export class EventDetailComponent implements OnInit, OnDestroy {
 
       this.newEventMode = false;
 
-      this.subscribtionEvent = this.dbService.getEvent(this.auth.getTeamId(),this.eventID).subscribe(x => this.processEvent(x));
+      this.subscribtionEvent = this.dbService.getEvent(this.eventId).subscribe(x => this.processEvent(x));
 
-      this.subscribtionEventPresences = this.dbService.getEventPrecenses(this.auth.getTeamId(), this.eventID)
+      this.subscribtionEventPresences = this.dbService.getEventPrecenses(this.eventId)
       .subscribe(y => this.processEventPresences(y));
 
       this.subscribtionPlayers = this.playerDbService.currentPlayers.subscribe(z => this.processPlayers(z));
@@ -142,7 +139,7 @@ export class EventDetailComponent implements OnInit, OnDestroy {
   }
 
   submitForm() {
-    if(this.eventID === 'newevent') {
+    if(this.eventId === 'newevent') {
       this.addNewEvent();
     } else {
       this.updateEvent();
@@ -164,14 +161,14 @@ export class EventDetailComponent implements OnInit, OnDestroy {
 
     this.processDateFields();
 
-    this.dbService.addEvent(this.auth.getTeamId(),this.event).then(() => this.router.proceedToEvents());
+    this.dbService.addEvent(this.event).then(() => this.router.proceedToEvents());
     
   }
 
   updateEvent() {
 
     this.processDateFields();
-    this.dbService.updateEvent(this.auth.getTeamId(),this.eventID,this.event)
+    this.dbService.updateEvent(this.eventId,this.event)
     .then(() => this.router.proceedToEvents());
 
   }
@@ -184,6 +181,11 @@ export class EventDetailComponent implements OnInit, OnDestroy {
 
   }
 
+  deleteEvent() {
+    this.dbService.deleteEvent(this.eventId);
+    this.router.proceedToEvents();
+
+  }
 
   processDateFields() {
 
@@ -324,14 +326,13 @@ export class EventDetailComponent implements OnInit, OnDestroy {
     this.event.amountUnknown = playersCount - this.event.amountYes - this.event.amountMaybe - this.event.amountNo;
   }
 
-  changePresence(oldPresence, newPresence, playerID ) {
+  changePresence(newPresence, playerID ) {
 
     if (this.currentPlayer.administrator === true || playerID === this.currentPlayer.id) {
 
       this.presence.presence = newPresence;
-      this.oldPresence.presence = oldPresence;
 
-      this.dbService.setEventPresence(this.auth.getTeamId(),this.eventID, playerID ,this.presence, this.oldPresence);
+      this.dbService.setEventPresence(this.eventId, playerID ,this.presence);
 
       let index = 0;
 

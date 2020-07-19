@@ -22,7 +22,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
   public presences: Presence[] = [];
   private currentPlayer: Player;
   private presence: Presence;
-  private oldPresence: Presence;
   private inbetweenDate: Date;
   private countPlayers: number;
 
@@ -65,7 +64,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.presence = new Presence;
-    this.oldPresence = new Presence;
     this.subscriptionAuth = this.auth.currentAuth.subscribe(x => this.processAuth(x));
     this.countPlayers = 0;
 
@@ -108,7 +106,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.subscriptionEvents = this.eventService.currentEvents.subscribe(x => this.processEvents(x));
     this.subscriptionPlayers = this.playerService.currentPlayers.subscribe(z => this.processPlayers(z));
     this.subscriptionPresences = this.dbService.
-    getEventPrecensesPlayer(this.auth.getTeamId(),this.currentPlayer.id).subscribe(y => this.processPresences(y));
+    getEventPrecensesPlayer(this.currentPlayer.id).subscribe(y => this.processPresences(y));
 
 
   }
@@ -194,12 +192,11 @@ sortDate(a,b) {
 }
 
 
-changePresence(oldPresence, newPresence, eventID ) {
+changePresence(newPresence, eventID ) {
 
   this.presence.presence = newPresence;
-  this.oldPresence.presence = oldPresence;
 
-  this.dbService.setEventPresence(this.auth.getTeamId(),eventID, this.currentPlayer.id ,this.presence, this.oldPresence);
+  this.dbService.setEventPresence(eventID, this.currentPlayer.id ,this.presence);
 
   let index = 0;
 

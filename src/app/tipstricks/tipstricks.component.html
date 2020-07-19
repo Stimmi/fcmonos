@@ -59,8 +59,8 @@
         <div *ngFor='let team of teams'>
           <form>
           <div *ngIf='team.id != teamId'> 
-          <button class="btn" (click)="changeTeam(team.id)">{{team.name}}</button>
-          <button *ngIf='team.id != defaultTeam' class="btn" (click)="setDefault(team.id)">Set as default</button>
+          <button (click)="changeTeam(team.id)">{{team.name}}</button>
+          <button *ngIf='team.id != defaultTeam' (click)="setDefault(team.id)">Set as default</button>
           </div>
         </form>
         </div>

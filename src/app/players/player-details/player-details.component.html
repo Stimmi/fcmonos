@@ -8,9 +8,32 @@
       <button class="btn btn-secondary dropdown-toggle col-4" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         <fa-icon [icon]="faCog"></fa-icon> Options</button>
       <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-        <a *ngIf="!updateMode && administrator" class="dropdown-item" (click)="updateModeFunction()">Edit Player</a>
+        <a *ngIf="!updateMode && administrator" class="dropdown-item" (click)="updateModeFunction()">Edit</a>
+        <a *ngIf="administrator" class="dropdown-item" data-toggle="modal" data-target="#deleteModal">Delete</a>
       </div>
     </div>
+
+<!-- deleteModal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Delete member</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        Are you sure you want to delete {{player.name}}?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="deletePlayer()">Delete</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 
 <form>
     <div class="row">
@@ -59,7 +82,7 @@
 
     <div class="form-check">  
         <input type="checkbox" class="form-check-input" id="administrator" name="administrator" [(ngModel)]="player.administrator" [attr.disabled]="!administratorAdmin ? '' : null">
-        <label for="administrator" class="form-check-label"><fa-icon [icon]="faUserCog"></fa-icon> Administrator</label>
+        <label for="administrator" class="form-check-label"><fa-icon [icon]="faUserCog"></fa-icon> Administrator (create, update and delete events, members and attendances)</label>
     </div>
 
     

@@ -1,0 +1,7 @@
+h3 {
+    text-decoration: underline;
+    cursor: pointer;
+    font-size: small;
+    font-weight: normal;
+    margin-top: 10px;
+}

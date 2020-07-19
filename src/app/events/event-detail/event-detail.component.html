@@ -9,10 +9,32 @@
       <fa-icon [icon]="faCog"></fa-icon> Options</button>
     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
       <a class="dropdown-item" href="whatsapp://send?text=https://fcmonos.web.app/dashboard" data-action="share/whatsapp/share">Share on Whatsapp <i class="fa fa-whatsapp" aria-hidden="true"></i></a>
-      <a *ngIf="!newEventMode && currentPlayer.administrator" class="dropdown-item" (click)="editEvent()">Edit this event</a>
+      <a *ngIf="!newEventMode && currentPlayer.administrator" class="dropdown-item" (click)="editEvent()">Edit</a>
+      <a *ngIf="currentPlayer.administrator" class="dropdown-item" data-toggle="modal" data-target="#deleteModal">Delete</a>
       <a *ngIf="currentPlayer.administrator" class="dropdown-item" (click)="addEvent()">Add a new event</a>
     </div>
   </div>
+
+<!-- deleteModal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Delete event</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        Are you sure you want to delete {{event.name}}?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="deleteEvent()">Delete</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 <form>
 
@@ -67,11 +89,11 @@
 
 
 
-<app-event-chat [eventID]="eventID"></app-event-chat>
+<app-event-chat [eventId]="eventId"></app-event-chat>
 
 
 <div class="container text-center p-1" *ngIf="this.currentPlayer.administrator">
-  <h5><fa-icon [icon]="faExclamationTriangle"></fa-icon> As an administrator you are able to update all event presences!</h5>
+  <h5><fa-icon [icon]="faExclamationTriangle"></fa-icon> As an administrator you are able to update all event attendances!</h5>
 </div>
 
 <div class="container">
@@ -104,15 +126,15 @@
       <fa-icon [icon]="faUserInjured" *ngIf="player.injured"></fa-icon>
     </th>
     <td colspan="2">
-        <fa-icon [icon]="faCheckCircle" *ngIf="player.presence!='YES'" (click)="changePresence(player.presence,'YES',player.id )"></fa-icon>
+        <fa-icon [icon]="faCheckCircle" *ngIf="player.presence!='YES'" (click)="changePresence('YES',player.id )"></fa-icon>
         <fa-icon [icon]="faCheckCircleSol" *ngIf="player.presence=='YES'" class="green"></fa-icon>
     </td>
     <td colspan="2">
-      <fa-icon [icon]="faQuestionCircle" *ngIf="player.presence!='MAYBE'" (click)="changePresence(player.presence,'MAYBE',player.id )"></fa-icon>
+      <fa-icon [icon]="faQuestionCircle" *ngIf="player.presence!='MAYBE'" (click)="changePresence('MAYBE',player.id )"></fa-icon>
       <fa-icon [icon]="faQuestionCircleSol" *ngIf="player.presence=='MAYBE'" class="orange"></fa-icon>
     </td>
     <td colspan="2">
-      <fa-icon [icon]="faTimesCircle" *ngIf="player.presence!='NO'" (click)="changePresence(player.presence,'NO',player.id )"></fa-icon>
+      <fa-icon [icon]="faTimesCircle" *ngIf="player.presence!='NO'" (click)="changePresence('NO',player.id )"></fa-icon>
       <fa-icon [icon]="faTimesCircleSol" *ngIf="player.presence=='NO'" class="red"></fa-icon>
     </td>
     <td colspan="2">
@@ -133,15 +155,15 @@
       <fa-icon [icon]="faUserInjured" *ngIf="player.injured"></fa-icon>
     </th>
     <td colspan="2">
-        <fa-icon [icon]="faCheckCircle" *ngIf="player.presence!='YES'" (click)="changePresence(player.presence,'YES',player.id )"></fa-icon>
+        <fa-icon [icon]="faCheckCircle" *ngIf="player.presence!='YES'" (click)="changePresence('YES',player.id )"></fa-icon>
         <fa-icon [icon]="faCheckCircleSol" *ngIf="player.presence=='YES'" class="green"></fa-icon>
     </td>
     <td colspan="2">
-      <fa-icon [icon]="faQuestionCircle" *ngIf="player.presence!='MAYBE'" (click)="changePresence(player.presence,'MAYBE',player.id )"></fa-icon>
+      <fa-icon [icon]="faQuestionCircle" *ngIf="player.presence!='MAYBE'" (click)="changePresence('MAYBE',player.id )"></fa-icon>
       <fa-icon [icon]="faQuestionCircleSol" *ngIf="player.presence=='MAYBE'" class="orange"></fa-icon>
     </td>
     <td colspan="2">
-      <fa-icon [icon]="faTimesCircle" *ngIf="player.presence!='NO'" (click)="changePresence(player.presence,'NO',player.id )"></fa-icon>
+      <fa-icon [icon]="faTimesCircle" *ngIf="player.presence!='NO'" (click)="changePresence('NO',player.id )"></fa-icon>
       <fa-icon [icon]="faTimesCircleSol" *ngIf="player.presence=='NO'" class="red"></fa-icon>
     </td>
     <td colspan="2">
